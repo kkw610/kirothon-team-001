@@ -8,7 +8,7 @@ import {
   safeWon,
 } from "./format";
 
-export type BreakdownKind = "subway" | "taxiWait" | "taxi" | "total";
+export type BreakdownKind = "subway" | "taxiWait" | "taxi" | "walk" | "total";
 
 export interface BreakdownRow {
   kind: BreakdownKind;
@@ -28,12 +28,36 @@ export interface BreakdownNames {
   destination?: string;
 }
 
-export function buildBreakdownRows(
-  option: Option,
-  names: BreakdownNames = {},
-): [BreakdownRow, BreakdownRow, BreakdownRow, BreakdownRow] {
+export function buildBreakdownRows(option: Option, names: BreakdownNames = {}): BreakdownRow[] {
   const { departureTime, arrivalTime, subwayMin, taxiWaitMin, taxiMin } = option;
   const subwayEnd = addMinutes(departureTime, subwayMin);
+
+  if (option.kind === "walk") {
+    const walkMin = option.walkMin ?? 0;
+    return [
+      {
+        kind: "subway",
+        label: names.origin ? `지하철 · ${names.origin} → ${option.stopName}` : "지하철",
+        range: `${formatTimeRange(departureTime, subwayEnd)} · 열차 대기 포함`,
+        duration: formatDuration(subwayMin),
+        cost: safeWon(option.subwayFare),
+      },
+      {
+        kind: "walk",
+        label: names.destination ? `도보 · ${option.stopName} → ${names.destination}` : "도보",
+        range: `${formatTimeRange(subwayEnd, arrivalTime)} · 예상`,
+        duration: formatDuration(walkMin),
+        cost: safeWon(0),
+      },
+      {
+        kind: "total",
+        label: "합계",
+        duration: formatDuration(subwayMin + walkMin),
+        cost: safeWon(option.totalCost),
+      },
+    ];
+  }
+
   const taxiStart = addMinutes(departureTime, subwayMin + taxiWaitMin);
 
   return [

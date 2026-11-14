@@ -54,11 +54,20 @@ export interface Route {
 }
 
 export interface Option {
+  /**
+   * "taxi": 정류장에서 내려 택시로 간다(없으면 "taxi").
+   * "walk": 끝까지 지하철을 타고 마지막 역에서 목적지까지 걸어간다. 택시 필드는 0이다.
+   */
+  kind?: "walk" | "taxi";
   routeId: string;
-  /** 택시로 갈아탈 정류장 이름 */
+  /** 택시로 갈아탈 정류장 이름. kind가 "walk"이면 마지막 역 */
   stopName: string;
-  /** 택시로 갈아탈 정류장 좌표 */
+  /** 택시로 갈아탈 정류장 좌표. kind가 "walk"이면 마지막 역 */
   stopCoord: Coordinate;
+  /** 마지막 역에서 목적지까지 도보 시간(분). kind가 "walk"일 때만 있다 */
+  walkMin?: number;
+  /** 마지막 역에서 목적지까지 도보 거리(m). kind가 "walk"일 때만 있다 */
+  walkDistanceM?: number;
   /** 출발 시각 (ISO 8601) */
   departureTime: string;
   /** 예상 도착 시각 (ISO 8601) */

@@ -13,6 +13,7 @@ function barClass(kind: BreakdownKind): string | undefined {
   if (kind === "subway") return styles.barSubway;
   if (kind === "taxiWait") return styles.barWait;
   if (kind === "taxi") return styles.barTaxi;
+  if (kind === "walk") return styles.barWait;
   return undefined;
 }
 
@@ -35,7 +36,7 @@ export function BreakdownCard({ option, names }: Props) {
           </div>
         );
       })}
-      <p className={styles.note}>{TAXI_FARE_DISCLAIMER}</p>
+      {option.kind !== "walk" && <p className={styles.note}>{TAXI_FARE_DISCLAIMER}</p>}
     </section>
   );
 }
