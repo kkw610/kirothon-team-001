@@ -1,0 +1,31 @@
+:root {
+  /* 색 (design-system.md 표와 같은 값) */
+  --primary: #8e44d4;       --on-primary: #ffffff;
+  --primary-text: #7a35c4;  --primary-soft: #f3eafc;
+  --surface-tint: #f6f2fd;  --surface: #ffffff;
+  --ink: #1e1433;           --text-sub: #5e5670;
+  --border: #e6ddf6;
+  --ok: #16a34a;            --late: #dc2626;
+  --late-soft: #fdecea;     --late-row: #6b7280;
+  --subway: #2e9e4f;        --taxi: #f2a007;
+  --page-bg: #f5f1fd;
+  /* 모양 */
+  --radius-card: 16px;  --radius-button: 12px;  --radius-hero: 20px;
+  /* 간격 */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-5: 20px; --space-6: 24px;
+}
+input, button, select, textarea { font-family: inherit; }
+body { margin: 0; font-family: var(--font-body), system-ui, sans-serif; background: var(--page-bg); color: var(--ink); }
+.card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
+.form { display: grid; gap: 12px; }
+.field { display: grid; gap: 4px; font-size: 14px; }
+input { padding: 8px; font-size: 16px; border: 1px solid #ccd; border-radius: 8px; }
+button { padding: 10px; font-size: 16px; border: 0; border-radius: 8px; background: #1d4ed8; color: #fff; cursor: pointer; }
+button:disabled { opacity: 0.6; cursor: default; }
+.error { color: #c62828; margin: 0; }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #eee; }
+tr.best { background: #e8f5e9; font-weight: 600; }
+.map { width: 100%; box-sizing: border-box; }
+.breakdown { margin: 8px 0; padding-left: 20px; }

@@ -1,0 +1,101 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 `pickFastestSubwayRoute` 함수 추가": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637371148
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637377911
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637399851
+      }
+    ],
+    "1.2 `recommend`가 선택 Route만 평가하도록 수정": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637372547
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637402710
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637469790
+      }
+    ],
+    "2.1 경로 선택 단위 테스트 추가": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637372683
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637472881
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637498078
+      }
+    ],
+    "2.2 빈 입력과 오류 전파 단위 테스트 추가": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637372793
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637498631
+      },
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637654845
+      }
+    ],
+    "3. 체크포인트 - 단위 테스트 통과 확인": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637372878
+      }
+    ],
+    "5. 최종 체크포인트 - `npm test`와 `npm run build` 통과 확인": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637372955
+      }
+    ],
+    "1. 경로 선택 구현 (`recommend.ts`)": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637469910
+      }
+    ],
+    "2. 경로 선택 단위 테스트 (`recommend.test.ts`)": [
+      {
+        "executionId": "62868a23-2470-4d82-87f4-c44ad90ae980",
+        "chatSessionId": "sess_0e072844-ed63-4d89-9cab-f5a8fb9ff3ce",
+        "timestamp": 1794637655063
+      }
+    ]
+  }
+}

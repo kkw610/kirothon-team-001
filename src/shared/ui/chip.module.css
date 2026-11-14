@@ -1,0 +1,27 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.primarySoft {
+  background: var(--primary-soft);
+  color: var(--primary-text);
+}
+
+.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.late {
+  background: var(--late-soft);
+  color: var(--late);
+}
