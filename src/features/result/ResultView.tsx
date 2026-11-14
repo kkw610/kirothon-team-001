@@ -9,6 +9,7 @@ import { RecommendationCard } from "./RecommendationCard";
 import styles from "./result.module.css";
 import { RouteSummaryCard } from "./RouteSummaryCard";
 import { pickFastest } from "./select";
+import { SubwayOnlyCard } from "./SubwayOnlyCard";
 import { EmptyCard } from "./ResultStates";
 import { resolveViewState } from "./viewState";
 
@@ -56,6 +57,15 @@ export function ResultView({ result, arrivalDeadline, originName, destinationNam
         )}
       </div>
       {aside && <div className={styles.areaMap}>{aside}</div>}
+      <div className={styles.areaSubway}>
+        <SubwayOnlyCard
+          route={result.routes[0]}
+          departureTime={shown.departureTime}
+          arrivalDeadline={arrivalDeadline}
+          originName={originName}
+          destinationName={destinationName}
+        />
+      </div>
       <div className={styles.areaTable}>
         <ComparisonTable options={options} best={best} arrivalDeadline={arrivalDeadline} />
       </div>

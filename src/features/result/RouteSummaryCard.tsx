@@ -1,5 +1,6 @@
 import type { Option } from "@/shared/types";
 import { cx } from "./cx";
+import { getLineColor, getLineTextColor } from "./lineColor";
 import { addMinutes, formatStationName, safeTime } from "./format";
 import styles from "./result.module.css";
 
@@ -11,7 +12,17 @@ interface Step {
   leg?: string;
   dot: string;
   line?: string;
+  /** 이 단계에서 타는 노선 색 (점 아래쪽 반, 아래로 이어지는 선, 노선 칩) */
+  color?: string;
+  /** 이 단계에 도착할 때 타고 온 노선 색 (점 위쪽 반) */
+  prevColor?: string;
 }
+
+const cssVars = (vars: Record<string, string | undefined>) => {
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(vars)) if (v) out[k] = v;
+  return out as React.CSSProperties;
+};
 
 interface Props {
   option: Option;
@@ -41,9 +52,11 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
     leg: legLabel(i + 1),
     dot: styles.dotSubway,
     line: styles.lineSubway,
+    color: getLineColor(legs[i + 1].line),
+    prevColor: getLineColor(leg.line),
   }));
   const steps: Step[] = [
-    { key: "origin", name: originName, time: `${safeTime(departureTime)} 출발`, leg: legLabel(0), dot: styles.dotSubway, line: styles.lineSubway },
+    { key: "origin", name: originName, time: `${safeTime(departureTime)} 출발`, leg: legLabel(0), dot: styles.dotSubway, line: styles.lineSubway, color: getLineColor(legs[0]?.line) },
     ...transferSteps,
     {
       key: "stop",
@@ -51,6 +64,7 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
       time: stopTime,
       dot: styles.dotTransfer,
       line: styles.lineTaxi,
+      prevColor: getLineColor(legs[legs.length - 1]?.line),
     },
     { key: "dest", name: destinationName, time: `${safeTime(arrivalTime)} 도착`, dot: styles.dotDest, line: undefined },
   ];
@@ -59,7 +73,7 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
       <h3 className={cx(styles.heading, styles.sectionTitle)}>경로 요약</h3>
       <ol className={styles.timeline}>
         {steps.map((s) => (
-          <li key={s.key} className={styles.step}>
+          <li key={s.key} className={styles.step} style={cssVars({ "--leg-color": s.color, "--leg-prev-color": s.prevColor ?? s.color })}>
             <span className={styles.stepRail} aria-hidden="true">
               <span className={cx(styles.dot, s.dot)} />
               {s.line && <span className={cx(styles.railLine, s.line)} />}
@@ -67,7 +81,14 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
             <div className={styles.stepText}>
               <p className={styles.stepName}>{s.name}</p>
               <p className={styles.stepTime}>{s.time}</p>
-              {s.leg && <p className={styles.stepLeg}>{s.leg}</p>}
+              {s.leg && (
+                <p
+                  className={styles.stepLeg}
+                  style={s.color ? { background: s.color, color: getLineTextColor(s.color) } : undefined}
+                >
+                  {s.leg}
+                </p>
+              )}
             </div>
           </li>
         ))}
