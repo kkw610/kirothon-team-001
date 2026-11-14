@@ -59,7 +59,8 @@ Requirement 2부터 4는 이미 구현된 동작을 회귀 방지용으로 명�
 2. THE Recommender SHALL Taxi_Wait_Buffer를 상수 `TAXI_WAIT_BUFFER_MIN` 하나로 참조한다.
 3. WHEN Arrival_Time이 Arrival_Deadline 이하이면, THE Recommender SHALL 해당 Option의 `onTime`을 true로 설정한다.
 4. WHEN Arrival_Time이 Arrival_Deadline보다 늦으면, THE Recommender SHALL 해당 Option의 `onTime`을 false로 설정한다.
-5. THE Recommender SHALL Selected_Route의 Candidate_Stop마다 Option을 정확히 1개씩 `options`에 담는다.
+5. THE Recommender SHALL Selected_Route의 Candidate_Stop마다 Option을 정확히 1개씩 `options`에 담는다. 단, Requirement 3.6에 따라 택시 경로가 없는 Candidate_Stop은 뺀다.
+6. WHEN Taxi_Estimator를 호출하면, THE Recommender SHALL 택시 탑승 시각(출발 시각 + `elapsedMin` + Taxi_Wait_Buffer)을 `boardingAt`으로 넘긴다. taxi 기능은 이 값으로 교통 예측과 심야 할증을 정한다. (2026-11-14 개정, taxi 연동)
 
 ### Requirement 3: 총비용 계산 (구현됨)
 
@@ -68,10 +69,11 @@ Requirement 2부터 4는 이미 구현된 동작을 회귀 방지용으로 명�
 #### Acceptance Criteria
 
 1. THE Recommender SHALL 각 Option의 Total_Cost를 `subwayFare`와 `taxiFare`의 합으로 계산하며, 모든 금액은 원 단위 정수로 처리한다.
-2. WHEN Candidate_Stop이 Selected_Route의 첫 번째 Stop(index 0)이면, THE Recommender SHALL `subwayFare`를 0원으로 설정한다.
-3. WHEN Candidate_Stop이 Selected_Route의 첫 번째 Stop이 아니면, THE Recommender SHALL `subwayFare`를 해당 Selected_Route의 `fare` 전체 금액으로 설정하며, 정류장까지의 구간별 요금으로 나누지 않는다.
+2. WHEN Candidate_Stop에 `fare`(역별 지하철 요금)가 있으면, THE Recommender SHALL `subwayFare`를 그 값으로 설정한다. (2026-11-14 개정, transit 연동)
+3. WHEN Candidate_Stop에 `fare`가 없으면, THE Recommender SHALL 첫 번째 Stop(index 0)은 `subwayFare`를 0원으로, 그 밖의 Stop은 Selected_Route의 `fare` 전체 금액으로 설정한다.
 4. WHEN Taxi_Estimator가 결과를 돌려주면, THE Recommender SHALL `taxiFare`를 Taxi_Estimator가 돌려준 `fare` 값 그대로(반올림이나 가산 없이) 설정한다.
-5. IF Taxi_Estimator 호출이 실패하면, THEN THE Recommender SHALL 해당 요청의 추천 계산을 실패로 종료하고 어떤 Option도 부분 결과로 반환하지 않는다.
+5. IF Taxi_Estimator 호출이 `code`가 `"NO_ROUTE"`가 아닌 오류로 실패하면, THEN THE Recommender SHALL 해당 요청의 추천 계산을 실패로 종료하고 어떤 Option도 부분 결과로 반환하지 않는다.
+6. IF Taxi_Estimator 호출이 `code`가 `"NO_ROUTE"`인 오류로 실패하면, THEN THE Recommender SHALL 그 Candidate_Stop만 `options`에서 빼고 나머지 후보로 계속 계산한다. (2026-11-14 개정, handoff.md 5. 오류 권장)
 
 ### Requirement 4: 최소 총비용 역 추천 (구현됨)
 
@@ -82,7 +84,7 @@ Requirement 2부터 4는 이미 구현된 동작을 회귀 방지용으로 명�
 1. WHEN 평가 결과에 On_Time_Option이 1개 이상 존재하면, THE Recommender SHALL Total_Cost(원 단위 정수)가 가장 낮은 On_Time_Option을 `best`로 설정한다.
 2. IF 가장 낮은 Total_Cost를 가진 On_Time_Option이 2개 이상이면, THEN THE Recommender SHALL 그중 Arrival_Time이 가장 이른 Option을 `best`로 설정한다.
 3. IF 가장 낮은 Total_Cost와 가장 이른 Arrival_Time이 모두 같은 On_Time_Option이 2개 이상이면, THEN THE Recommender SHALL 평가 순서(입력 후보 목록에서의 순서)상 먼저 나온 Option을 `best`로 설정한다.
-4. IF 평가 결과에 On_Time_Option이 0개이면, THEN THE Recommender SHALL `best`를 null로 설정하고, `options`에 평가한 모든 Option을 입력 후보 수와 동일한 개수로 유지하며, 오류 없이 결과를 반환한다.
+4. IF 평가 결과에 On_Time_Option이 0개이면, THEN THE Recommender SHALL `best`를 null로 설정하고, `options`에 평가한 모든 Option을 유지하며(Requirement 3.6으로 빠진 후보 제외), 오류 없이 결과를 반환한다.
 5. WHEN `best`가 설정되면, THE Recommender SHALL `best`가 `options`에 포함된 Option 중 하나이며 Arrival_Time이 도착 기한 이내인 Option이 되도록 보장한다.
 
 ### Requirement 5: 경로 선택 테스트
@@ -104,6 +106,18 @@ Requirement 2부터 4는 이미 구현된 동작을 회귀 방지용으로 명�
 | `.kiro/specs/transfer-station-recommender/` | 생성 | 이 Spec 문서 |
 
 `src/features/recommender/index.ts`, `constants.ts`, `shared/types.ts`는 변경하지 않는다.
+
+## API 연동 반영 (2026-11-14, `feat/api` handoff)
+
+transit·taxi 연동 후 다음을 반영했다. 근거는 `.kiro/specs/subway-taxi-api/handoff.md`다.
+
+| 파일 | 변경 |
+| --- | --- |
+| `src/features/recommender/recommend.ts` | Requirement 2.6(`boardingAt` 전달), 3.2~3.3(역별 요금 우선) |
+| `src/features/recommender/recommend.ts` | Requirement 3.5~3.6(택시 `NO_ROUTE` 역만 후보에서 제외) |
+| `src/features/recommender/recommend.test.ts` | Requirement 3.5~3.6 테스트 2개 추가 |
+
+`app/api/recommend/route.ts`의 `departureAt` 전달과 오류 코드별 응답(404/502/500, `app/api/recommend/errors.ts`), `recommend.test.ts`의 `from.name` 타입 오류 수정은 develop(PR #6, #7)에 이미 반영되어 있어 그대로 쓴다. 경로는 기본값 1개만 받는다(Requirement 1에 따라 1개만 평가하므로 차이 없음).
 
 ## 공통 파일 변경 요청
 

@@ -19,11 +19,15 @@ interface Props {
   destinationName: string;
 }
 
-/** 출발 → 택시 환승역 → 도착을 세로 타임라인으로 보여 준다. */
+/** 출발 → 택시 환승역(또는 도보 하차역) → 도착을 세로 타임라인으로 보여 준다. */
 export function RouteSummaryCard({ option, originName, destinationName }: Props) {
   const { departureTime, arrivalTime, subwayMin, taxiWaitMin } = option;
   const getOff = addMinutes(departureTime, subwayMin);
   const taxiStart = addMinutes(departureTime, subwayMin + taxiWaitMin);
+  const stopTime =
+    option.kind === "walk"
+      ? `${safeTime(getOff)} 하차 · 도보로 이동`
+      : `${safeTime(getOff)} 하차 · ${safeTime(taxiStart)} 택시 승차`;
   const legs = option.legs ?? [];
   const legLabel = (i: number) => {
     const leg = legs[i];
@@ -44,7 +48,7 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
     {
       key: "stop",
       name: formatStationName(option.stopName),
-      time: `${safeTime(getOff)} 하차 · ${safeTime(taxiStart)} 택시 승차`,
+      time: stopTime,
       dot: styles.dotTransfer,
       line: styles.lineTaxi,
     },

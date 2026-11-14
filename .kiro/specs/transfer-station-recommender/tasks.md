@@ -72,6 +72,12 @@
     - **Property 7: best는 options의 제시간 원소다**
     - **Validates: Requirements 4.5**
 
+- [x] 6. transit·taxi 연동 반영 (`feat/api` handoff)
+  - `recommend.ts`: `estimateTaxi(stop, destination, boardingAt)`로 탑승 시각 전달, `subwayFare = stop.fare ?? (index === 0 ? 0 : route.fare)`
+  - `route.ts`의 `departureAt` 전달·오류 코드별 응답, `recommend.test.ts` 타입 오류 수정은 develop에 이미 반영됨(별도 작업 없음)
+  - `recommend.ts`: 택시 `NO_ROUTE` 오류가 난 역은 후보에서만 빼고, 그 밖의 오류는 전체 실패로 올림. 테스트 2개 추가
+  - _Requirements: 2.6, 3.2, 3.3, 3.5, 3.6_
+
 - [~] 5. 최종 체크포인트 - `npm test`와 `npm run build` 통과 확인
   - 사람이 `npm test`(vitest 단일 실행)와 `npm run build`를 실행해 둘 다 통과하는지 확인한다. 질문이 있으면 사용자에게 묻는다.
 

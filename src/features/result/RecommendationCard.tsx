@@ -1,7 +1,7 @@
 import type { Option } from "@/shared/types";
 import { Mascot } from "@/shared/ui";
 import { cx } from "./cx";
-import { RECOMMEND_CHIP, formatArrivalStats, formatTransferHeadline } from "./format";
+import { RECOMMEND_CHIP, formatArrivalStats, formatOptionHeadline } from "./format";
 import styles from "./result.module.css";
 interface Props {
   option: Option;
@@ -16,7 +16,7 @@ export function RecommendationCard({ option, arrivalDeadline }: Props) {
         <Mascot size={96} mood="happy" />
       </div>
       <p className={styles.chip}>{RECOMMEND_CHIP}</p>
-      <h2 className={cx(styles.heading, styles.headline)}>{formatTransferHeadline(option.stopName)}</h2>
+      <h2 className={cx(styles.heading, styles.headline)}>{formatOptionHeadline(option)}</h2>
       <dl className={styles.stats}>
         {stats.map((s) => (
           <div key={s.label} className={styles.stat}>

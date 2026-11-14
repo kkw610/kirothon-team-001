@@ -19,7 +19,8 @@ const straight = (from: Coordinate, to: Coordinate): TaxiPath => ({ path: [from,
  */
 export function RouteMap({ result, origin, destination }: Props) {
   const view = useMemo(() => buildMapProps(result, origin, destination), [result, origin, destination]);
-  const from = view?.option.stopCoord;
+  // 도보 옵션은 택시 도로 경로가 필요 없다.
+  const from = view?.option.kind === "walk" ? undefined : view?.option.stopCoord;
   const [taxi, setTaxi] = useState<{ key: string; data: TaxiPath } | null>(null);
   const key = from ? `${from.x},${from.y}->${destination.x},${destination.y}` : "";
 

@@ -79,6 +79,19 @@ export function formatTransferHeadline(stopName: string): string {
   return `${formatStationName(stopName)}에서 택시로 갈아타세요`;
 }
 
+/** 택시 없이 마지막 역에서 걸어가는 옵션의 제목. */
+export function formatWalkHeadline(stopName: string, walkMin: number | undefined): string {
+  const walk = isFiniteNumber(walkMin) ? ` (도보 ${formatDuration(walkMin)})` : "";
+  return `${formatStationName(stopName)}에서 내려 걸어가세요${walk}`;
+}
+
+/** 옵션 종류에 맞는 제목. */
+export function formatOptionHeadline(option: Pick<Option, "kind" | "stopName" | "walkMin">): string {
+  return option.kind === "walk"
+    ? formatWalkHeadline(option.stopName, option.walkMin)
+    : formatTransferHeadline(option.stopName);
+}
+
 /** "09:12 → 09:28". 유효하지 않은 쪽은 "-". */
 export function formatTimeRange(fromIso: string, toIso: string): string {
   return `${safeTime(fromIso)} → ${safeTime(toIso)}`;

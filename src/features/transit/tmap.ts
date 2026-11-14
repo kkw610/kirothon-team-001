@@ -94,6 +94,9 @@ function failFromError(body: unknown): void {
   const status = statusSchema.safeParse(body);
   if (status.success && !("metaData" in (body as object))) {
     if (NO_ROUTE_STATUS.has(status.data.result.status)) {
+      console.warn(
+        `[transit] TMAP 결과 없음 status=${status.data.result.status} ${status.data.result.message ?? ""}`,
+      );
       throw new TransitError("NO_ROUTE", "지하철 경로를 찾을 수 없습니다.");
     }
     throw new TransitError("UPSTREAM", `TMAP 대중교통 오류(status ${status.data.result.status})`);
@@ -145,6 +148,13 @@ export function parseTmapRoutes(body: unknown, options: ParseOptions): Route[] {
     if (route) routes.push(route);
   }
 
-  if (routes.length === 0) throw new TransitError("NO_ROUTE", "지하철 경로를 찾을 수 없습니다.");
+  if (routes.length === 0) {
+    // 진단용: 받은 경로마다 구간 수단과 노선을 남긴다(예: "WALK>BUS:간선:470>SUBWAY:신분당선").
+    const summary = parsed.data.metaData.plan.itineraries
+      .map((it) => it.legs.map((l) => (l.mode === "WALK" ? "WALK" : `${l.mode}:${l.route ?? "?"}`)).join(">"))
+      .join(" | ");
+    console.warn(`[transit] 1~9호선 지하철 전용 경로 없음. 받은 경로: ${summary || "(0개)"}`);
+    throw new TransitError("NO_ROUTE", "지하철 경로를 찾을 수 없습니다.");
+  }
   return routes;
 }
