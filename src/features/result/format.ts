@@ -42,7 +42,7 @@ export function formatMargin(diffMin: number): string {
 export const RECOMMEND_CHIP = "추천 · 제시간 도착 중 가장 싼 방법";
 export const LATE_CHIP = "제시간 도착 불가";
 export const LATE_HEADLINE = "제시간에 도착하는 방법이 없어요";
-export const LOADING_TITLE = "경로 계산 중...";
+export const LOADING_TITLE = "경로를 찾는 중이에요";
 export const SLOW_NOTICE = "평소보다 오래 걸리고 있어요. 잠시만 기다려 주세요.";
 export const SLOW_THRESHOLD_MS = 30_000;
 export const ERROR_TITLE = "경로를 불러오지 못했어요";
