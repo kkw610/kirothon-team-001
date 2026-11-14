@@ -17,9 +17,12 @@
 ## 외부 API
 
 ### 대중교통 경로 API
-- 후보: ODsay 대중교통 길찾기 API (가정). 서울 지하철 구간의 역 목록, 역별 좌표, 역까지 누적 소요 시간을 얻는 데 쓴다.
-- 요청 시 지하철 단일 경로만 사용한다(`domain-rules.md` 참고).
-- 필요한 응답 값: 역 이름, 역 좌표, 구간별 소요 시간, 지하철 요금.
+- 확정: TMAP 대중교통 API (SK Open API). `POST https://apis.openapi.sk.com/transit/routes`, 헤더 `appKey`.
+  - 출발 시각(`searchDttm`, Asia/Seoul `yyyyMMddHHmm`)을 기준으로 경로를 찾는다.
+  - ODsay는 출발 시각을 지원하지 않아 제외했다. 카카오모빌리티 대중교통은 제휴 전용이라 제외했다.
+  - 결정 근거: `.kiro/specs/subway-taxi-api/design.md`의 D1.
+- 수도권 1~9호선(급행 포함)과 도보로만 된 경로를 쓴다. 기본은 경로 1개다(`domain-rules.md` 참고). 대체 경로는 옵션으로 최대 3개까지 받는다.
+- 필요한 응답 값: 역 이름, 역 좌표, 구간별 소요 시간과 거리, 노선, 지하철 요금.
 
 ### 카카오모빌리티 길찾기 API
 - 자동차 길찾기: `GET https://apis-navi.kakaomobility.com/v1/directions`
@@ -31,7 +34,7 @@
 ## 환경 변수
 | 이름 | 용도 |
 |---|---|
-| `TRANSIT_API_KEY` | 대중교통 경로 API 키 |
+| `TRANSIT_API_KEY` | 대중교통 경로 API 키 (TMAP `appKey`) |
 | `KAKAO_REST_API_KEY` | 카카오모빌리티 REST API 키 |
 
 - 키는 `.env.local`에만 두고 커밋하지 않는다. 저장소에는 `.env.example`만 둔다.

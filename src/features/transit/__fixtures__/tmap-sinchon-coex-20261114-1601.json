@@ -1,0 +1,2948 @@
+{
+ "metaData": {
+  "requestParameters": {
+   "busCount": 2,
+   "expressbusCount": 0,
+   "subwayCount": 1,
+   "airplaneCount": 0,
+   "locale": "ko",
+   "endY": "37.5116",
+   "endX": "127.0588",
+   "wideareaRouteCount": 0,
+   "subwayBusCount": 7,
+   "startY": "37.5551",
+   "startX": "126.9368",
+   "ferryCount": 0,
+   "trainCount": 0,
+   "reqDttm": "20261114160106"
+  },
+  "plan": {
+   "itineraries": [
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 2664,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 477,
+       "route": "수도권2호선",
+       "routeId": "110021017",
+       "distance": 4471,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "홍대입구",
+          "lon": "126.923497",
+          "lat": "37.556631",
+          "stationID": "110239"
+         },
+         {
+          "index": 2,
+          "stationName": "합정",
+          "lon": "126.914617",
+          "lat": "37.550000",
+          "stationID": "110238"
+         },
+         {
+          "index": 3,
+          "stationName": "당산",
+          "lon": "126.902678",
+          "lat": "37.534878",
+          "stationID": "110237"
+         }
+        ]
+       },
+       "end": {
+        "name": "당산",
+        "lon": 126.90267777777778,
+        "lat": 37.53487777777778
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 167,
+       "distance": 179,
+       "start": {
+        "name": "당산",
+        "lon": 126.90267777777778,
+        "lat": 37.53487777777778
+       },
+       "end": {
+        "name": "당산",
+        "lon": 126.90265277777777,
+        "lat": 37.533525
+       }
+      },
+      {
+       "routeColor": "BDB092",
+       "distance": 15794,
+       "start": {
+        "name": "당산",
+        "lon": 126.90265277777777,
+        "lat": 37.533525
+       },
+       "type": 120,
+       "mode": "SUBWAY",
+       "sectionTime": 1394,
+       "route": "수도권9호선(급행)",
+       "routeId": "111091002",
+       "service": 1,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "당산",
+          "lon": "126.902653",
+          "lat": "37.533525",
+          "stationID": "110913"
+         },
+         {
+          "index": 1,
+          "stationName": "여의도",
+          "lon": "126.924197",
+          "lat": "37.521594",
+          "stationID": "110915"
+         },
+         {
+          "index": 2,
+          "stationName": "노량진",
+          "lon": "126.940767",
+          "lat": "37.513583",
+          "stationID": "110917"
+         },
+         {
+          "index": 3,
+          "stationName": "동작",
+          "lon": "126.977981",
+          "lat": "37.503258",
+          "stationID": "110920"
+         },
+         {
+          "index": 4,
+          "stationName": "고속터미널",
+          "lon": "127.004347",
+          "lat": "37.506011",
+          "stationID": "110923"
+         },
+         {
+          "index": 5,
+          "stationName": "신논현",
+          "lon": "127.025422",
+          "lat": "37.504753",
+          "stationID": "110925"
+         },
+         {
+          "index": 6,
+          "stationName": "선정릉",
+          "lon": "127.043356",
+          "lat": "37.510117",
+          "stationID": "110927"
+         },
+         {
+          "index": 7,
+          "stationName": "봉은사",
+          "lon": "127.060206",
+          "lat": "37.514239",
+          "stationID": "110929"
+         }
+        ]
+       },
+       "end": {
+        "name": "봉은사",
+        "lon": 127.06020555555556,
+        "lat": 37.51423888888889
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 494,
+       "distance": 551,
+       "start": {
+        "name": "봉은사",
+        "lon": 127.06020555555556,
+        "lat": 37.51423888888889
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 793,
+     "transferCount": 1,
+     "totalDistance": 20783,
+     "pathType": 1,
+     "totalWalkDistance": 868
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 2808,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 220,
+       "distance": 274,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌로터리",
+        "lon": 126.93466111111111,
+        "lat": 37.55390555555555
+       }
+      },
+      {
+       "routeColor": "0068B7",
+       "distance": 4412,
+       "start": {
+        "name": "신촌로터리",
+        "lon": 126.93466111111111,
+        "lat": 37.55390555555555
+       },
+       "type": 11,
+       "mode": "BUS",
+       "sectionTime": 813,
+       "route": "간선:163",
+       "routeId": "1021006001",
+       "service": 1,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌로터리",
+          "lon": "126.934661",
+          "lat": "37.553906",
+          "stationID": "757298"
+         },
+         {
+          "index": 1,
+          "stationName": "창전현대홈타운",
+          "lon": "126.932289",
+          "lat": "37.550797",
+          "stationID": "757143"
+         },
+         {
+          "index": 2,
+          "stationName": "광흥창역.서강동주민센터",
+          "lon": "126.931425",
+          "lat": "37.548139",
+          "stationID": "756996"
+         },
+         {
+          "index": 3,
+          "stationName": "국회의사당",
+          "lon": "126.919211",
+          "lat": "37.530608",
+          "stationID": "755854"
+         },
+         {
+          "index": 4,
+          "stationName": "국회의사당역5번출구",
+          "lon": "126.917594",
+          "lat": "37.528014",
+          "stationID": "755658"
+         },
+         {
+          "index": 5,
+          "stationName": "여의도역6번출구",
+          "lon": "126.924767",
+          "lat": "37.520717",
+          "stationID": "755143"
+         }
+        ]
+       },
+       "end": {
+        "name": "여의도역6번출구",
+        "lon": 126.92476666666667,
+        "lat": 37.520716666666665
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 105,
+       "distance": 108,
+       "start": {
+        "name": "여의도역6번출구",
+        "lon": 126.92476666666667,
+        "lat": 37.520716666666665
+       },
+       "end": {
+        "name": "여의도",
+        "lon": 126.92419722222222,
+        "lat": 37.521594444444446
+       }
+      },
+      {
+       "routeColor": "BDB092",
+       "distance": 13366,
+       "start": {
+        "name": "여의도",
+        "lon": 126.92419722222222,
+        "lat": 37.521594444444446
+       },
+       "type": 120,
+       "mode": "SUBWAY",
+       "sectionTime": 1176,
+       "route": "수도권9호선(급행)",
+       "routeId": "111091002",
+       "service": 1,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "여의도",
+          "lon": "126.924197",
+          "lat": "37.521594",
+          "stationID": "110915"
+         },
+         {
+          "index": 1,
+          "stationName": "노량진",
+          "lon": "126.940767",
+          "lat": "37.513583",
+          "stationID": "110917"
+         },
+         {
+          "index": 2,
+          "stationName": "동작",
+          "lon": "126.977981",
+          "lat": "37.503258",
+          "stationID": "110920"
+         },
+         {
+          "index": 3,
+          "stationName": "고속터미널",
+          "lon": "127.004347",
+          "lat": "37.506011",
+          "stationID": "110923"
+         },
+         {
+          "index": 4,
+          "stationName": "신논현",
+          "lon": "127.025422",
+          "lat": "37.504753",
+          "stationID": "110925"
+         },
+         {
+          "index": 5,
+          "stationName": "선정릉",
+          "lon": "127.043356",
+          "lat": "37.510117",
+          "stationID": "110927"
+         },
+         {
+          "index": 6,
+          "stationName": "봉은사",
+          "lon": "127.060206",
+          "lat": "37.514239",
+          "stationID": "110929"
+         }
+        ]
+       },
+       "end": {
+        "name": "봉은사",
+        "lon": 127.06020555555556,
+        "lat": 37.51423888888889
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 494,
+       "distance": 551,
+       "start": {
+        "name": "봉은사",
+        "lon": 127.06020555555556,
+        "lat": 37.51423888888889
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 819,
+     "transferCount": 1,
+     "totalDistance": 18436,
+     "pathType": 3,
+     "totalWalkDistance": 933
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 2928,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 1182,
+       "route": "수도권2호선",
+       "routeId": "110021007",
+       "distance": 9302,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "이대",
+          "lon": "126.946328",
+          "lat": "37.556800",
+          "stationID": "110241"
+         },
+         {
+          "index": 2,
+          "stationName": "아현",
+          "lon": "126.956203",
+          "lat": "37.557397",
+          "stationID": "110242"
+         },
+         {
+          "index": 3,
+          "stationName": "충정로",
+          "lon": "126.964306",
+          "lat": "37.559683",
+          "stationID": "110243"
+         },
+         {
+          "index": 4,
+          "stationName": "시청",
+          "lon": "126.975494",
+          "lat": "37.563625",
+          "stationID": "110201"
+         },
+         {
+          "index": 5,
+          "stationName": "을지로입구",
+          "lon": "126.982275",
+          "lat": "37.566042",
+          "stationID": "110202"
+         },
+         {
+          "index": 6,
+          "stationName": "을지로3가",
+          "lon": "126.990928",
+          "lat": "37.566286",
+          "stationID": "110203"
+         },
+         {
+          "index": 7,
+          "stationName": "을지로4가",
+          "lon": "126.998094",
+          "lat": "37.566642",
+          "stationID": "110204"
+         },
+         {
+          "index": 8,
+          "stationName": "동대문역사문화공원",
+          "lon": "127.008886",
+          "lat": "37.565697",
+          "stationID": "110205"
+         },
+         {
+          "index": 9,
+          "stationName": "신당",
+          "lon": "127.019483",
+          "lat": "37.565678",
+          "stationID": "110206"
+         },
+         {
+          "index": 10,
+          "stationName": "상왕십리",
+          "lon": "127.029656",
+          "lat": "37.564269",
+          "stationID": "110207"
+         },
+         {
+          "index": 11,
+          "stationName": "왕십리",
+          "lon": "127.036739",
+          "lat": "37.561239",
+          "stationID": "110208"
+         }
+        ]
+       },
+       "end": {
+        "name": "왕십리",
+        "lon": 127.03673888888889,
+        "lat": 37.56123888888889
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 207,
+       "distance": 198,
+       "start": {
+        "name": "왕십리",
+        "lon": 127.03673888888889,
+        "lat": 37.56123888888889
+       },
+       "end": {
+        "name": "왕십리",
+        "lon": 127.03876944444444,
+        "lat": 37.56118611111111
+       }
+      },
+      {
+       "routeColor": "F5A200",
+       "distance": 5128,
+       "start": {
+        "name": "왕십리",
+        "lon": 127.03876944444444,
+        "lat": 37.56118611111111
+       },
+       "type": 100,
+       "mode": "SUBWAY",
+       "sectionTime": 480,
+       "route": "수인분당선",
+       "routeId": "110101017",
+       "service": 0,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "왕십리",
+          "lon": "127.038769",
+          "lat": "37.561186",
+          "stationID": "111002"
+         },
+         {
+          "index": 1,
+          "stationName": "서울숲",
+          "lon": "127.044747",
+          "lat": "37.543767",
+          "stationID": "111003"
+         },
+         {
+          "index": 2,
+          "stationName": "압구정로데오",
+          "lon": "127.040758",
+          "lat": "37.527881",
+          "stationID": "111004"
+         },
+         {
+          "index": 3,
+          "stationName": "강남구청",
+          "lon": "127.041203",
+          "lat": "37.517428",
+          "stationID": "111005"
+         }
+        ]
+       },
+       "end": {
+        "name": "강남구청",
+        "lon": 127.04120277777778,
+        "lat": 37.517427777777776
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 176,
+       "distance": 157,
+       "start": {
+        "name": "강남구청",
+        "lon": 127.04120277777778,
+        "lat": 37.517427777777776
+       },
+       "end": {
+        "name": "삼성동서광아파트",
+        "lon": 127.0425361111111,
+        "lat": 37.5173
+       }
+      },
+      {
+       "routeColor": "0068B7",
+       "distance": 2273,
+       "start": {
+        "name": "삼성동서광아파트",
+        "lon": 127.0425361111111,
+        "lat": 37.5173
+       },
+       "type": 11,
+       "mode": "BUS",
+       "sectionTime": 406,
+       "route": "간선:301",
+       "routeId": "1021048001",
+       "service": 1,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "삼성동서광아파트",
+          "lon": "127.042536",
+          "lat": "37.517300",
+          "stationID": "773097"
+         },
+         {
+          "index": 1,
+          "stationName": "강남구청.강남세무서",
+          "lon": "127.047703",
+          "lat": "37.518250",
+          "stationID": "773115"
+         },
+         {
+          "index": 2,
+          "stationName": "진흥아파트.청담역",
+          "lon": "127.052308",
+          "lat": "37.519097",
+          "stationID": "773134"
+         },
+         {
+          "index": 3,
+          "stationName": "청담역.경기고교",
+          "lon": "127.056444",
+          "lat": "37.519831",
+          "stationID": "773146"
+         },
+         {
+          "index": 4,
+          "stationName": "봉은사.삼성1파출소앞",
+          "lon": "127.059494",
+          "lat": "37.515056",
+          "stationID": "773032"
+         },
+         {
+          "index": 5,
+          "stationName": "무역센터",
+          "lon": "127.061192",
+          "lat": "37.512025",
+          "stationID": "753434"
+         }
+        ]
+       },
+       "end": {
+        "name": "무역센터",
+        "lon": 127.06119166666667,
+        "lat": 37.512025
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 345,
+       "distance": 343,
+       "start": {
+        "name": "무역센터",
+        "lon": 127.06119166666667,
+        "lat": 37.512025
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 860,
+     "transferCount": 2,
+     "totalDistance": 17295,
+     "pathType": 3,
+     "totalWalkDistance": 836
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 2984,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 1182,
+       "route": "수도권2호선",
+       "routeId": "110021007",
+       "distance": 9302,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "이대",
+          "lon": "126.946328",
+          "lat": "37.556800",
+          "stationID": "110241"
+         },
+         {
+          "index": 2,
+          "stationName": "아현",
+          "lon": "126.956203",
+          "lat": "37.557397",
+          "stationID": "110242"
+         },
+         {
+          "index": 3,
+          "stationName": "충정로",
+          "lon": "126.964306",
+          "lat": "37.559683",
+          "stationID": "110243"
+         },
+         {
+          "index": 4,
+          "stationName": "시청",
+          "lon": "126.975494",
+          "lat": "37.563625",
+          "stationID": "110201"
+         },
+         {
+          "index": 5,
+          "stationName": "을지로입구",
+          "lon": "126.982275",
+          "lat": "37.566042",
+          "stationID": "110202"
+         },
+         {
+          "index": 6,
+          "stationName": "을지로3가",
+          "lon": "126.990928",
+          "lat": "37.566286",
+          "stationID": "110203"
+         },
+         {
+          "index": 7,
+          "stationName": "을지로4가",
+          "lon": "126.998094",
+          "lat": "37.566642",
+          "stationID": "110204"
+         },
+         {
+          "index": 8,
+          "stationName": "동대문역사문화공원",
+          "lon": "127.008886",
+          "lat": "37.565697",
+          "stationID": "110205"
+         },
+         {
+          "index": 9,
+          "stationName": "신당",
+          "lon": "127.019483",
+          "lat": "37.565678",
+          "stationID": "110206"
+         },
+         {
+          "index": 10,
+          "stationName": "상왕십리",
+          "lon": "127.029656",
+          "lat": "37.564269",
+          "stationID": "110207"
+         },
+         {
+          "index": 11,
+          "stationName": "왕십리",
+          "lon": "127.036739",
+          "lat": "37.561239",
+          "stationID": "110208"
+         }
+        ]
+       },
+       "end": {
+        "name": "왕십리",
+        "lon": 127.03673888888889,
+        "lat": 37.56123888888889
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 207,
+       "distance": 198,
+       "start": {
+        "name": "왕십리",
+        "lon": 127.03673888888889,
+        "lat": 37.56123888888889
+       },
+       "end": {
+        "name": "왕십리",
+        "lon": 127.03876944444444,
+        "lat": 37.56118611111111
+       }
+      },
+      {
+       "routeColor": "F5A200",
+       "distance": 5128,
+       "start": {
+        "name": "왕십리",
+        "lon": 127.03876944444444,
+        "lat": 37.56118611111111
+       },
+       "type": 100,
+       "mode": "SUBWAY",
+       "sectionTime": 480,
+       "route": "수인분당선",
+       "routeId": "110101017",
+       "service": 0,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "왕십리",
+          "lon": "127.038769",
+          "lat": "37.561186",
+          "stationID": "111002"
+         },
+         {
+          "index": 1,
+          "stationName": "서울숲",
+          "lon": "127.044747",
+          "lat": "37.543767",
+          "stationID": "111003"
+         },
+         {
+          "index": 2,
+          "stationName": "압구정로데오",
+          "lon": "127.040758",
+          "lat": "37.527881",
+          "stationID": "111004"
+         },
+         {
+          "index": 3,
+          "stationName": "강남구청",
+          "lon": "127.041203",
+          "lat": "37.517428",
+          "stationID": "111005"
+         }
+        ]
+       },
+       "end": {
+        "name": "강남구청",
+        "lon": 127.04120277777778,
+        "lat": 37.517427777777776
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 154,
+       "distance": 163,
+       "start": {
+        "name": "강남구청",
+        "lon": 127.04120277777778,
+        "lat": 37.517427777777776
+       },
+       "end": {
+        "name": "강남구청역2번출구",
+        "lon": 127.04008611111111,
+        "lat": 37.516733333333335
+       }
+      },
+      {
+       "routeColor": "0068B7",
+       "distance": 2501,
+       "start": {
+        "name": "강남구청역2번출구",
+        "lon": 127.04008611111111,
+        "lat": 37.516733333333335
+       },
+       "type": 11,
+       "mode": "BUS",
+       "sectionTime": 484,
+       "route": "간선:401",
+       "routeId": "1021089001",
+       "service": 1,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "강남구청역2번출구",
+          "lon": "127.040086",
+          "lat": "37.516733",
+          "stationID": "773082"
+         },
+         {
+          "index": 1,
+          "stationName": "삼성동서광아파트",
+          "lon": "127.042536",
+          "lat": "37.517300",
+          "stationID": "773097"
+         },
+         {
+          "index": 2,
+          "stationName": "강남구청.강남세무서",
+          "lon": "127.047703",
+          "lat": "37.518250",
+          "stationID": "773115"
+         },
+         {
+          "index": 3,
+          "stationName": "진흥아파트.청담역",
+          "lon": "127.052308",
+          "lat": "37.519097",
+          "stationID": "773134"
+         },
+         {
+          "index": 4,
+          "stationName": "청담역.경기고교",
+          "lon": "127.056444",
+          "lat": "37.519831",
+          "stationID": "773146"
+         },
+         {
+          "index": 5,
+          "stationName": "봉은사.삼성1파출소앞",
+          "lon": "127.059494",
+          "lat": "37.515056",
+          "stationID": "773032"
+         },
+         {
+          "index": 6,
+          "stationName": "무역센터",
+          "lon": "127.061192",
+          "lat": "37.512025",
+          "stationID": "753434"
+         }
+        ]
+       },
+       "end": {
+        "name": "무역센터",
+        "lon": 127.06119166666667,
+        "lat": 37.512025
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 345,
+       "distance": 343,
+       "start": {
+        "name": "무역센터",
+        "lon": 127.06119166666667,
+        "lat": 37.512025
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 838,
+     "transferCount": 2,
+     "totalDistance": 17529,
+     "pathType": 3,
+     "totalWalkDistance": 842
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 2905,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 1182,
+       "route": "수도권2호선",
+       "routeId": "110021007",
+       "distance": 9302,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "이대",
+          "lon": "126.946328",
+          "lat": "37.556800",
+          "stationID": "110241"
+         },
+         {
+          "index": 2,
+          "stationName": "아현",
+          "lon": "126.956203",
+          "lat": "37.557397",
+          "stationID": "110242"
+         },
+         {
+          "index": 3,
+          "stationName": "충정로",
+          "lon": "126.964306",
+          "lat": "37.559683",
+          "stationID": "110243"
+         },
+         {
+          "index": 4,
+          "stationName": "시청",
+          "lon": "126.975494",
+          "lat": "37.563625",
+          "stationID": "110201"
+         },
+         {
+          "index": 5,
+          "stationName": "을지로입구",
+          "lon": "126.982275",
+          "lat": "37.566042",
+          "stationID": "110202"
+         },
+         {
+          "index": 6,
+          "stationName": "을지로3가",
+          "lon": "126.990928",
+          "lat": "37.566286",
+          "stationID": "110203"
+         },
+         {
+          "index": 7,
+          "stationName": "을지로4가",
+          "lon": "126.998094",
+          "lat": "37.566642",
+          "stationID": "110204"
+         },
+         {
+          "index": 8,
+          "stationName": "동대문역사문화공원",
+          "lon": "127.008886",
+          "lat": "37.565697",
+          "stationID": "110205"
+         },
+         {
+          "index": 9,
+          "stationName": "신당",
+          "lon": "127.019483",
+          "lat": "37.565678",
+          "stationID": "110206"
+         },
+         {
+          "index": 10,
+          "stationName": "상왕십리",
+          "lon": "127.029656",
+          "lat": "37.564269",
+          "stationID": "110207"
+         },
+         {
+          "index": 11,
+          "stationName": "왕십리",
+          "lon": "127.036739",
+          "lat": "37.561239",
+          "stationID": "110208"
+         }
+        ]
+       },
+       "end": {
+        "name": "왕십리",
+        "lon": 127.03673888888889,
+        "lat": 37.56123888888889
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 207,
+       "distance": 198,
+       "start": {
+        "name": "왕십리",
+        "lon": 127.03673888888889,
+        "lat": 37.56123888888889
+       },
+       "end": {
+        "name": "왕십리",
+        "lon": 127.03876944444444,
+        "lat": 37.56118611111111
+       }
+      },
+      {
+       "routeColor": "F5A200",
+       "distance": 3922,
+       "start": {
+        "name": "왕십리",
+        "lon": 127.03876944444444,
+        "lat": 37.56118611111111
+       },
+       "type": 100,
+       "mode": "SUBWAY",
+       "sectionTime": 300,
+       "route": "수인분당선",
+       "routeId": "110101017",
+       "service": 0,
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "왕십리",
+          "lon": "127.038769",
+          "lat": "37.561186",
+          "stationID": "111002"
+         },
+         {
+          "index": 1,
+          "stationName": "서울숲",
+          "lon": "127.044747",
+          "lat": "37.543767",
+          "stationID": "111003"
+         },
+         {
+          "index": 2,
+          "stationName": "압구정로데오",
+          "lon": "127.040758",
+          "lat": "37.527881",
+          "stationID": "111004"
+         }
+        ]
+       },
+       "end": {
+        "name": "압구정로데오",
+        "lon": 127.04075833333333,
+        "lat": 37.527880555555555
+       }
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 122,
+       "distance": 139,
+       "start": {
+        "name": "압구정로데오",
+        "lon": 127.04075833333333,
+        "lat": 37.527880555555555
+       },
+       "end": {
+        "name": "한양아파트.압구정로데오역",
+        "lon": 127.03944444444444,
+        "lat": 37.52798055555556
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "0068B7",
+       "sectionTime": 658,
+       "route": "간선:342",
+       "routeId": "1021078001",
+       "distance": 3400,
+       "service": 1,
+       "start": {
+        "name": "한양아파트.압구정로데오역",
+        "lon": 127.03944444444444,
+        "lat": 37.52798055555556
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "한양아파트.압구정로데오역",
+          "lon": "127.039444",
+          "lat": "37.527981",
+          "stationID": "773347"
+         },
+         {
+          "index": 1,
+          "stationName": "일지아트홀",
+          "lon": "127.039553",
+          "lat": "37.524961",
+          "stationID": "773275"
+         },
+         {
+          "index": 2,
+          "stationName": "영동고등학교.현대아파트",
+          "lon": "127.039583",
+          "lat": "37.521403",
+          "stationID": "773182"
+         },
+         {
+          "index": 3,
+          "stationName": "강남구청역",
+          "lon": "127.040678",
+          "lat": "37.518489",
+          "stationID": "773121"
+         },
+         {
+          "index": 4,
+          "stationName": "강남구보건소",
+          "lon": "127.041797",
+          "lat": "37.515467",
+          "stationID": "773049"
+         },
+         {
+          "index": 5,
+          "stationName": "한국토지주택공사앞",
+          "lon": "127.042686",
+          "lat": "37.513075",
+          "stationID": "772982"
+         },
+         {
+          "index": 6,
+          "stationName": "삼성2문화센터",
+          "lon": "127.046442",
+          "lat": "37.510883",
+          "stationID": "772894"
+         },
+         {
+          "index": 7,
+          "stationName": "삼성중앙역.플래티넘아파트",
+          "lon": "127.051764",
+          "lat": "37.512481",
+          "stationID": "772960"
+         },
+         {
+          "index": 8,
+          "stationName": "봉은사역.코엑스인터컨티넨탈",
+          "lon": "127.057556",
+          "lat": "37.513631",
+          "stationID": "772985"
+         }
+        ]
+       },
+       "end": {
+        "name": "봉은사역.코엑스인터컨티넨탈",
+        "lon": 127.05755555555555,
+        "lat": 37.51363055555556
+       },
+       "type": 11
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 304,
+       "distance": 323,
+       "start": {
+        "name": "봉은사역.코엑스인터컨티넨탈",
+        "lon": 127.05755555555555,
+        "lat": 37.51363055555556
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 765,
+     "transferCount": 2,
+     "totalDistance": 17233,
+     "pathType": 3,
+     "totalWalkDistance": 798
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 3583,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 1422,
+       "route": "수도권2호선",
+       "routeId": "110021007",
+       "distance": 11481,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "이대",
+          "lon": "126.946328",
+          "lat": "37.556800",
+          "stationID": "110241"
+         },
+         {
+          "index": 2,
+          "stationName": "아현",
+          "lon": "126.956203",
+          "lat": "37.557397",
+          "stationID": "110242"
+         },
+         {
+          "index": 3,
+          "stationName": "충정로",
+          "lon": "126.964306",
+          "lat": "37.559683",
+          "stationID": "110243"
+         },
+         {
+          "index": 4,
+          "stationName": "시청",
+          "lon": "126.975494",
+          "lat": "37.563625",
+          "stationID": "110201"
+         },
+         {
+          "index": 5,
+          "stationName": "을지로입구",
+          "lon": "126.982275",
+          "lat": "37.566042",
+          "stationID": "110202"
+         },
+         {
+          "index": 6,
+          "stationName": "을지로3가",
+          "lon": "126.990928",
+          "lat": "37.566286",
+          "stationID": "110203"
+         },
+         {
+          "index": 7,
+          "stationName": "을지로4가",
+          "lon": "126.998094",
+          "lat": "37.566642",
+          "stationID": "110204"
+         },
+         {
+          "index": 8,
+          "stationName": "동대문역사문화공원",
+          "lon": "127.008886",
+          "lat": "37.565697",
+          "stationID": "110205"
+         },
+         {
+          "index": 9,
+          "stationName": "신당",
+          "lon": "127.019483",
+          "lat": "37.565678",
+          "stationID": "110206"
+         },
+         {
+          "index": 10,
+          "stationName": "상왕십리",
+          "lon": "127.029656",
+          "lat": "37.564269",
+          "stationID": "110207"
+         },
+         {
+          "index": 11,
+          "stationName": "왕십리",
+          "lon": "127.036739",
+          "lat": "37.561239",
+          "stationID": "110208"
+         },
+         {
+          "index": 12,
+          "stationName": "한양대",
+          "lon": "127.043644",
+          "lat": "37.555778",
+          "stationID": "110209"
+         },
+         {
+          "index": 13,
+          "stationName": "뚝섬",
+          "lon": "127.047500",
+          "lat": "37.547189",
+          "stationID": "110210"
+         }
+        ]
+       },
+       "end": {
+        "name": "뚝섬",
+        "lon": 127.0475,
+        "lat": 37.54718888888889
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 175,
+       "distance": 191,
+       "start": {
+        "name": "뚝섬",
+        "lon": 127.0475,
+        "lat": 37.54718888888889
+       },
+       "end": {
+        "name": "뚝섬역5번출구",
+        "lon": 127.04925277777778,
+        "lat": 37.546483333333335
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "53B332",
+       "sectionTime": 1351,
+       "route": "지선:2413",
+       "routeId": "1021037001",
+       "distance": 4623,
+       "service": 1,
+       "start": {
+        "name": "뚝섬역5번출구",
+        "lon": 127.04925277777778,
+        "lat": 37.546483333333335
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "뚝섬역5번출구",
+          "lon": "127.049253",
+          "lat": "37.546483",
+          "stationID": "774113"
+         },
+         {
+          "index": 1,
+          "stationName": "SK테크노빌딩앞",
+          "lon": "127.050008",
+          "lat": "37.545800",
+          "stationID": "774086"
+         },
+         {
+          "index": 2,
+          "stationName": "경동초등학교입구",
+          "lon": "127.049253",
+          "lat": "37.543631",
+          "stationID": "773969"
+         },
+         {
+          "index": 3,
+          "stationName": "경일초등학교앞",
+          "lon": "127.048128",
+          "lat": "37.540950",
+          "stationID": "773837"
+         },
+         {
+          "index": 4,
+          "stationName": "성원중학교후문",
+          "lon": "127.050261",
+          "lat": "37.539964",
+          "stationID": "773787"
+         },
+         {
+          "index": 5,
+          "stationName": "성원중.성수2가제1동주민센터",
+          "lon": "127.053464",
+          "lat": "37.539144",
+          "stationID": "773756"
+         },
+         {
+          "index": 6,
+          "stationName": "뚝도시장",
+          "lon": "127.055342",
+          "lat": "37.538633",
+          "stationID": "773730"
+         },
+         {
+          "index": 7,
+          "stationName": "경수중학교",
+          "lon": "127.056986",
+          "lat": "37.538203",
+          "stationID": "773715"
+         },
+         {
+          "index": 8,
+          "stationName": "성수119안전센터",
+          "lon": "127.060067",
+          "lat": "37.537397",
+          "stationID": "773679"
+         },
+         {
+          "index": 9,
+          "stationName": "영동대교북단",
+          "lon": "127.060758",
+          "lat": "37.536783",
+          "stationID": "773656"
+         },
+         {
+          "index": 10,
+          "stationName": "영동대교남단",
+          "lon": "127.055458",
+          "lat": "37.522375",
+          "stationID": "773212"
+         },
+         {
+          "index": 11,
+          "stationName": "청담역.경기고교",
+          "lon": "127.056347",
+          "lat": "37.520811",
+          "stationID": "773172"
+         },
+         {
+          "index": 12,
+          "stationName": "봉은사.삼성1파출소앞",
+          "lon": "127.059494",
+          "lat": "37.515056",
+          "stationID": "773032"
+         }
+        ]
+       },
+       "end": {
+        "name": "봉은사.삼성1파출소앞",
+        "lon": 127.05949444444444,
+        "lat": 37.515055555555556
+       },
+       "type": 12
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 503,
+       "distance": 563,
+       "start": {
+        "name": "봉은사.삼성1파출소앞",
+        "lon": 127.05949444444444,
+        "lat": 37.515055555555556
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 810,
+     "transferCount": 1,
+     "totalDistance": 16705,
+     "pathType": 3,
+     "totalWalkDistance": 892
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 3098,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 645,
+       "route": "수도권2호선",
+       "routeId": "110021007",
+       "distance": 5085,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "이대",
+          "lon": "126.946328",
+          "lat": "37.556800",
+          "stationID": "110241"
+         },
+         {
+          "index": 2,
+          "stationName": "아현",
+          "lon": "126.956203",
+          "lat": "37.557397",
+          "stationID": "110242"
+         },
+         {
+          "index": 3,
+          "stationName": "충정로",
+          "lon": "126.964306",
+          "lat": "37.559683",
+          "stationID": "110243"
+         },
+         {
+          "index": 4,
+          "stationName": "시청",
+          "lon": "126.975494",
+          "lat": "37.563625",
+          "stationID": "110201"
+         },
+         {
+          "index": 5,
+          "stationName": "을지로입구",
+          "lon": "126.982275",
+          "lat": "37.566042",
+          "stationID": "110202"
+         },
+         {
+          "index": 6,
+          "stationName": "을지로3가",
+          "lon": "126.990928",
+          "lat": "37.566286",
+          "stationID": "110203"
+         }
+        ]
+       },
+       "end": {
+        "name": "을지로3가",
+        "lon": 126.99092777777778,
+        "lat": 37.56628611111111
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 250,
+       "distance": 234,
+       "start": {
+        "name": "을지로3가",
+        "lon": 126.99092777777778,
+        "lat": 37.56628611111111
+       },
+       "end": {
+        "name": "을지로3가",
+        "lon": 126.99256944444444,
+        "lat": 37.56680277777778
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "EF7C1C",
+       "sectionTime": 780,
+       "route": "수도권3호선",
+       "routeId": "110031016",
+       "distance": 7446,
+       "service": 1,
+       "start": {
+        "name": "을지로3가",
+        "lon": 126.99256944444444,
+        "lat": 37.56680277777778
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "을지로3가",
+          "lon": "126.992569",
+          "lat": "37.566803",
+          "stationID": "110322"
+         },
+         {
+          "index": 1,
+          "stationName": "충무로",
+          "lon": "126.994439",
+          "lat": "37.560953",
+          "stationID": "110323"
+         },
+         {
+          "index": 2,
+          "stationName": "동대입구",
+          "lon": "127.005353",
+          "lat": "37.559075",
+          "stationID": "110324"
+         },
+         {
+          "index": 3,
+          "stationName": "약수",
+          "lon": "127.010994",
+          "lat": "37.554358",
+          "stationID": "110325"
+         },
+         {
+          "index": 4,
+          "stationName": "금호",
+          "lon": "127.015789",
+          "lat": "37.548303",
+          "stationID": "110326"
+         },
+         {
+          "index": 5,
+          "stationName": "옥수",
+          "lon": "127.017589",
+          "lat": "37.541242",
+          "stationID": "110327"
+         },
+         {
+          "index": 6,
+          "stationName": "압구정",
+          "lon": "127.028514",
+          "lat": "37.526383",
+          "stationID": "110328"
+         },
+         {
+          "index": 7,
+          "stationName": "신사",
+          "lon": "127.020308",
+          "lat": "37.516444",
+          "stationID": "110329"
+         }
+        ]
+       },
+       "end": {
+        "name": "신사",
+        "lon": 127.02030833333333,
+        "lat": 37.516444444444446
+       },
+       "type": 3
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 143,
+       "distance": 161,
+       "start": {
+        "name": "신사",
+        "lon": 127.02030833333333,
+        "lat": 37.516444444444446
+       },
+       "end": {
+        "name": "신사역1번출구",
+        "lon": 127.02176666666666,
+        "lat": 37.51685555555556
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "53B332",
+       "sectionTime": 803,
+       "route": "마을:강남08",
+       "routeId": "1021371001",
+       "distance": 4687,
+       "service": 1,
+       "start": {
+        "name": "신사역1번출구",
+        "lon": 127.02176666666666,
+        "lat": 37.51685555555556
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신사역1번출구",
+          "lon": "127.021767",
+          "lat": "37.516856",
+          "stationID": "773086"
+         },
+         {
+          "index": 1,
+          "stationName": "신사동고개",
+          "lon": "127.026117",
+          "lat": "37.518650",
+          "stationID": "773128"
+         },
+         {
+          "index": 2,
+          "stationName": "강남을지병원",
+          "lon": "127.028639",
+          "lat": "37.518192",
+          "stationID": "773116"
+         },
+         {
+          "index": 3,
+          "stationName": "학동역",
+          "lon": "127.029992",
+          "lat": "37.515314",
+          "stationID": "773043"
+         },
+         {
+          "index": 4,
+          "stationName": "세관앞",
+          "lon": "127.036442",
+          "lat": "37.515606",
+          "stationID": "773056"
+         },
+         {
+          "index": 5,
+          "stationName": "강남구청역2번출구",
+          "lon": "127.040086",
+          "lat": "37.516733",
+          "stationID": "773082"
+         },
+         {
+          "index": 6,
+          "stationName": "삼성동서광아파트",
+          "lon": "127.042536",
+          "lat": "37.517300",
+          "stationID": "773097"
+         },
+         {
+          "index": 7,
+          "stationName": "강남구청.강남세무서",
+          "lon": "127.047703",
+          "lat": "37.518250",
+          "stationID": "773115"
+         },
+         {
+          "index": 8,
+          "stationName": "진흥아파트.청담역",
+          "lon": "127.052308",
+          "lat": "37.519097",
+          "stationID": "773134"
+         },
+         {
+          "index": 9,
+          "stationName": "청담역.경기고교",
+          "lon": "127.056444",
+          "lat": "37.519831",
+          "stationID": "773146"
+         },
+         {
+          "index": 10,
+          "stationName": "봉은사.삼성1파출소앞",
+          "lon": "127.059494",
+          "lat": "37.515056",
+          "stationID": "773032"
+         },
+         {
+          "index": 11,
+          "stationName": "무역센터",
+          "lon": "127.061192",
+          "lat": "37.512025",
+          "stationID": "753434"
+         }
+        ]
+       },
+       "end": {
+        "name": "무역센터",
+        "lon": 127.06119166666667,
+        "lat": 37.512025
+       },
+       "type": 3
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 345,
+       "distance": 343,
+       "start": {
+        "name": "무역센터",
+        "lon": 127.06119166666667,
+        "lat": 37.512025
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 870,
+     "transferCount": 2,
+     "totalDistance": 17850,
+     "pathType": 3,
+     "totalWalkDistance": 876
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1750,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 3186,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 132,
+       "distance": 138,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       }
+      },
+      {
+       "mode": "SUBWAY",
+       "routeColor": "009D3E",
+       "sectionTime": 546,
+       "route": "수도권2호선",
+       "routeId": "110021007",
+       "distance": 4320,
+       "service": 1,
+       "start": {
+        "name": "신촌",
+        "lon": 126.93700277777778,
+        "lat": 37.555169444444445
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌",
+          "lon": "126.937003",
+          "lat": "37.555169",
+          "stationID": "110240"
+         },
+         {
+          "index": 1,
+          "stationName": "이대",
+          "lon": "126.946328",
+          "lat": "37.556800",
+          "stationID": "110241"
+         },
+         {
+          "index": 2,
+          "stationName": "아현",
+          "lon": "126.956203",
+          "lat": "37.557397",
+          "stationID": "110242"
+         },
+         {
+          "index": 3,
+          "stationName": "충정로",
+          "lon": "126.964306",
+          "lat": "37.559683",
+          "stationID": "110243"
+         },
+         {
+          "index": 4,
+          "stationName": "시청",
+          "lon": "126.975494",
+          "lat": "37.563625",
+          "stationID": "110201"
+         },
+         {
+          "index": 5,
+          "stationName": "을지로입구",
+          "lon": "126.982275",
+          "lat": "37.566042",
+          "stationID": "110202"
+         }
+        ]
+       },
+       "end": {
+        "name": "을지로입구",
+        "lon": 126.982275,
+        "lat": 37.56604166666666
+       },
+       "type": 2
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 250,
+       "distance": 287,
+       "start": {
+        "name": "을지로입구",
+        "lon": 126.982275,
+        "lat": 37.56604166666666
+       },
+       "end": {
+        "name": "을지로입구.로얄호텔",
+        "lon": 126.98529166666667,
+        "lat": 37.56599444444444
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "0068B7",
+       "sectionTime": 1245,
+       "route": "간선:472",
+       "routeId": "1021111001",
+       "distance": 8094,
+       "service": 1,
+       "start": {
+        "name": "을지로입구.로얄호텔",
+        "lon": 126.98529166666667,
+        "lat": 37.56599444444444
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "을지로입구.로얄호텔",
+          "lon": "126.985292",
+          "lat": "37.565994",
+          "stationID": "757997"
+         },
+         {
+          "index": 1,
+          "stationName": "남대문세무서(중)",
+          "lon": "126.987469",
+          "lat": "37.564958",
+          "stationID": "757955"
+         },
+         {
+          "index": 2,
+          "stationName": "남산1호터널",
+          "lon": "126.992267",
+          "lat": "37.557394",
+          "stationID": "757512"
+         },
+         {
+          "index": 3,
+          "stationName": "순천향대학병원.한남오거리",
+          "lon": "127.005775",
+          "lat": "37.535506",
+          "stationID": "773596"
+         },
+         {
+          "index": 4,
+          "stationName": "신사중학교",
+          "lon": "127.020625",
+          "lat": "37.523078",
+          "stationID": "773226"
+         },
+         {
+          "index": 5,
+          "stationName": "광림교회.현대고등학교",
+          "lon": "127.025258",
+          "lat": "37.525414",
+          "stationID": "773281"
+         },
+         {
+          "index": 6,
+          "stationName": "현대아파트",
+          "lon": "127.031086",
+          "lat": "37.528372",
+          "stationID": "773364"
+         },
+         {
+          "index": 7,
+          "stationName": "압구정파출소",
+          "lon": "127.036300",
+          "lat": "37.528794",
+          "stationID": "773384"
+         }
+        ]
+       },
+       "end": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       },
+       "type": 11
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 0,
+       "distance": 0,
+       "start": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       },
+       "end": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "0068B7",
+       "sectionTime": 709,
+       "route": "간선:342",
+       "routeId": "1021078001",
+       "distance": 3693,
+       "service": 1,
+       "start": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "압구정파출소",
+          "lon": "127.036300",
+          "lat": "37.528794",
+          "stationID": "773384"
+         },
+         {
+          "index": 1,
+          "stationName": "한양아파트.압구정로데오역",
+          "lon": "127.039444",
+          "lat": "37.527981",
+          "stationID": "773347"
+         },
+         {
+          "index": 2,
+          "stationName": "일지아트홀",
+          "lon": "127.039553",
+          "lat": "37.524961",
+          "stationID": "773275"
+         },
+         {
+          "index": 3,
+          "stationName": "영동고등학교.현대아파트",
+          "lon": "127.039583",
+          "lat": "37.521403",
+          "stationID": "773182"
+         },
+         {
+          "index": 4,
+          "stationName": "강남구청역",
+          "lon": "127.040678",
+          "lat": "37.518489",
+          "stationID": "773121"
+         },
+         {
+          "index": 5,
+          "stationName": "강남구보건소",
+          "lon": "127.041797",
+          "lat": "37.515467",
+          "stationID": "773049"
+         },
+         {
+          "index": 6,
+          "stationName": "한국토지주택공사앞",
+          "lon": "127.042686",
+          "lat": "37.513075",
+          "stationID": "772982"
+         },
+         {
+          "index": 7,
+          "stationName": "삼성2문화센터",
+          "lon": "127.046442",
+          "lat": "37.510883",
+          "stationID": "772894"
+         },
+         {
+          "index": 8,
+          "stationName": "삼성중앙역.플래티넘아파트",
+          "lon": "127.051764",
+          "lat": "37.512481",
+          "stationID": "772960"
+         },
+         {
+          "index": 9,
+          "stationName": "봉은사역.코엑스인터컨티넨탈",
+          "lon": "127.057556",
+          "lat": "37.513631",
+          "stationID": "772985"
+         }
+        ]
+       },
+       "end": {
+        "name": "봉은사역.코엑스인터컨티넨탈",
+        "lon": 127.05755555555555,
+        "lat": 37.51363055555556
+       },
+       "type": 11
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 304,
+       "distance": 323,
+       "start": {
+        "name": "봉은사역.코엑스인터컨티넨탈",
+        "lon": 127.05755555555555,
+        "lat": 37.51363055555556
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 686,
+     "transferCount": 2,
+     "totalDistance": 16666,
+     "pathType": 3,
+     "totalWalkDistance": 748
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1700,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 4380,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 139,
+       "distance": 152,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "연세로.문학의거리",
+        "lon": 126.93700833333334,
+        "lat": 37.55625
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "0068B7",
+       "sectionTime": 3228,
+       "route": "간선:472",
+       "routeId": "1021111001",
+       "distance": 14978,
+       "service": 1,
+       "start": {
+        "name": "연세로.문학의거리",
+        "lon": 126.93700833333334,
+        "lat": 37.55625
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "연세로.문학의거리",
+          "lon": "126.937008",
+          "lat": "37.556250",
+          "stationID": "757448"
+         },
+         {
+          "index": 1,
+          "stationName": "연세로.명물거리",
+          "lon": "126.937039",
+          "lat": "37.557967",
+          "stationID": "757558"
+         },
+         {
+          "index": 2,
+          "stationName": "세브란스병원",
+          "lon": "126.937803",
+          "lat": "37.559919",
+          "stationID": "757689"
+         },
+         {
+          "index": 3,
+          "stationName": "신촌기차역",
+          "lon": "126.942647",
+          "lat": "37.558681",
+          "stationID": "757608"
+         },
+         {
+          "index": 4,
+          "stationName": "이대역",
+          "lon": "126.944717",
+          "lat": "37.556611",
+          "stationID": "757469"
+         },
+         {
+          "index": 5,
+          "stationName": "웨딩타운",
+          "lon": "126.951211",
+          "lat": "37.556994",
+          "stationID": "757502"
+         },
+         {
+          "index": 6,
+          "stationName": "아현역",
+          "lon": "126.954442",
+          "lat": "37.557264",
+          "stationID": "757514"
+         },
+         {
+          "index": 7,
+          "stationName": "가구단지",
+          "lon": "126.960639",
+          "lat": "37.557978",
+          "stationID": "757554"
+         },
+         {
+          "index": 8,
+          "stationName": "충정로역9번출구",
+          "lon": "126.964003",
+          "lat": "37.561681",
+          "stationID": "757796"
+         },
+         {
+          "index": 9,
+          "stationName": "경찰청",
+          "lon": "126.968517",
+          "lat": "37.563300",
+          "stationID": "757893"
+         },
+         {
+          "index": 10,
+          "stationName": "숭례문",
+          "lon": "126.973694",
+          "lat": "37.558117",
+          "stationID": "757556"
+         },
+         {
+          "index": 11,
+          "stationName": "시청앞",
+          "lon": "126.976417",
+          "lat": "37.562181",
+          "stationID": "757827"
+         },
+         {
+          "index": 12,
+          "stationName": "서울광장",
+          "lon": "126.978786",
+          "lat": "37.565261",
+          "stationID": "834400"
+         },
+         {
+          "index": 13,
+          "stationName": "을지로입구.로얄호텔",
+          "lon": "126.985292",
+          "lat": "37.565994",
+          "stationID": "757997"
+         },
+         {
+          "index": 14,
+          "stationName": "남대문세무서(중)",
+          "lon": "126.987469",
+          "lat": "37.564958",
+          "stationID": "757955"
+         },
+         {
+          "index": 15,
+          "stationName": "남산1호터널",
+          "lon": "126.992267",
+          "lat": "37.557394",
+          "stationID": "757512"
+         },
+         {
+          "index": 16,
+          "stationName": "순천향대학병원.한남오거리",
+          "lon": "127.005775",
+          "lat": "37.535506",
+          "stationID": "773596"
+         },
+         {
+          "index": 17,
+          "stationName": "신사중학교",
+          "lon": "127.020625",
+          "lat": "37.523078",
+          "stationID": "773226"
+         },
+         {
+          "index": 18,
+          "stationName": "광림교회.현대고등학교",
+          "lon": "127.025258",
+          "lat": "37.525414",
+          "stationID": "773281"
+         },
+         {
+          "index": 19,
+          "stationName": "현대아파트",
+          "lon": "127.031086",
+          "lat": "37.528372",
+          "stationID": "773364"
+         },
+         {
+          "index": 20,
+          "stationName": "압구정파출소",
+          "lon": "127.036300",
+          "lat": "37.528794",
+          "stationID": "773384"
+         }
+        ]
+       },
+       "end": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       },
+       "type": 11
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 0,
+       "distance": 0,
+       "start": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       },
+       "end": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "0068B7",
+       "sectionTime": 709,
+       "route": "간선:342",
+       "routeId": "1021078001",
+       "distance": 3693,
+       "service": 1,
+       "start": {
+        "name": "압구정파출소",
+        "lon": 127.0363,
+        "lat": 37.52879444444444
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "압구정파출소",
+          "lon": "127.036300",
+          "lat": "37.528794",
+          "stationID": "773384"
+         },
+         {
+          "index": 1,
+          "stationName": "한양아파트.압구정로데오역",
+          "lon": "127.039444",
+          "lat": "37.527981",
+          "stationID": "773347"
+         },
+         {
+          "index": 2,
+          "stationName": "일지아트홀",
+          "lon": "127.039553",
+          "lat": "37.524961",
+          "stationID": "773275"
+         },
+         {
+          "index": 3,
+          "stationName": "영동고등학교.현대아파트",
+          "lon": "127.039583",
+          "lat": "37.521403",
+          "stationID": "773182"
+         },
+         {
+          "index": 4,
+          "stationName": "강남구청역",
+          "lon": "127.040678",
+          "lat": "37.518489",
+          "stationID": "773121"
+         },
+         {
+          "index": 5,
+          "stationName": "강남구보건소",
+          "lon": "127.041797",
+          "lat": "37.515467",
+          "stationID": "773049"
+         },
+         {
+          "index": 6,
+          "stationName": "한국토지주택공사앞",
+          "lon": "127.042686",
+          "lat": "37.513075",
+          "stationID": "772982"
+         },
+         {
+          "index": 7,
+          "stationName": "삼성2문화센터",
+          "lon": "127.046442",
+          "lat": "37.510883",
+          "stationID": "772894"
+         },
+         {
+          "index": 8,
+          "stationName": "삼성중앙역.플래티넘아파트",
+          "lon": "127.051764",
+          "lat": "37.512481",
+          "stationID": "772960"
+         },
+         {
+          "index": 9,
+          "stationName": "봉은사역.코엑스인터컨티넨탈",
+          "lon": "127.057556",
+          "lat": "37.513631",
+          "stationID": "772985"
+         }
+        ]
+       },
+       "end": {
+        "name": "봉은사역.코엑스인터컨티넨탈",
+        "lon": 127.05755555555555,
+        "lat": 37.51363055555556
+       },
+       "type": 11
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 304,
+       "distance": 323,
+       "start": {
+        "name": "봉은사역.코엑스인터컨티넨탈",
+        "lon": 127.05755555555555,
+        "lat": 37.51363055555556
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 443,
+     "transferCount": 1,
+     "totalDistance": 19053,
+     "pathType": 2,
+     "totalWalkDistance": 475
+    },
+    {
+     "fare": {
+      "regular": {
+       "totalFare": 1500,
+       "currency": {
+        "symbol": "￦",
+        "currency": "원",
+        "currencyCode": "KRW"
+       }
+      }
+     },
+     "totalTime": 4851,
+     "legs": [
+      {
+       "mode": "WALK",
+       "sectionTime": 291,
+       "distance": 251,
+       "start": {
+        "name": "출발지",
+        "lon": 126.9368,
+        "lat": 37.5551
+       },
+       "end": {
+        "name": "신촌로터리",
+        "lon": 126.936925,
+        "lat": 37.553866666666664
+       }
+      },
+      {
+       "mode": "BUS",
+       "routeColor": "0068B7",
+       "sectionTime": 4014,
+       "route": "간선:740",
+       "routeId": "1021279001",
+       "distance": 15699,
+       "service": 1,
+       "start": {
+        "name": "신촌로터리",
+        "lon": 126.936925,
+        "lat": 37.553866666666664
+       },
+       "passStopList": {
+        "stations": [
+         {
+          "index": 0,
+          "stationName": "신촌로터리",
+          "lon": "126.936925",
+          "lat": "37.553867",
+          "stationID": "757293"
+         },
+         {
+          "index": 1,
+          "stationName": "서강대학교",
+          "lon": "126.937367",
+          "lat": "37.551822",
+          "stationID": "757183"
+         },
+         {
+          "index": 2,
+          "stationName": "광성중고등학교",
+          "lon": "126.938708",
+          "lat": "37.549314",
+          "stationID": "757070"
+         },
+         {
+          "index": 3,
+          "stationName": "대흥역",
+          "lon": "126.941192",
+          "lat": "37.548094",
+          "stationID": "756986"
+         },
+         {
+          "index": 4,
+          "stationName": "용강초등학교",
+          "lon": "126.943525",
+          "lat": "37.547064",
+          "stationID": "756926"
+         },
+         {
+          "index": 5,
+          "stationName": "동도중학교.서울디자인고등학교",
+          "lon": "126.946833",
+          "lat": "37.545614",
+          "stationID": "756848"
+         },
+         {
+          "index": 6,
+          "stationName": "공덕역1번출구",
+          "lon": "126.949372",
+          "lat": "37.544508",
+          "stationID": "756781"
+         },
+         {
+          "index": 7,
+          "stationName": "공덕오거리",
+          "lon": "126.953492",
+          "lat": "37.542689",
+          "stationID": "756680"
+         },
+         {
+          "index": 8,
+          "stationName": "용마루고개.브라운스톤공덕아파트",
+          "lon": "126.956758",
+          "lat": "37.541158",
+          "stationID": "756596"
+         },
+         {
+          "index": 9,
+          "stationName": "용마루고개.효창파크푸르지오아파트",
+          "lon": "126.958503",
+          "lat": "37.540378",
+          "stationID": "756540"
+         },
+         {
+          "index": 10,
+          "stationName": "효창공원앞역.이봉창역사울림관",
+          "lon": "126.962614",
+          "lat": "37.538856",
+          "stationID": "756435"
+         },
+         {
+          "index": 11,
+          "stationName": "용산꿈나무종합타운.보건분소",
+          "lon": "126.964594",
+          "lat": "37.538342",
+          "stationID": "756402"
+         },
+         {
+          "index": 12,
+          "stationName": "원효로제1동주민센터",
+          "lon": "126.967036",
+          "lat": "37.537694",
+          "stationID": "756341"
+         },
+         {
+          "index": 13,
+          "stationName": "전쟁기념관",
+          "lon": "126.975508",
+          "lat": "37.534614",
+          "stationID": "756141"
+         },
+         {
+          "index": 14,
+          "stationName": "녹사평역",
+          "lon": "126.985461",
+          "lat": "37.534817",
+          "stationID": "756157"
+         },
+         {
+          "index": 15,
+          "stationName": "용산구청",
+          "lon": "126.991211",
+          "lat": "37.529686",
+          "stationID": "755757"
+         },
+         {
+          "index": 16,
+          "stationName": "한강중학교",
+          "lon": "126.992258",
+          "lat": "37.524831",
+          "stationID": "755421"
+         },
+         {
+          "index": 17,
+          "stationName": "반포한강공원.세빛섬",
+          "lon": "126.997242",
+          "lat": "37.512678",
+          "stationID": "754541"
+         },
+         {
+          "index": 18,
+          "stationName": "서울지방조달청.서울성모병원",
+          "lon": "127.003983",
+          "lat": "37.499250",
+          "stationID": "772520"
+         },
+         {
+          "index": 19,
+          "stationName": "대검찰청.서초경찰서",
+          "lon": "127.006208",
+          "lat": "37.494472",
+          "stationID": "772358"
+         },
+         {
+          "index": 20,
+          "stationName": "서초역1번출구",
+          "lon": "127.008989",
+          "lat": "37.492067",
+          "stationID": "772252"
+         },
+         {
+          "index": 21,
+          "stationName": "교대역2번출구",
+          "lon": "127.015331",
+          "lat": "37.494019",
+          "stationID": "772339"
+         },
+         {
+          "index": 22,
+          "stationName": "서초동유원아파트",
+          "lon": "127.020142",
+          "lat": "37.495483",
+          "stationID": "772395"
+         },
+         {
+          "index": 23,
+          "stationName": "롯데칠성",
+          "lon": "127.023856",
+          "lat": "37.496633",
+          "stationID": "772429"
+         },
+         {
+          "index": 24,
+          "stationName": "강남역1번출구.역삼세무서",
+          "lon": "127.029347",
+          "lat": "37.498275",
+          "stationID": "772486"
+         },
+         {
+          "index": 25,
+          "stationName": "역삼역.포스코타워역삼",
+          "lon": "127.033742",
+          "lat": "37.499619",
+          "stationID": "772528"
+         },
+         {
+          "index": 26,
+          "stationName": "대한사회복지회",
+          "lon": "127.038836",
+          "lat": "37.501175",
+          "stationID": "772589"
+         },
+         {
+          "index": 27,
+          "stationName": "한국자산신탁.센터필드",
+          "lon": "127.044128",
+          "lat": "37.502806",
+          "stationID": "772646"
+         },
+         {
+          "index": 28,
+          "stationName": "선릉역",
+          "lon": "127.050275",
+          "lat": "37.504667",
+          "stationID": "772705"
+         },
+         {
+          "index": 29,
+          "stationName": "포스코빌딩",
+          "lon": "127.054889",
+          "lat": "37.506097",
+          "stationID": "772747"
+         },
+         {
+          "index": 30,
+          "stationName": "한국무역센터.삼성역",
+          "lon": "127.060897",
+          "lat": "37.508447",
+          "stationID": "1005072"
+         }
+        ]
+       },
+       "end": {
+        "name": "한국무역센터.삼성역",
+        "lon": 127.06089722222222,
+        "lat": 37.50844722222222
+       },
+       "type": 11
+      },
+      {
+       "mode": "WALK",
+       "sectionTime": 546,
+       "distance": 640,
+       "start": {
+        "name": "한국무역센터.삼성역",
+        "lon": 127.06089722222222,
+        "lat": 37.50844722222222
+       },
+       "end": {
+        "name": "도착지",
+        "lon": 127.0588,
+        "lat": 37.5116
+       }
+      }
+     ],
+     "totalWalkTime": 837,
+     "transferCount": 0,
+     "totalDistance": 16234,
+     "pathType": 2,
+     "totalWalkDistance": 891
+    }
+   ]
+  }
+ }
+}

@@ -18,13 +18,27 @@ export interface Stop extends Coordinate {
   /** 출발지부터의 누적 소요시간(분) */
   elapsedMin: number;
   mode: TransportMode;
+  /** 노선 이름(예: "수도권 2호선"). 환승역은 먼저 탄 노선 */
+  line?: string;
+  /** 탑승역부터 이 역까지 지하철 누적 거리(m, 추정) */
+  distanceM?: number;
+  /** 출발지에서 이 역까지 타고 내릴 때의 지하철 요금(원). 첫 역(탑승역)은 0 */
+  fare?: number;
 }
 
 export interface Route {
   id: string;
-  /** 대중교통 요금(원) */
+  /** 대중교통 요금(원). 끝까지 지하철로 갈 때의 요금 */
   fare: number;
   stops: Stop[];
+  /** 출발지에서 목적지까지 총 소요시간(분, 도보 포함) */
+  totalMin?: number;
+  /** 지하철 환승 횟수 */
+  transferCount?: number;
+  /** 출발 시각을 기준으로 찾은 경로인지 */
+  timeAware?: boolean;
+  /** 경로 검색 기준 출발 시각 (ISO 8601) */
+  departureTime?: string;
 }
 
 export interface Option {
@@ -76,10 +90,20 @@ export interface TaxiEstimate {
   durationSec: number;
   /** 거리와 시간으로 직접 계산한 요금(원) */
   fare: number;
+  /** 시속 15.72km 미만으로 달린 시간(초). 시간요금 계산 근거 */
+  slowSec?: number;
+  /** 적용한 할증률. 0(주간), 0.2, 0.4(심야) */
+  surchargeRate?: number;
+  /** 소요시간의 교통 기준. realtime: 호출 시점 교통, predicted: 탑승 시각의 교통 예측 */
+  trafficBasis?: "realtime" | "predicted";
 }
 
-/** taxi 기능이 구현하고 recommender가 주입받아 쓰는 함수 형태. */
+/**
+ * taxi 기능이 구현하고 recommender가 주입받아 쓰는 함수 형태.
+ * boardingAt(택시 탑승 시각)으로 심야 할증을 판단한다. 생략하면 호출 시점의 현재 시각이다.
+ */
 export type TaxiEstimator = (
   from: Coordinate,
   to: Coordinate,
+  boardingAt?: Date,
 ) => Promise<TaxiEstimate>;
