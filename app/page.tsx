@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { RouteMap } from "@/features/map";
 import { ResultError, ResultSkeleton, ResultView } from "@/features/result";
 import { SearchForm } from "@/features/search-form";
 import type { RecommendRequest, RecommendResponse } from "@/shared/types";
@@ -90,7 +91,11 @@ export default function HomePage() {
             originName={state.request.origin.name}
             destinationName={state.request.destination.name}
             aside={
-              <div className={styles.mapPlaceholder}>지도는 준비 중이에요</div>
+              <RouteMap
+                result={state.data}
+                origin={state.request.origin}
+                destination={state.request.destination}
+              />
             }
           />
         )}

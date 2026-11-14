@@ -4,6 +4,7 @@ import { recommend } from "@/features/recommender";
 import { estimateTaxi } from "@/features/taxi";
 import { getTransitRoutes } from "@/features/transit";
 import type { RecommendResponse } from "@/shared/types";
+import { invalidRequest, toApiError } from "./errors";
 
 const place = z.object({
   name: z.string().min(1).max(100),
@@ -26,22 +27,26 @@ export async function POST(request: Request) {
   const json = await request.json().catch(() => null);
   const parsed = body.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: "요청 형식이 올바르지 않습니다." }, { status: 400 });
+    const failure = invalidRequest(parsed.error.issues.map((i) => i.path.join(".")).join(", "));
+    console.warn("recommend invalid request:", failure.logMessage);
+    return NextResponse.json(failure.body, { status: failure.status });
   }
   const { origin, destination, arrivalTime, departureTime } = parsed.data;
+  const departureAt = departureTime ? new Date(departureTime) : new Date();
 
   try {
-    const routes = await getTransitRoutes(origin, destination);
+    const routes = await getTransitRoutes(origin, destination, departureAt);
     const result: RecommendResponse = await recommend({
       routes,
       destination,
-      departureAt: departureTime ? new Date(departureTime) : new Date(),
+      departureAt,
       arrivalDeadline: new Date(arrivalTime),
       estimateTaxi,
     });
     return NextResponse.json(result);
   } catch (error) {
-    console.error("recommend failed", error instanceof Error ? error.message : "unknown");
-    return NextResponse.json({ error: "추천을 계산하지 못했습니다." }, { status: 500 });
+    const failure = toApiError(error);
+    console.error(`recommend failed [${failure.body.code}]`, failure.logMessage);
+    return NextResponse.json(failure.body, { status: failure.status });
   }
 }

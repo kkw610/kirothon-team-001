@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { Route, TaxiEstimator } from "@/shared/types";
 import { recommend } from "./recommend";
 
@@ -59,5 +59,80 @@ describe("recommend", () => {
   it("도착 시각이 희망 시각과 같으면 제시간으로 본다", async () => {
     const res = await recommend({ ...base, arrivalDeadline: new Date("2025-01-01T00:35:00Z") });
     expect(res.best).not.toBeNull();
+  });
+});
+
+describe("recommend 경로 선택", () => {
+  const deadline = new Date("2025-01-01T01:00:00Z");
+
+  it("버스 Stop이 있는 Route는 지하철 전용 Route가 있어도 제외된다", async () => {
+    const busRoute: Route = {
+      id: "bus",
+      fare: 1200,
+      stops: [
+        { name: "A", x: 0, y: 0, elapsedMin: 0, mode: "subway" },
+        { name: "Bus", x: 1, y: 0, elapsedMin: 3, mode: "bus" },
+      ],
+    };
+    const res = await recommend({ ...base, routes: [busRoute, route], arrivalDeadline: deadline });
+    expect(res.routes.map((r) => r.id)).toEqual(["r1"]);
+    expect(res.options.every((o) => o.routeId !== "bus")).toBe(true);
+  });
+
+  it("지하철 전용 Route가 여럿이면 소요시간이 최소인 Route만 남는다", async () => {
+    const slow: Route = {
+      id: "slow",
+      fare: 1500,
+      stops: [
+        { name: "A", x: 0, y: 0, elapsedMin: 0, mode: "subway" },
+        { name: "B", x: 1, y: 0, elapsedMin: 40, mode: "subway" },
+      ],
+    };
+    const res = await recommend({ ...base, routes: [slow, route], arrivalDeadline: deadline });
+    expect(res.routes.map((r) => r.id)).toEqual(["r1"]);
+    expect(res.routes.some((r) => r.id === "slow")).toBe(false);
+  });
+
+  it("소요시간이 같으면 먼저 입력된 Route를 선택한다", async () => {
+    const twin: Route = { ...route, id: "twin" };
+    const res = await recommend({ ...base, routes: [twin, route], arrivalDeadline: deadline });
+    expect(res.routes.map((r) => r.id)).toEqual(["twin"]);
+  });
+});
+
+describe("recommend 빈 입력과 오류 전파", () => {
+  const deadline = new Date("2025-01-01T01:00:00Z");
+  const emptyResult = { best: null, options: [], routes: [] };
+
+  it("모든 Route에 버스 Stop이 있으면 빈 결과를 반환하고 택시를 호출하지 않는다", async () => {
+    const busRoutes: Route[] = ["b1", "b2"].map((id) => ({
+      id,
+      fare: 1200,
+      stops: [
+        { name: "A", x: 0, y: 0, elapsedMin: 0, mode: "subway" as const },
+        { name: "Bus", x: 1, y: 0, elapsedMin: 3, mode: "bus" as const },
+      ],
+    }));
+    const spy = vi.fn(taxi);
+    const res = await recommend({ ...base, routes: busRoutes, arrivalDeadline: deadline, estimateTaxi: spy });
+    expect(res).toEqual(emptyResult);
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it("routes가 빈 배열이면 빈 결과를 반환하고 택시를 호출하지 않는다", async () => {
+    const spy = vi.fn(taxi);
+    const res = await recommend({ ...base, routes: [], arrivalDeadline: deadline, estimateTaxi: spy });
+    expect(res).toEqual(emptyResult);
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it("estimateTaxi가 한 Stop에서 예외를 던지면 recommend가 reject된다", async () => {
+    const failing: TaxiEstimator = async (from, to) => {
+      if ("name" in from && from.name === "B") throw new Error("taxi failure");
+      return taxi(from, to);
+    };
+    await expect(
+      recommend({ ...base, arrivalDeadline: deadline, estimateTaxi: failing }),
+    ).rejects.toThrow("taxi failure");
   });
 });
