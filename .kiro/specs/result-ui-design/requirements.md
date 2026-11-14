@@ -23,7 +23,7 @@
 - **Touch_Target**: 버튼, 표 행 등 사용자가 누르는 요소
 - **Best_Option**: 제시간 도착 중 총비용이 가장 낮아 추천된 `Option`
 - **Fastest_Option**: `best === null`일 때 `options` 중 도착 시각이 가장 이른 `Option`
-- **Mascot_Slot**: 마스코트 "빨리갈게" 그림을 나중에 넣기 위해 비워 두는 자리
+- **Mascot_Slot**: 마스코트 "BBalligalge" 그림을 나중에 넣기 위해 비워 두는 자리
 
 ## Requirements
 

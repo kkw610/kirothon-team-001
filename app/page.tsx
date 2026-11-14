@@ -73,7 +73,7 @@ export default function HomePage() {
         <div className={styles.srOnly} role="status" aria-live="polite">
           {PHASE_ANNOUNCEMENT[state.phase]}
         </div>
-        <h1 className={styles.srOnly}>빨리갈게</h1>
+        <h1 className={styles.srOnly}>BBalligalge</h1>
 
         {/* 입력 슬롯: 입력값 유지를 위해 항상 마운트하고 숨긴다 */}
         <div hidden={state.phase !== "input"}>

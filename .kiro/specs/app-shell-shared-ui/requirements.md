@@ -19,7 +19,7 @@
 - **Button**: 주요(primary)와 보조(outline) 두 종류가 있는 버튼 컴포넌트.
 - **Card**: 흰 바탕, 1px `--border` 테두리, 둥근 모서리의 컨테이너.
 - **Chip**: 알약 모양의 작은 라벨. 조건 요약, "추천", "제시간 도착 불가" 같은 상태 표시에 쓴다.
-- **Mascot**: 유령 캐릭터 "빨리갈게". 흰 몸통, 보라색 윤곽선, 검은 눈, 땀방울 두 개, 속도선을 가진 일러스트.
+- **Mascot**: 유령 캐릭터 "BBalligalge". 흰 몸통, 보라색 윤곽선, 검은 눈, 땀방울 두 개, 속도선을 가진 일러스트.
 - **Logo_Mark**: 보라색 둥근 사각형 안에 유령이 있는 앱 아이콘. Header 왼쪽에 쓴다.
 - **Mascot_Asset**, **Logo_Asset**: 사용자가 제공하는 SVG 파일 두 개(각각 Mascot, Logo_Mark의 원본).
 - **Search_Condition**: 사용자가 입력한 출발지, 목적지, 도착 시각, (있으면) 출발 시각. 타입은 `RecommendRequest`다.
@@ -77,7 +77,7 @@
 2. THE Shared_UI SHALL Mascot_Asset을 그대로 그리는 `Mascot` 컴포넌트를 제공하고, 크기(`size`, px)를 지정할 수 있게 한다.
 3. THE Mascot SHALL `mood` 속성(`idle`, `happy`, `loading`, `late`, `error`)을 받는다. WHEN 표정별 그림이 아직 없다, THE Mascot SHALL 모든 `mood`에 대해 Mascot_Asset 하나를 그린다.
 4. THE Mascot SHALL 장식 요소로 취급해 `aria-hidden="true"`를 갖는다. 화면의 의미는 항상 인접한 텍스트가 전달한다.
-5. THE LogoMark SHALL 서비스 이름 텍스트 "빨리갈게"와 함께 쓰일 때 `aria-hidden="true"`를 갖고, 단독으로 쓰일 때는 `alt`에 해당하는 접근 가능한 이름 "빨리갈게"를 갖는다.
+5. THE LogoMark SHALL 서비스 이름 텍스트 "BBalligalge"와 함께 쓰일 때 `aria-hidden="true"`를 갖고, 단독으로 쓰일 때는 `alt`에 해당하는 접근 가능한 이름 "BBalligalge"를 갖는다.
 6. THE Mascot와 LogoMark SHALL 지정한 `size`에서 가로세로 비율을 유지하며 찌그러지지 않는다.
 7. IF 사용자가 SVG 파일을 제공하기 전이다, THEN THE Shared_UI SHALL 같은 컴포넌트 인터페이스를 유지한 임시 그림으로 대체해 다른 화면 작업이 막히지 않게 한다. 실제 파일이 들어오면 컴포넌트를 쓰는 쪽의 코드 변경 없이 교체된다.
 8. WHEN `Mascot` 또는 `LogoMark`가 화면에 렌더링된다, THE Shared_UI SHALL 추가 네트워크 요청 없이 첫 화면과 함께 표시되거나, 요청이 필요하면 `next/image` 등으로 레이아웃 이동을 일으키지 않는다.
@@ -88,7 +88,7 @@
 
 #### Acceptance Criteria
 
-1. THE Header SHALL 흰 바탕의 가로 막대로, 왼쪽에 LogoMark와 서비스 이름 "빨리갈게"(제목 글꼴, 보라색)를 보인다.
+1. THE Header SHALL 흰 바탕의 가로 막대로, 왼쪽에 LogoMark와 서비스 이름 "BBalligalge"(제목 글꼴, 보라색)를 보인다.
 2. WHILE Phase가 `input`이다, THE Header SHALL 로고와 서비스 이름만 보이고 Condition_Summary 칩과 "조건 바꾸기" 버튼을 보이지 않는다.
 3. WHILE Phase가 `loading`, `result`, `error` 중 하나다, THE Header SHALL 로고 오른쪽에 Condition_Summary 칩을, 막대 오른쪽 끝에 `outline` Button "조건 바꾸기"를 보인다.
 4. WHEN 사용자가 "조건 바꾸기"를 누른다, THE Header SHALL `onChangeCondition` 콜백을 호출한다. 화면 전환은 호출한 쪽(App_Shell)이 처리한다.

@@ -50,7 +50,7 @@
     - 알약 모양, `white-space: nowrap`, `min-width: 0`. 톤별 색은 `--primary-soft`/`--primary-text`, `--primary`/`--on-primary`, `--late-soft`/`--late`.
     - _Requirements: 3.4, 3.5, 3.6_
   - [x] 2.4 `LogoMark.tsx`, `Mascot.tsx`, `brand.module.css`
-    - `LogoMark`: `size`(기본 32), `decorative`. `<img src="/brand/logo.svg" width height>`. `decorative`가 거짓이면 `alt="빨리갈게"`, 참이면 `alt=""`와 `aria-hidden`.
+    - `LogoMark`: `size`(기본 32), `decorative`. `<img src="/brand/logo.svg" width height>`. `decorative`가 거짓이면 `alt="BBalligalge"`, 참이면 `alt=""`와 `aria-hidden`.
     - `Mascot`: `size`(기본 64), `mood`(`idle` 기본). `<img src="/brand/mascot.svg">`, `alt=""`, `aria-hidden="true"`, `data-mood`. 표정별 파일이 생길 때를 위해 `MOOD_SRC: Record<MascotMood, string>` 표를 한 곳에 둔다(지금은 모든 값이 같은 파일).
     - `@next/next/no-img-element` 경고 줄에 `eslint-disable-next-line`과 이유 주석(정적 SVG, 최적화 불필요).
     - 확인: 두 이미지가 브라우저에서 비율을 유지하며 보인다.
@@ -73,7 +73,7 @@
     - **Validates: Requirements 6.1~6.6**
   - [x] 3.3 `Header.tsx`, `header.module.css` 생성
     - props: `conditionSummary?: string`, `onChangeCondition?: () => void`
-    - 구조: `<header>` 안에 `LogoMark`(decorative)와 "빨리갈게"(제목 글꼴, `--primary-text`). `conditionSummary`가 있으면 `Chip`(말줄임)과 오른쪽 끝 `Button variant="outline"` "조건 바꾸기". 요약이 있고 `onChangeCondition`이 없으면 버튼은 그리지 않는다.
+    - 구조: `<header>` 안에 `LogoMark`(decorative)와 "BBalligalge"(제목 글꼴, `--primary-text`). `conditionSummary`가 있으면 `Chip`(말줄임)과 오른쪽 끝 `Button variant="outline"` "조건 바꾸기". 요약이 있고 `onChangeCondition`이 없으면 버튼은 그리지 않는다.
     - CSS: 높이 50px 고정, 흰 바탕(`--surface`), 아래 1px `--border`. 안쪽 컨테이너 폭은 본문과 같은 3구간(모바일 100%+좌우 16px, 768px~ 760px, 1024px~ 1200px). 칩 `flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis`, 로고와 버튼 `flex: none`. 버튼은 높이 44px가 헤더 안에 들어가게 맞춘다.
     - `index.ts`에 `Header`와 `buildConditionSummary`를 추가한다.
     - 확인: 폭 320px에서 칩이 줄어들며 한 줄을 유지한다.

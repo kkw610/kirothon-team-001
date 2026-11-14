@@ -74,7 +74,7 @@ export function SearchForm({ loading, onSubmit }: Props) {
           택시를 타야 할까요?
         </h2>
         <p className={styles.lead}>
-          출발역, 도착역, 도착해야 하는 시각을 알려주면 빨리갈게가 제시간에
+          출발역, 도착역, 도착해야 하는 시각을 알려주면 BBalligalge가 제시간에
           도착하면서 가장 싼 환승역을 찾아요.
         </p>
       </div>
