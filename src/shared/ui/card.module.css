@@ -1,0 +1,27 @@
+.card {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+.tint {
+  background: var(--surface-tint);
+}
+
+.alert {
+  border: 2px solid var(--late);
+  border-radius: 20px;
+}
+
+.md {
+  padding: var(--space-4);
+}
+
+.lg {
+  padding: var(--space-6);
+}

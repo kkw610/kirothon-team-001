@@ -1,5 +1,21 @@
-body { margin: 0; font-family: system-ui, sans-serif; background: #f5f6f8; color: #1a1a1a; }
-main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 16px; }
+:root {
+  /* 색 (design-system.md 표와 같은 값) */
+  --primary: #8e44d4;       --on-primary: #ffffff;
+  --primary-text: #7a35c4;  --primary-soft: #f3eafc;
+  --surface-tint: #f6f2fd;  --surface: #ffffff;
+  --ink: #1e1433;           --text-sub: #5e5670;
+  --border: #e6ddf6;
+  --ok: #16a34a;            --late: #dc2626;
+  --late-soft: #fdecea;     --late-row: #6b7280;
+  --subway: #2e9e4f;        --taxi: #f2a007;
+  --page-bg: #f5f1fd;
+  /* 모양 */
+  --radius-card: 16px;  --radius-button: 12px;  --radius-hero: 20px;
+  /* 간격 */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-5: 20px; --space-6: 24px;
+}
+body { margin: 0; font-family: system-ui, sans-serif; background: var(--page-bg); color: var(--ink); }
 .card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
 .form { display: grid; gap: 12px; }
 .field { display: grid; gap: 4px; font-size: 14px; }

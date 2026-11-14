@@ -1,77 +1,64 @@
-import type { Option, RecommendResponse } from "@/shared/types";
-import { formatKm, formatTime, formatWon } from "./format";
+import type { ReactNode } from "react";
+import type { RecommendResponse } from "@/shared/types";
+import { BreakdownCard } from "./BreakdownCard";
+import { ComparisonTable } from "./ComparisonTable";
+import { cx } from "./cx";
+import { jua } from "./fonts";
+import { LateCard } from "./LateCard";
+import { RecommendationCard } from "./RecommendationCard";
+import styles from "./result.module.css";
+import { RouteSummaryCard } from "./RouteSummaryCard";
+import { pickFastest } from "./select";
+import { EmptyCard } from "./ResultStates";
+import { resolveViewState } from "./viewState";
 
 interface Props {
   result: RecommendResponse;
+  /** 희망 도착 시각 (ISO 8601) */
+  arrivalDeadline: string;
+  /** 출발지·도착지 이름. 있으면 경로 요약과 내역 제목에 쓴다. */
+  originName?: string;
+  destinationName?: string;
+  /** 경로 요약 아래(넓은 화면에서는 오른쪽 열)에 놓을 요소. 보통 지도 */
+  aside?: ReactNode;
 }
 
-function Breakdown({ option }: { option: Option }) {
-  return (
-    <ul className="breakdown">
-      <li>
-        지하철 {option.subwayMin}분 ({formatWon(option.subwayFare)})
-      </li>
-      <li>택시 대기 {option.taxiWaitMin}분</li>
-      <li>
-        택시 {option.taxiMin}분, {formatKm(option.taxiDistanceM)} ({formatWon(option.taxiFare)})
-      </li>
-      <li>
-        {formatTime(option.departureTime)} 출발, {formatTime(option.arrivalTime)} 도착
-      </li>
-    </ul>
-  );
-}
-
-export function ResultView({ result }: Props) {
+export function ResultView({ result, arrivalDeadline, originName, destinationName, aside }: Props) {
   const { best, options } = result;
-  const fastest = [...options].sort((a, b) => a.arrivalTime.localeCompare(b.arrivalTime))[0];
-  const shown = best ?? fastest;
+  const state = resolveViewState({ loading: false, hasError: false, best, options });
 
+  if (state === "empty") {
+    return <EmptyCard />;
+  }
+
+  // 제시간 도착이 불가능하면 도착이 가장 빠른 옵션을 대안으로 보여 준다.
+  const shown = state === "recommended" ? best : pickFastest(options);
+  if (!shown) {
+    return <EmptyCard />;
+  }
+
+  const names = { origin: originName, destination: destinationName };
   return (
-    <section className="card">
-      {best ? (
-        <h2>
-          {best.stopName}역에서 택시로 갈아타세요 (총 {formatWon(best.totalCost)})
-        </h2>
-      ) : (
-        <h2>제시간에 도착하는 방법이 없습니다</h2>
-      )}
-      {shown && (
-        <>
-          {!best && <p>가장 빠른 방법은 {shown.stopName}역에서 택시로 갈아타는 것입니다.</p>}
-          <Breakdown option={shown} />
-        </>
-      )}
-      <table>
-        <thead>
-          <tr>
-            <th>택시 환승역</th>
-            <th>지하철</th>
-            <th>택시</th>
-            <th>도착</th>
-            <th>총비용</th>
-          </tr>
-        </thead>
-        <tbody>
-          {options.map((o) => (
-            <tr
-              key={`${o.routeId}:${o.stopName}`}
-              className={best?.routeId === o.routeId && best.stopName === o.stopName ? "best" : undefined}
-            >
-              <td>{o.stopName}</td>
-              <td>{o.subwayMin}분</td>
-              <td>
-                {o.taxiMin}분 / {formatWon(o.taxiFare)}
-              </td>
-              <td>
-                {formatTime(o.arrivalTime)}
-                {o.onTime ? "" : " (지각)"}
-              </td>
-              <td>{formatWon(o.totalCost)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
+    <div className={cx(jua.variable, styles.root, styles.layout)}>
+      <div className={styles.areaHero}>
+        {state === "recommended" ? (
+          <RecommendationCard option={shown} arrivalDeadline={arrivalDeadline} />
+        ) : (
+          <LateCard option={shown} arrivalDeadline={arrivalDeadline} />
+        )}
+      </div>
+      <div className={styles.areaBreakdown}>
+        <BreakdownCard option={shown} names={names} />
+      </div>
+      <div className={styles.areaSide}>
+        {originName && destinationName && (
+          <RouteSummaryCard option={shown} originName={originName} destinationName={destinationName} />
+        )}
+        {aside}
+      </div>
+      <div className={styles.areaTable}>
+        <ComparisonTable options={options} best={best} arrivalDeadline={arrivalDeadline} />
+      </div>
+    </div>
   );
 }

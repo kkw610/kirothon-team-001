@@ -1,0 +1,312 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 `format.ts`에 표시 문구 함수와 상수 추가": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405031
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637410832
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637475835
+      }
+    ],
+    "1.3 공통 헬퍼 파일 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405079
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637411637
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637474678
+      }
+    ],
+    "2.1 `viewState.ts`와 `select.ts` 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405100
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637412428
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637475224
+      }
+    ],
+    "2.4 `breakdown.ts` 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405122
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637485133
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637562889
+      }
+    ],
+    "2.6 `comparison.ts` 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405140
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637485940
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637561523
+      }
+    ],
+    "3. Checkpoint - 순수 함수 확인": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405158
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637729187
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637749203
+      }
+    ],
+    "4.1 `result.module.css` 재작성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405177
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637486490
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637562295
+      }
+    ],
+    "4.2 `RecommendationCard.tsx` 수정, `LateCard.tsx` 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405196
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637571097
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637637121
+      }
+    ],
+    "4.3 `BreakdownCard.tsx` 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405252
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637571268
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637637919
+      }
+    ],
+    "4.4 `ComparisonTable.tsx` 수정": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405277
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637572101
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637638730
+      }
+    ],
+    "4.5 `ResultStates.tsx` 수정: `ResultSkeleton`, `ResultError`, `EmptyCard`": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405295
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637572788
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637639546
+      }
+    ],
+    "4.6 `ResultView.tsx` 수정, `index.ts` 확인": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405312
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637642874
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637684438
+      }
+    ],
+    "5.1 `mapModel.ts` 생성": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405329
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637412830
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637474221
+      }
+    ],
+    "5.3 `map.module.css` 생성, `MapView.tsx` 수정": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405345
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637487015
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637563574
+      }
+    ],
+    "6.1 `app/page.tsx`와 `app/page.module.css`의 결과 영역 배치 조정": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405362
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637688140
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637725449
+      }
+    ],
+    "7. Final checkpoint - 전체 확인": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637405379
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637752732
+      },
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637779581
+      }
+    ],
+    "1. 공통 기반: 문구 함수, 글꼴, 아이콘": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637475856
+      }
+    ],
+    "2. 순수 함수 계층": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637562930
+      }
+    ],
+    "5. 지도": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637563602
+      }
+    ],
+    "4. 결과 영역 CSS와 컴포넌트": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637684475
+      }
+    ],
+    "6. 페이지 배치": [
+      {
+        "executionId": "9a5ee223-6344-4ef7-89f0-15cba03397f0",
+        "chatSessionId": "sess_2c7f61de-f2ef-4f78-b931-069e33005572",
+        "timestamp": 1794637725485
+      }
+    ]
+  }
+}
