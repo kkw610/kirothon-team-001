@@ -153,6 +153,19 @@
 .timeInput[aria-invalid="true"] {
   border-color: var(--late);
 }
+/* 브라우저 기본 시계 아이콘을 숨기고, 클릭 영역만 커스텀 아이콘 위에 겹친다 */
+.timeInput::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 50%;
+  right: var(--space-5);
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
 .timeIcon {
   position: absolute;
   top: 50%;
