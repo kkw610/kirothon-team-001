@@ -1,0 +1,640 @@
+/* Design_Token: 색 값은 이 블록에서만 선언한다 (.kiro/steering/design-system.md) */
+.root {
+  --primary: #8e44d4;
+  --on-primary: #ffffff;
+  --primary-text: #7a35c4;
+  --primary-soft: #f3eafc;
+  --surface-tint: #f6f2fd;
+  --ink: #1e1433;
+  --text-sub: #5e5670;
+  --border: #e6ddf6;
+  --ok: #16a34a;
+  --late: #dc2626;
+  --late-row: #6b7280;
+  --subway: #2e9e4f;
+  --taxi: #f2a007;
+  --surface: #ffffff;
+  --late-soft: #fdecea;
+
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.root,
+.root * {
+  box-sizing: border-box;
+}
+
+/* 제목 계열 (Heading_Font) */
+.heading {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+.stack {
+  display: grid;
+  gap: 16px;
+}
+
+/* ---------- 공통 카드 ---------- */
+.card {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  min-width: 0;
+}
+
+.withMascot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.mascotSlot {
+  width: 64px;
+  height: 64px;
+  flex: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.iconOk {
+  fill: var(--ok);
+}
+
+.iconLate {
+  fill: var(--late);
+}
+
+.sub {
+  margin: 0 0 8px;
+  color: var(--text-sub);
+}
+
+.note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.ok {
+  color: var(--ink);
+}
+
+.late {
+  color: var(--late);
+}
+
+/* ---------- 추천 카드 ---------- */
+.recommendCard {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.recommendCard .chip {
+  background: var(--on-primary);
+  color: var(--primary-text);
+}
+
+.headline {
+  margin: 0 0 8px;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.summary {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.recommendCard .mascotSlot {
+  width: 88px;
+  height: 88px;
+}
+@media (min-width: 768px) {
+  .recommendCard .mascotSlot {
+    width: 120px;
+    height: 120px;
+  }
+}
+.recommendCard .summary,
+.recommendCard .headline {
+  color: var(--on-primary);
+}
+
+@media (min-width: 768px) {
+  .headline {
+    font-size: 28px;
+  }
+}
+
+/* ---------- 늦음 카드 ---------- */
+.lateCard {
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--late);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.lateCard .chip {
+  background: var(--late-soft);
+  color: var(--late);
+}
+
+.lateCard .headline {
+  color: var(--ink);
+}
+
+.lateText {
+  color: var(--late);
+}
+
+/* ---------- 내역 카드 ---------- */
+.breakdownCard {
+  display: grid;
+  gap: 12px;
+}
+
+.breakdownRow {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) minmax(48px, auto) minmax(72px, auto);
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 4px;
+  min-height: 44px;
+}
+
+.bar {
+  width: 8px;
+  min-height: 40px;
+  align-self: stretch;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.barSubway {
+  background: var(--subway);
+}
+
+.barTaxi {
+  background: var(--taxi);
+}
+.barWait {
+  background: var(--text-sub);
+  opacity: 0.45;
+}
+
+.rowTitle {
+  min-width: 0;
+}
+
+.rowLabel {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rowRange {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+.rowDuration,
+.rowCost {
+  margin: 0;
+  font-size: 14px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rowNote {
+  grid-column: 2 / -1;
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.totalRow {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.totalCost {
+  font-size: 20px;
+  color: var(--primary-text);
+}
+
+/* ---------- 비교표 ---------- */
+.sectionTitle {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+.tableHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+.tableHint {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  font-weight: 400;
+  color: var(--text-sub);
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  text-align: left;
+}
+
+.table tr {
+  min-height: 44px;
+}
+
+.table th,
+.table td {
+  height: 44px;
+}
+
+.table td small {
+  color: var(--text-sub);
+}
+
+.cellStop {
+  font-size: 16px;
+  font-weight: 700;
+}
+.cellTotal {
+  font-weight: 700;
+}
+.cellStatus {
+  white-space: nowrap;
+  font-weight: 700;
+}
+.okStatus {
+  color: var(--ink);
+}
+.lateStatus {
+  color: var(--late);
+}
+
+.cellNum {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th.cellNum {
+  text-align: right;
+}
+
+.rowBest {
+  background: var(--primary-soft);
+}
+
+.rowBest td:first-child {
+  border-left: 4px solid var(--primary);
+  border-radius: 8px 0 0 8px;
+}
+
+.rowLate {
+  color: var(--late-row);
+}
+
+.rowLate small {
+  color: var(--late-row);
+}
+
+.table td small.late {
+  color: var(--late);
+}
+
+.badge {
+  display: inline-block;
+  margin: 0 4px 0 0;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.badgeFastest {
+  background: var(--late);
+}
+
+/* ---------- 로딩 ---------- */
+.skeletonCard {
+  width: 100%;
+}
+
+.skeletonGroup {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 0;
+}
+
+.skeleton {
+  width: 100%;
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface-tint), var(--primary-soft), var(--surface-tint));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+.skeletonTitle {
+  height: 24px;
+  width: 70%;
+}
+
+.skeletonBlock {
+  height: 80px;
+  border-radius: 16px;
+}
+
+.skeletonBlockLarge {
+  height: 96px;
+  border-radius: 20px;
+}
+
+.slowNotice {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--surface-tint);
+  }
+}
+
+/* ---------- 오류, 빈 결과 ---------- */
+.errorCard {
+  border-color: var(--border);
+}
+
+.iconCircle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 0 8px;
+  border-radius: 999px;
+  background: var(--late-soft);
+}
+
+.errorTitle {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.errorText {
+  margin: 0 0 16px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.retry {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 20px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 0;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.emptyCard .headline {
+  font-size: 20px;
+}
+
+/* ---------- 모바일(~639px): 표 행을 카드로 ---------- */
+@media (max-width: 639px) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .table,
+  .table tbody {
+    display: block;
+  }
+
+  .table tr {
+    display: block;
+    min-height: 44px;
+    padding: 8px 12px;
+    margin: 0 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    height: auto;
+    min-height: 44px;
+    padding: 4px 0;
+    border-bottom: 0;
+    text-align: right;
+    align-items: center;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    color: var(--text-sub);
+    font-weight: 400;
+    text-align: left;
+    flex: none;
+  }
+
+  .rowBest td:first-child {
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .rowBest {
+    border-left: 4px solid var(--primary);
+  }
+
+  .rowLate {
+    color: var(--late-row);
+  }
+}
+
+/* ---------- 결과 레이아웃: 한 열, 1024px 이상에서 왼쪽(추천·내역)/오른쪽(경로·지도) ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  min-width: 0;
+}
+.areaSide {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  min-width: 0;
+}
+.areaHero,
+.areaBreakdown,
+.areaTable {
+  min-width: 0;
+}
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+    grid-template-areas:
+      "hero side"
+      "breakdown side"
+      "table table";
+    align-items: start;
+  }
+  .areaHero {
+    grid-area: hero;
+  }
+  .areaBreakdown {
+    grid-area: breakdown;
+  }
+  .areaSide {
+    grid-area: side;
+  }
+  .areaTable {
+    grid-area: table;
+  }
+}
+
+/* ---------- 경로 요약 타임라인 ---------- */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.step {
+  display: flex;
+  gap: 12px;
+  min-height: 72px;
+}
+.step:last-child {
+  min-height: 0;
+}
+.stepRail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20px;
+  flex: none;
+}
+.dot {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 4px solid var(--primary);
+}
+.dotSubway {
+  border-color: var(--subway);
+}
+.dotTaxi {
+  border-color: var(--taxi);
+}
+.dotDest {
+  border-color: var(--primary);
+}
+.railLine {
+  flex: 1;
+  width: 4px;
+}
+.lineSubway {
+  background: var(--subway);
+}
+.lineTaxi {
+  background: var(--taxi);
+}
+.stepText {
+  min-width: 0;
+  padding-bottom: 12px;
+}
+.stepName {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.stepTime {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--text-sub);
+}

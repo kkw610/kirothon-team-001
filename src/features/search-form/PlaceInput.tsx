@@ -2,15 +2,20 @@
 
 import { useEffect, useId, useState } from "react";
 import type { Place } from "@/shared/types";
+import styles from "./searchForm.module.css";
 
 interface Props {
   label: string;
+  /** 검증 오류 문구. 있으면 입력에 aria-invalid로 연결된다. */
+  error?: string | null;
   onChange: (place: Place | null) => void;
 }
 
 /** 이름을 입력하면 /api/places로 후보를 찾고, 후보 중 하나와 일치할 때 장소가 선택된다. */
-export function PlaceInput({ label, onChange }: Props) {
+export function PlaceInput({ label, error, onChange }: Props) {
   const listId = useId();
+  const inputId = useId();
+  const errorId = `${inputId}-error`;
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<Place[]>([]);
 
@@ -40,12 +45,19 @@ export function PlaceInput({ label, onChange }: Props) {
   }, [text]);
 
   return (
-    <label className="field">
-      <span>{label}</span>
+    <div className={styles.field}>
+      <label className={styles.label} htmlFor={inputId}>
+        {label}
+      </label>
       <input
+        id={inputId}
+        className={styles.input}
         list={listId}
         value={text}
         placeholder="예: 신촌역"
+        autoComplete="off"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         onChange={(e) => {
           setText(e.target.value);
           onChange(null);
@@ -56,6 +68,11 @@ export function PlaceInput({ label, onChange }: Props) {
           <option key={p.name} value={p.name} />
         ))}
       </datalist>
-    </label>
+      {error && (
+        <p id={errorId} className={styles.error}>
+          {error}
+        </p>
+      )}
+    </div>
   );
 }

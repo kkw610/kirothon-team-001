@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">
+  <title>급하게 달리는 귀여운 보라색 유령 캐릭터</title>
+  <desc>보라색 둥근 사각형 안에서 하얀 유령이 땀을 흘리며 오른쪽으로 바쁘게 달리는 모습.</desc>
+  <defs>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#32105f" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <!-- Purple app-icon background -->
+  <rect width="640" height="640" rx="132" fill="#9146F5"/>
+
+  <!-- Speed streaks behind the character -->
+  <g fill="none" stroke="#E8D8FF" stroke-linecap="round" stroke-width="15" opacity=".95">
+    <path d="M76 255h104"/>
+    <path d="M48 306h126"/>
+    <path d="M82 357h76"/>
+  </g>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="9" opacity=".7">
+    <path d="M110 215h55"/>
+    <path d="M70 402h78"/>
+  </g>
+
+  <!-- Tiny urgency marks -->
+  <path d="M444 120l-16 31 27-4" fill="none" stroke="#FFE36E" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M493 166l-9 22 21-5" fill="none" stroke="#FFE36E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Ghost body, leaning forward as it runs -->
+  <g transform="rotate(12 330 350)" filter="url(#softShadow)">
+    <path d="
+      M246 505
+      C208 492 190 459 204 423
+      C177 440 144 435 132 411
+      C118 383 141 354 164 330
+      C185 308 190 276 194 239
+      C204 151 265 92 348 92
+      C444 92 501 163 500 264
+      C499 350 467 432 420 482
+      C390 514 351 524 325 494
+      C300 524 265 529 246 505Z"
+      fill="#FFFFFF"/>
+  </g>
+
+  <!-- Subtle dark circles under the eyes -->
+  <g transform="rotate(12 330 350)" fill="#B9A8C9" opacity=".78">
+    <ellipse cx="305" cy="294" rx="24" ry="9"/>
+    <ellipse cx="392" cy="294" rx="24" ry="9"/>
+  </g>
+
+  <!-- Eyes -->
+  <g transform="rotate(12 330 350)" fill="#050505">
+    <ellipse cx="305" cy="250" rx="24" ry="38"/>
+    <ellipse cx="392" cy="250" rx="24" ry="38"/>
+  </g>
+
+  <!-- Sweat drops -->
+  <path d="M468 211
+           C468 211 448 238 448 252
+           C448 266 458 276 471 276
+           C484 276 494 266 494 252
+           C494 238 468 211 468 211Z"
+        fill="#70D8FF" stroke="#FFFFFF" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M171 181
+           C171 181 158 199 158 210
+           C158 220 165 227 175 227
+           C185 227 192 220 192 210
+           C192 199 171 181 171 181Z"
+        fill="#70D8FF" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round"/>
+
+  <!-- Small running dust puffs -->
+  <g fill="#FFFFFF" opacity=".9">
+    <circle cx="195" cy="520" r="13"/>
+    <circle cx="164" cy="532" r="8"/>
+    <circle cx="220" cy="545" r="7"/>
+  </g>
+  <path d="M100 472l-24 12m40 18l-28 4" stroke="#FFE36E" stroke-width="10" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,68 @@
+.root {
+  --primary: #8e44d4;
+  --surface-tint: #f6f2fd;
+  --border: #e6ddf6;
+  --ink: #1e1433;
+  --subway: #2e9e4f;
+  --taxi: #f2a007;
+  --surface: #ffffff;
+}
+
+.mapCard {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  background: var(--surface-tint);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.line {
+  fill: none;
+  stroke: var(--subway);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.taxiLine {
+  fill: none;
+  stroke: var(--taxi);
+  stroke-width: 3;
+  stroke-dasharray: 8 6;
+  stroke-linecap: round;
+}
+
+.stopDot {
+  fill: var(--subway);
+}
+
+.stopHighlight {
+  fill: var(--primary);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.originDot {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+.destMark {
+  fill: var(--primary);
+}
+
+.label {
+  fill: var(--ink);
+  font-size: 12px;
+}
+
+.labelStrong {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
