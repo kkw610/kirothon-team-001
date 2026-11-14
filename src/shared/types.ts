@@ -26,6 +26,14 @@ export interface Stop extends Coordinate {
   fare?: number;
 }
 
+/** 도보 구간 */
+export interface WalkSegment {
+  /** 거리(m) */
+  distanceM: number;
+  /** 시간(분, 소수 1자리) */
+  minutes: number;
+}
+
 export interface Route {
   id: string;
   /** 대중교통 요금(원). 끝까지 지하철로 갈 때의 요금 */
@@ -39,6 +47,10 @@ export interface Route {
   timeAware?: boolean;
   /** 경로 검색 기준 출발 시각 (ISO 8601) */
   departureTime?: string;
+  /** 출발지에서 첫 역까지 도보. elapsedMin에 이미 포함된다 */
+  walkFromOrigin?: WalkSegment;
+  /** 마지막 역에서 목적지까지 도보. 택시 없이 갈 때만 쓴다. totalMin에 포함된다 */
+  walkToDestination?: WalkSegment;
 }
 
 export interface Option {
