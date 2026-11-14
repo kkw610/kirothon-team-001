@@ -29,6 +29,10 @@
 | 구현 | Vibe             | Next.js 프로젝트 뼈대, API 라우트 2개(/api/places, /api/recommend), 메모리 캐시, 서버 전용 env, 가짜 데이터로 끝까지 동작하는 메인 화면 생성                                                                                                                             |                              |
 | 검증 | Vibe             | 기능 폴더 간 import 금지를 ESLint 규칙으로 강제하고 위반 시 오류 나는 것 확인, 추천·요금 로직 단위 테스트 작성                                                                                                                                                          |                              |
 | 기타 | Hook             | 에이전트 작업 종료 시 lint와 타입체크 자동 실행                                                                                                                                                                                                                          |                              |
+| 기획 | Steering | [프론트엔드] 결과 화면·지도의 배치·상태·표기 규칙(`frontend-ui.md`)과 색·글꼴·모양 규칙(`design-system.md`)을 나눠 썼다. 충돌하면 `frontend-ui.md`를 따르도록 우선순위를 적었다. | `.kiro/steering/frontend-ui.md`, `design-system.md` |
+| 설계 | Spec | [프론트엔드] 동작하는 결과 화면(`recommend-result-ui`)을 먼저 만들고, 목업 5장 기준 디자인(`result-ui-design`)과 공통 UI·화면 전환 구조(`app-shell-shared-ui`)를 별도 spec으로 나눴다. 디자인 단계에서는 데이터와 상태 판별 로직을 바꾸지 않기로 했다. | `.kiro/specs/recommend-result-ui/`, `result-ui-design/`, `app-shell-shared-ui/` |
+| 구현 | Vibe + Spec (tasks) | [프론트엔드] 앱 셸, 입력 화면, 결과 화면(추천 카드, 내역, 비교표, 로딩·오류)을 구현했다. 상태 판별과 표시 계산은 컴포넌트 밖 순수 함수로 분리했다. | `app/page.tsx`, `src/shared/ui/`, `src/features/search-form/`, `src/features/result/` |
+| 구현 | Vibe | [프론트엔드] 지하철만 타고 갈 때의 도착 시각·요금·여유를 택시 환승과 비교하는 카드를 추가했다. | `src/features/result/SubwayOnlyCard.tsx`, `subwayOnly.ts` |
 
 ## 개발 과정에서 바뀐 점
 
@@ -59,6 +63,11 @@
 - **바꾼 방식**: 출발지→목적지 지하철+도보 경로를 기준 옵션(택시 0원)으로 두고 각 역의 택시 환승과 비교하도록 설계했다(`design.md` D4). 도보 데이터는 이미 받는 TMAP 응답의 `WALK` 구간을 써서 호출을 늘리지 않았다. 카카오 도보 길찾기는 제휴 전용, TMAP 보행자 API는 별도 상품이라 쓰지 않았다.
 - **남은 일**: 추천 로직(`recommend.ts`)과 `Option` 타입, `domain-rules.md` 변경은 다른 파트 영역이라 공통 파일 변경 요청 9~11로 넘겼다.
 
+### [프론트엔드] 공통 UI를 결과 폴더에서 `shared/ui`로 이동
+
+- **바뀐 이유**: 입력·로딩·오류 화면을 병렬로 만들어야 하는데, 기능 폴더끼리 import할 수 없어 헤더, 버튼, 글꼴, 색 토큰을 공유할 곳이 없었다.
+- **바꾼 방식**: `app-shell-shared-ui` spec을 만들어 `src/shared/ui/`와 `globals.css` 토큰으로 옮겼다. 기존 컴포넌트가 깨지지 않게 `result/fonts.ts`는 같은 이름을 다시 내보내게 했다.
+
 ## 어려웠던 점과 해결 방법
 
 ### [API 연동] 공식 문서를 읽을 수 없는 API
@@ -88,3 +97,8 @@
   - TMAP 오류 응답의 코드를 서버 로그에 남기도록 바꿔 `INVALID_API_KEY`를 확인했다.
   - 키 값은 출력하지 않고 해시만 비교했다. `.env.local`의 키와 실행 중인 서버 프로세스의 키가 달랐다.
   - Next.js는 프로세스 환경변수를 `.env.local`보다 우선한다. 예전 키를 물려받지 않게 서버를 다시 띄워 해결했고, 이 주의 사항을 `design.md` 리스크에 적었다.
+
+### [프론트엔드] 한 화면이 여러 상태를 가짐
+
+- **문제**: 결과 영역이 정상, 제시간 도착 불가, 후보 없음, 로딩, 오류로 나뉘고 표시 규칙이 많아 컴포넌트 안에 두면 테스트하기 어렵다.
+- **해결**: 상태 판별과 내역·비교 행 계산을 순수 함수로 빼고 컴포넌트는 그리기만 하게 했다.
