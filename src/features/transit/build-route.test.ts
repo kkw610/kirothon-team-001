@@ -6,11 +6,11 @@ const st = (name: string, x: number) => ({ name, x, y: 37.5 });
 
 /** 도보 3분 -> 2호선 6분 2km(A,B,C) -> 도보 2분(환승) -> 3호선 4분 12km(C,D) -> 도보 1분 */
 const legs: TransitLeg[] = [
-  { kind: "walk", minutes: 3 },
+  { kind: "walk", minutes: 3, distanceM: 200 },
   { kind: "subway", minutes: 6, distanceM: 2000, line: "수도권2호선", stations: [st("A", 127.0), st("B", 127.01), st("C", 127.02)] },
-  { kind: "walk", minutes: 2 },
+  { kind: "walk", minutes: 2, distanceM: 150 },
   { kind: "subway", minutes: 4, distanceM: 12000, line: "수도권3호선", stations: [st("C", 127.02), st("D", 127.03)] },
-  { kind: "walk", minutes: 1 },
+  { kind: "walk", minutes: 1, distanceM: 80 },
 ];
 const meta = { id: "r0", fare: 1650, totalMin: 16, timeAware: true, departureTime: "2026-11-14T08:00:00.000Z" };
 
@@ -51,6 +51,17 @@ describe("buildRoute", () => {
 
   it("totalMin이 없으면 구간 시간 합", () => {
     expect(buildRoute(legs, { ...meta, totalMin: undefined })!.totalMin).toBe(16);
+  });
+
+  it("출발 도보와 도착 도보를 따로 담는다(환승 도보 제외)", () => {
+    const route = buildRoute(legs, meta)!;
+    expect(route.walkFromOrigin).toEqual({ distanceM: 200, minutes: 3 });
+    expect(route.walkToDestination).toEqual({ distanceM: 80, minutes: 1 });
+  });
+
+  it("도착 도보가 없으면 0", () => {
+    const route = buildRoute(legs.slice(0, 4), meta)!;
+    expect(route.walkToDestination).toEqual({ distanceM: 0, minutes: 0 });
   });
 
   it("지하철역이 없으면 null", () => {

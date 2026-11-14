@@ -5,6 +5,7 @@
 - 담당: API 파트(`feat/api`). 받는 쪽: 추천 로직 파트(`src/features/recommender`, `app/api/recommend/route.ts`)
 - 검증: 2026-11-14 실제 키로 확인했다. TMAP(신촌역 → 코엑스 16:01, 다음 날 01:30), 전체 흐름(강남역 → 서울역: TMAP → recommend → 카카오).
 - 개정 2 (2026-11-14): 지하철 API를 TMAP 대중교통으로 교체. 출발 시각 기준 경로, 대체 경로 옵션, 1~9호선 제한 추가.
+- 개정 4 (2026-11-14): 도보 구간(`walkFromOrigin`, `walkToDestination`) 추가. 택시 없이 지하철+도보로 가는 기준 옵션을 만들 수 있다(4절).
 - 개정 3 (2026-11-14): TMAP 실측 반영. 출발 시각은 운행 여부로만 반영된다(2절, 7절).
 
 ## 1. 제공 함수
@@ -30,11 +31,13 @@
 |---|---|---|---|
 | `id` | - | `"tmap-0"`, `"tmap-1"`, ... (0이 추천) | - |
 | `fare` | 원 | TMAP `fare.regular.totalFare`. 끝까지 지하철로 갈 때 요금 | 실제 값 |
-| `totalMin` | 분 | TMAP `totalTime`(초) ÷ 60. 출발지에서 목적지까지, 도보 포함 | 실제 값 |
+| `totalMin` | 분 | TMAP `totalTime`(초) ÷ 60. **택시 없이** 지하철과 도보로 목적지까지 가는 시간 | 실제 값 |
 | `transferCount` | 회 | 지하철 구간 수 − 1 | 실제 값 |
 | `timeAware` | - | 출발 시각 기준으로 찾은 경로인지. TMAP은 `true` | - |
 | `departureTime` | ISO 8601 | 검색 기준 출발 시각 | - |
 | `stops` | - | 지나는 역 순서대로. 첫 역이 탑승역, 마지막 역이 하차역 | 아래 표 |
+| `walkFromOrigin` | `{ distanceM, minutes }` | 출발지 → 첫 역 도보. TMAP 첫 `WALK` 구간. `elapsedMin`에 이미 포함 | 실제 값 |
+| `walkToDestination` | `{ distanceM, minutes }` | 마지막 역 → 목적지 도보. TMAP 마지막 `WALK` 구간. `totalMin`에 포함 | 실제 값 |
 
 ### `Stop` (역 하나)
 
@@ -115,7 +118,7 @@ const departureAt = departureTime ? new Date(departureTime) : new Date();
 const routes = await getTransitRoutes(origin, destination, departureAt);
 ```
 
-`src/features/recommender/recommend.ts`에서 두 군데를 바꾼다.
+`src/features/recommender/recommend.ts`에서 세 군데를 바꾼다. (3)은 `design.md` D4 제안이며 `domain-rules.md` 합의가 먼저다.
 
 ```ts
 // (1) 택시 탑승 시각을 넘겨 그 시각의 교통 예측과 심야 할증을 반영한다
@@ -127,6 +130,35 @@ const taxi = await estimateTaxi(stop, destination, boardingAt);
 // (2) 역별 지하철 요금을 쓴다 (없으면 기존 방식)
 const subwayFare = stop.fare ?? (index === 0 ? 0 : route.fare);
 ```
+
+```ts
+// (3) 기준 옵션: 택시 없이 지하철+도보로 목적지까지 (design.md D4)
+//     Option에 kind?: "walk" | "taxi", walkMin?: number 추가가 필요하다(공통 파일 변경 요청 10).
+const last = selected.stops[selected.stops.length - 1];
+const walkArrivalMs = departureAt.getTime() + (selected.totalMin ?? last.elapsedMin) * MIN_MS;
+evaluated.push({
+  arrivalMs: walkArrivalMs,
+  option: {
+    kind: "walk",
+    routeId: selected.id,
+    stopName: last.name,
+    stopCoord: { x: last.x, y: last.y },
+    departureTime: departureAt.toISOString(),
+    arrivalTime: new Date(walkArrivalMs).toISOString(),
+    onTime: walkArrivalMs <= arrivalDeadline.getTime(),
+    subwayMin: last.elapsedMin,
+    walkMin: selected.walkToDestination?.minutes ?? 0,
+    taxiWaitMin: 0,
+    taxiMin: 0,
+    taxiDistanceM: 0,
+    subwayFare: selected.fare,
+    taxiFare: 0,
+    totalCost: selected.fare,
+  },
+});
+```
+- 기준 옵션은 택시 요금이 0이라 제시간이면 항상 가장 싸서 추천된다. 늦으면 택시 옵션 중에서 고른다(기존 규칙).
+- 마지막 역에서 택시를 타는 옵션은 그대로 둔다. 도착 도보가 길 때는 택시가 더 빨라 비교 대상이 된다.
 
 도착 시각과 총비용 공식은 `domain-rules.md` 그대로다.
 - 도착 = 출발 + `stop.elapsedMin` + 5분 + `taxi.durationSec`

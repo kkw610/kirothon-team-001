@@ -1,4 +1,4 @@
-import type { Coordinate, Route, Stop } from "@/shared/types";
+import type { Coordinate, Route, Stop, WalkSegment } from "@/shared/types";
 import { calculateSubwayFare } from "./fare";
 
 /** API 응답을 이 형태로 바꾼 뒤 buildRoute에 넘긴다. API 형식과 역별 계산을 분리하기 위한 중간 형태다. */
@@ -13,7 +13,12 @@ export type TransitLeg =
       /** 탑승역부터 하차역까지 순서대로 */
       stations: Array<Coordinate & { name: string }>;
     }
-  | { kind: "walk" | "other"; minutes: number };
+  | {
+      kind: "walk" | "other";
+      minutes: number;
+      /** 구간 거리(m). 도보 구간 합계에 쓴다 */
+      distanceM?: number;
+    };
 
 export interface RouteMeta {
   id: string;
@@ -41,6 +46,18 @@ function round1(value: number): number {
   return Math.round(value * 10) / 10;
 }
 
+/** legs[from, to) 중 도보 구간의 거리·시간 합 */
+function sumWalk(legs: TransitLeg[], from: number, to: number): WalkSegment {
+  let distanceM = 0;
+  let minutes = 0;
+  for (const leg of legs.slice(from, to)) {
+    if (leg.kind !== "walk") continue;
+    distanceM += leg.distanceM ?? 0;
+    minutes += leg.minutes;
+  }
+  return { distanceM: Math.round(distanceM), minutes: round1(minutes) };
+}
+
 /** 구간 안 역들의 구간 시작부터의 비율(0~1)과 직선거리 합. 좌표가 모두 같으면 역 순서 비율. */
 function stationRatios(stations: Coordinate[]): { ratios: number[]; straightM: number } {
   const cumulative = [0];
@@ -62,6 +79,7 @@ function stationRatios(stations: Coordinate[]): { ratios: number[]; straightM: n
  * - 요금: 탑승역부터 누적 거리로 거리비례 운임을 계산하고 경로 요금 이하로 자른다.
  *   탑승역은 0(타지 않음), 마지막 역은 경로 요금과 같다.
  * - 환승역은 두 구간에 연속으로 나오므로 먼저 나온 것만 남긴다.
+ * - 도보: 첫 지하철 앞 도보 합은 walkFromOrigin, 마지막 지하철 뒤 도보 합은 walkToDestination.
  * 지하철역이 하나도 없으면 null을 돌려준다.
  */
 export function buildRoute(legs: TransitLeg[], meta: RouteMeta): Route | null {
@@ -95,6 +113,9 @@ export function buildRoute(legs: TransitLeg[], meta: RouteMeta): Route | null {
   if (stops.length === 0) return null;
   if (stops.length > 1) stops[stops.length - 1].fare = meta.fare;
 
+  const firstSubway = legs.findIndex((l) => l.kind === "subway");
+  const lastSubway = legs.length - 1 - [...legs].reverse().findIndex((l) => l.kind === "subway");
+
   return {
     id: meta.id,
     fare: meta.fare,
@@ -103,5 +124,7 @@ export function buildRoute(legs: TransitLeg[], meta: RouteMeta): Route | null {
     transferCount: Math.max(0, legs.filter((l) => l.kind === "subway").length - 1),
     timeAware: meta.timeAware,
     departureTime: meta.departureTime,
+    walkFromOrigin: sumWalk(legs, 0, firstSubway),
+    walkToDestination: sumWalk(legs, lastSubway + 1, legs.length),
   };
 }

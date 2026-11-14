@@ -26,6 +26,17 @@ export interface TransitOptions {
   maxRoutes?: number;
 }
 
+/** 오류 응답 본문에서 TMAP 오류 코드만 꺼낸다. 형식: { code } 또는 { error: { code } } */
+async function upstreamErrorCode(response: Response): Promise<string> {
+  const body: unknown = await response.json().catch(() => undefined);
+  if (body && typeof body === "object") {
+    const b = body as { code?: unknown; error?: { code?: unknown } };
+    const code = b.code ?? b.error?.code;
+    if (typeof code === "string" && /^[A-Z0-9_]{1,40}$/.test(code)) return code;
+  }
+  return "code unknown";
+}
+
 async function fetchTmap(origin: Place, destination: Place, searchDttm: string): Promise<unknown> {
   let response: Response;
   try {
@@ -52,11 +63,11 @@ async function fetchTmap(origin: Place, destination: Place, searchDttm: string):
   } catch {
     throw new TransitError("UPSTREAM", "TMAP 대중교통 API에 연결하지 못했습니다.");
   }
-  if (response.status === 401 || response.status === 403) {
-    throw new TransitError("UPSTREAM", `TMAP 대중교통 키 인증 실패(HTTP ${response.status})`);
-  }
-  if (response.status === 429) {
-    throw new TransitError("UPSTREAM", "TMAP 대중교통 호출 한도를 넘었습니다(HTTP 429).");
+  if (response.status === 401 || response.status === 403 || response.status === 429) {
+    // 원인 구분을 위해 TMAP 오류 코드(예: QUOTA_EXCEEDED)만 메시지에 담는다. 키나 요청 좌표는 담지 않는다.
+    const code = await upstreamErrorCode(response);
+    const reason = response.status === 429 ? "호출 한도 초과" : "키 인증 실패";
+    throw new TransitError("UPSTREAM", `TMAP 대중교통 ${reason}(HTTP ${response.status}, ${code})`);
   }
   // 경로 없음(status 11~14)도 본문으로 판단해야 하므로 4xx 본문은 파서에 넘긴다.
   const body = await response.json().catch(() => undefined);
