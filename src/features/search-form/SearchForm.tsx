@@ -48,8 +48,8 @@ export function SearchForm({ loading, onSubmit }: Props) {
     e.preventDefault();
     if (loading) return;
     const next: Errors = {};
-    if (!origin) next.origin = "출발역을 검색 목록에서 선택해 주세요.";
-    if (!destination) next.destination = "도착역을 검색 목록에서 선택해 주세요.";
+    if (!origin) next.origin = "출발역을 선택해 주세요.";
+    if (!destination) next.destination = "도착역을 선택해 주세요.";
     const arrivalDate = todayAt(arrival);
     if (!arrival || Number.isNaN(arrivalDate.getTime())) {
       next.arrival = "도착해야 하는 시각을 입력해 주세요.";
@@ -83,55 +83,59 @@ export function SearchForm({ loading, onSubmit }: Props) {
           택시를 타야 할까요?
         </h2>
         <p className={styles.lead}>
-          출발역, 도착역, 도착해야 하는 시각을 알려주면 BBalligalge가 제시간에
-          도착하면서 가장 싼 환승역을 찾아요.
+          어디서 어디로, 몇 시까지 가야 하는지만 알려 주세요.
+          <br />
+          제시간에 도착하는 가장 싼 택시 환승역을 찾아 드릴게요.
         </p>
       </div>
       <Card as="div" padding="lg" className={styles.card}>
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <h3 className={styles.formTitle}>조건을 알려 주세요</h3>
           <PlaceInput label="출발역" error={errors.origin} onChange={setOrigin} />
           <PlaceInput label="도착역" error={errors.destination} onChange={setDestination} />
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={arrivalId}>
-              도착해야 하는 시각
-            </label>
-            <input
-              id={arrivalId}
-              className={styles.input}
-              type="time"
-              suppressHydrationWarning // 기본값이 서버와 브라우저 시각에 따라 달라진다.
-              value={arrival}
-              aria-invalid={errors.arrival ? true : undefined}
-              aria-describedby={errors.arrival ? `${arrivalId}-error` : undefined}
-              onChange={(e) => setArrival(e.target.value)}
-            />
-            {errors.arrival && (
-              <p id={`${arrivalId}-error`} className={styles.error}>
-                {errors.arrival}
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor={arrivalId}>
+                도착해야 하는 시각
+              </label>
+              <input
+                id={arrivalId}
+                className={styles.input}
+                type="time"
+                suppressHydrationWarning // 기본값이 서버와 브라우저 시각에 따라 달라진다.
+                value={arrival}
+                aria-invalid={errors.arrival ? true : undefined}
+                aria-describedby={errors.arrival ? `${arrivalId}-error` : undefined}
+                onChange={(e) => setArrival(e.target.value)}
+              />
+              {errors.arrival && (
+                <p id={`${arrivalId}-error`} className={styles.error}>
+                  {errors.arrival}
+                </p>
+              )}
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor={departureId}>
+                출발 시각 <span className={styles.optional}>(선택)</span>
+              </label>
+              <input
+                id={departureId}
+                className={styles.input}
+                type="time"
+                value={departure}
+                aria-invalid={errors.departure ? true : undefined}
+                aria-describedby={`${departureId}-hint${errors.departure ? ` ${departureId}-error` : ""}`}
+                onChange={(e) => setDeparture(e.target.value)}
+              />
+              <p id={`${departureId}-hint`} className={styles.hint}>
+                비워 두면 지금 출발해요.
               </p>
-            )}
-          </div>
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={departureId}>
-              출발 시각 <span className={styles.optional}>(선택)</span>
-            </label>
-            <input
-              id={departureId}
-              className={styles.input}
-              type="time"
-              value={departure}
-              aria-invalid={errors.departure ? true : undefined}
-              aria-describedby={`${departureId}-hint${errors.departure ? ` ${departureId}-error` : ""}`}
-              onChange={(e) => setDeparture(e.target.value)}
-            />
-            <p id={`${departureId}-hint`} className={styles.hint}>
-              비워 두면 지금 출발해요.
-            </p>
-            {errors.departure && (
-              <p id={`${departureId}-error`} className={styles.error}>
-                {errors.departure}
-              </p>
-            )}
+              {errors.departure && (
+                <p id={`${departureId}-error`} className={styles.error}>
+                  {errors.departure}
+                </p>
+              )}
+            </div>
           </div>
           <Button type="submit" fullWidth disabled={loading} aria-busy={loading}>
             {loading ? "계산 중..." : "택시로 갈아탈 역 찾기"}
