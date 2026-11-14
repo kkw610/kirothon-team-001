@@ -6,7 +6,7 @@ import type {
   TaxiEstimator,
 } from "@/shared/types";
 import { buildLegs } from "./legs";
-import { TAXI_WAIT_BUFFER_MIN } from "./constants";
+import { NEAR_DESTINATION_M, TAXI_WAIT_BUFFER_MIN } from "./constants";
 
 export interface RecommendInput {
   routes: Route[];
@@ -17,6 +17,16 @@ export interface RecommendInput {
 }
 
 const MIN_MS = 60_000;
+const EARTH_RADIUS_M = 6_371_000;
+
+/** 두 좌표 사이 직선거리(m, 하버사인) */
+function distanceM(a: { x: number; y: number }, b: { x: number; y: number }): number {
+  const rad = Math.PI / 180;
+  const dLat = (b.y - a.y) * rad;
+  const dLon = (b.x - a.x) * rad;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.y * rad) * Math.cos(b.y * rad) * Math.sin(dLon / 2) ** 2;
+  return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(h));
+}
 
 /**
  * 지하철 전용 Route 중 마지막 Stop의 elapsedMin이 가장 작은 Route 1개를 고른다.
@@ -54,7 +64,8 @@ export async function recommend(input: RecommendInput): Promise<RecommendRespons
 
   const candidates = selected.stops
     .map((stop, index) => ({ stop, index }))
-    .filter(({ stop }) => stop.mode === "subway");
+    .filter(({ stop }) => stop.mode === "subway")
+    .filter(({ stop }) => distanceM(stop, destination) > NEAR_DESTINATION_M);
 
   const evaluated = await Promise.all(
     candidates.map(async ({ stop, index }) => {
