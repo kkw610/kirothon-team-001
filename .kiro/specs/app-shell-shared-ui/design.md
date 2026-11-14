@@ -154,7 +154,7 @@ interface MascotProps {
 
 - 둘 다 `<img>`를 그린다. `src`는 `/brand/logo.svg`, `/brand/mascot.svg`. `width`, `height`에 `size`를 넣고 `style={{ width: size, height: size }}`는 쓰지 않는다. 비율은 정사각형이라 `object-fit: contain`만 CSS로 지정한다(요구사항 4.6, 4.8).
 - `Mascot`은 항상 `alt=""`, `aria-hidden="true"`, `data-mood={mood}`. 지금은 `mood`가 그림을 바꾸지 않는다. 표정별 파일이 생기면 `MOOD_SRC: Record<MascotMood, string>` 표 한 곳만 고친다(요구사항 4.3).
-- `LogoMark`는 `decorative`가 거짓이면 `alt="환승이"`. Header에서는 옆에 텍스트 "환승이"가 있으므로 `decorative`로 쓴다(4.5).
+- `LogoMark`는 `decorative`가 거짓이면 `alt="빨리갈게"`. Header에서는 옆에 텍스트 "빨리갈게"가 있으므로 `decorative`로 쓴다(4.5).
 - 임시 그림 대체 단계는 필요 없다. 파일이 이미 `public/brand/`에 있다(요구사항 4.7은 만족한 상태).
 - `next/image`는 쓰지 않는다. 일반 `<img>`는 `@next/next/no-img-element` 경고를 내므로 해당 줄에 `eslint-disable-next-line`과 이유(정적 SVG, 최적화 불필요)를 주석으로 단다.
 
@@ -169,8 +169,8 @@ interface HeaderProps {
 ```
 
 - `conditionSummary`가 `undefined`이면 로고와 서비스 이름만(요구사항 5.2). 문자열이면 칩과 버튼을 함께 보인다(5.3). `conditionSummary`는 있고 `onChangeCondition`이 없는 조합은 타입상 허용하되 버튼을 그리지 않는다.
-- 구조: `<header class="header"><div class="inner">[LogoMark + "환승이"] [Chip] <span class="spacer"/> [Button outline "조건 바꾸기"]</div></header>`. `inner`는 본문 컨테이너와 같은 최대 폭 규칙을 쓴다.
-- "환승이" 글자는 `font-family: var(--font-heading)`, `color: var(--primary-text)`.
+- 구조: `<header class="header"><div class="inner">[LogoMark + "빨리갈게"] [Chip] <span class="spacer"/> [Button outline "조건 바꾸기"]</div></header>`. `inner`는 본문 컨테이너와 같은 최대 폭 규칙을 쓴다.
+- "빨리갈게" 글자는 `font-family: var(--font-heading)`, `color: var(--primary-text)`.
 - 높이는 `height: 50px`로 고정, 칩은 `min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap`. 버튼은 `flex: none`(5.6, 5.8).
 - Header 안의 "조건 바꾸기" 버튼은 높이 44px 규칙(요구사항 10.1)이 Header 높이 50px 안에 들어가도록 상하 여백 3px로 한다.
 - 폭 320px에서 칩이 사라지지 않도록 칩에 `flex: 0 1 auto`(줄어들 수 있음), 로고와 버튼에 `flex: none`을 쓴다.
@@ -243,7 +243,7 @@ import { jua } from "@/shared/ui/fonts";
 <html lang="ko" className={jua.variable}>
 ```
 
-`title`, `description` 메타데이터는 이번에 바꾸지 않는다(범위 밖). 서비스 이름이 "환승이"이므로 `title`을 바꾸고 싶다면 별도 작업으로 제안한다.
+`title`, `description` 메타데이터는 이번에 바꾸지 않는다(범위 밖). 서비스 이름이 "빨리갈게"이므로 `title`을 바꾸고 싶다면 별도 작업으로 제안한다.
 
 ### `src/features/result/fonts.ts` 변경
 
@@ -288,7 +288,7 @@ export default function HomePage() {
 ```
 
 - 각 슬롯은 서로 다른 줄이다. 입력, 로딩, 결과, 오류 담당자가 각자 슬롯의 JSX 한 줄만 고치므로 병합 충돌이 줄어든다.
-- 기존 제목 `<h1>택시 환승역 추천</h1>`은 제거한다. Header가 서비스 이름을 보이므로 중복이다. 접근성을 위한 `<h1>`은 각 화면 담당이 화면 제목으로 넣는다(현재는 각 컴포넌트의 제목이 있다). 이번 spec에서는 `<h1>`이 없는 상태가 생기므로, 입력 단계가 `SearchForm`의 기존 모양 그대로인 동안 시각적으로 숨긴 `<h1 className="sr-only">환승이</h1>`을 둔다.
+- 기존 제목 `<h1>택시 환승역 추천</h1>`은 제거한다. Header가 서비스 이름을 보이므로 중복이다. 접근성을 위한 `<h1>`은 각 화면 담당이 화면 제목으로 넣는다(현재는 각 컴포넌트의 제목이 있다). 이번 spec에서는 `<h1>`이 없는 상태가 생기므로, 입력 단계가 `SearchForm`의 기존 모양 그대로인 동안 시각적으로 숨긴 `<h1 className="sr-only">빨리갈게</h1>`을 둔다.
 - 단계 전환 알림(요구사항 10.3): `role="status" aria-live="polite"` 영역에 단계별 짧은 문구("경로를 찾는 중이에요", "결과가 나왔어요", "경로를 불러오지 못했어요", "조건을 입력해 주세요")를 넣는다. 문구는 `app/` 안에 상수로 둔다. 표시용 문구를 `*.tsx`에서 조합하지 않는다는 기존 규칙(result 한정)은 이 파일에 해당하지 않지만, 템플릿 문자열 없이 상수만 쓴다.
 - `sr-only` 유틸은 `page.module.css`의 `.srOnly`로 둔다(전역 클래스 추가를 피한다).
 - 오류 단계의 "조건 바꾸기"는 Header 버튼이 맡는다. 오류 카드 안의 "조건 바꾸기" 버튼은 오류 화면 담당이 목업대로 추가하며, 이를 위해 `ResultError`에 `onChangeCondition` 선택 prop을 **그 담당이 추가**한다. 이번 spec에서는 건드리지 않는다.
@@ -372,7 +372,7 @@ B와 E는 같은 `ResultStates.tsx`를 건드리므로, **먼저 `ResultSkeleton
   - 폭 320px, 375px, 768px, 1280px에서 가로 스크롤과 Header 한 줄 유지.
   - 키보드 Tab 순서와 포커스 표시, Button `disabled` 모양.
   - 기존 결과 화면이 변하지 않았는지 이전 스크린샷과 비교(`screens/` 폴더).
-  - 한글 제목(Header "환승이", 결과 카드 제목)이 Jua로 그려지는지.
+  - 한글 제목(Header "빨리갈게", 결과 카드 제목)이 Jua로 그려지는지.
 - 대비 계산은 기존 토큰 값을 그대로 쓰므로 새로 검증하지 않는다. 새 값은 `--page-bg`뿐이며 글자가 올라가지 않는 바탕색이다.
 
 ## 위험 요소와 대응

@@ -16,7 +16,7 @@ export function LogoMark({ size = 32, decorative = false }: LogoMarkProps) {
       src="/brand/logo.svg"
       width={size}
       height={size}
-      alt={decorative ? "" : "환승이"}
+      alt={decorative ? "" : "빨리갈게"}
       aria-hidden={decorative ? true : undefined}
     />
   );
