@@ -6,6 +6,8 @@
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
   box-sizing: border-box;
   display: grid;
   gap: var(--space-4);
@@ -35,4 +37,16 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+/* 지도 자리표시: 지도 기능이 준비되기 전까지 보여 준다 */
+.mapPlaceholder {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  padding: var(--space-4);
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  background: var(--surface-tint);
+  color: var(--text-sub);
+  text-align: center;
 }

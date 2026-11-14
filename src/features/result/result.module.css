@@ -534,15 +534,19 @@
 }
 
 /* ---------- 결과 레이아웃: 한 열, 1024px 이상에서 왼쪽(추천·내역)/오른쪽(경로·지도) ---------- */
+/*
+ * 간격 위계: 추천 카드 아래 28px > 세부 카드 사이 20px > 비교표 위 32px.
+ * 추천 카드는 결론이라 세부 카드와 덩어리를 나누고, 비교표는 별도 구역으로 더 띄운다.
+ */
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
+  gap: 20px;
   min-width: 0;
 }
 .areaSide {
   display: grid;
-  gap: 16px;
+  gap: 20px;
   align-content: start;
   min-width: 0;
 }
@@ -551,8 +555,16 @@
 .areaTable {
   min-width: 0;
 }
+.areaHero {
+  margin-bottom: 8px;
+}
+.areaTable {
+  margin-top: 12px;
+}
 @media (min-width: 1024px) {
   .layout {
+    column-gap: 24px;
+    row-gap: 20px;
     grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
     grid-template-areas:
       "hero side"

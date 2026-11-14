@@ -2,7 +2,7 @@
 
 import { useId, useState, type FormEvent } from "react";
 import type { Place, RecommendRequest } from "@/shared/types";
-import { Button, Card, Mascot } from "@/shared/ui";
+import { Button, Card, SubwayScene } from "@/shared/ui";
 import { PlaceInput } from "./PlaceInput";
 import styles from "./searchForm.module.css";
 
@@ -18,10 +18,19 @@ type Errors = {
   departure?: string;
 };
 
-/** datetime-local 입력용 문자열(로컬 시각, 분 단위) */
-function toLocalInputValue(date: Date): string {
+/** time 입력용 문자열(로컬 시각 HH:mm) */
+function toTimeInputValue(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/** "HH:mm"을 오늘 날짜의 로컬 시각으로 바꾼다. 형식이 틀리면 Invalid Date */
+function todayAt(time: string): Date {
+  const match = /^(\d{2}):(\d{2})$/.exec(time);
+  if (!match) return new Date(NaN);
+  const date = new Date();
+  date.setHours(Number(match[1]), Number(match[2]), 0, 0);
+  return date;
 }
 
 export function SearchForm({ loading, onSubmit }: Props) {
@@ -30,7 +39,7 @@ export function SearchForm({ loading, onSubmit }: Props) {
   const [origin, setOrigin] = useState<Place | null>(null);
   const [destination, setDestination] = useState<Place | null>(null);
   const [arrival, setArrival] = useState(() =>
-    toLocalInputValue(new Date(Date.now() + 60 * 60_000)),
+    toTimeInputValue(new Date(Date.now() + 60 * 60_000)),
   );
   const [departure, setDeparture] = useState("");
   const [errors, setErrors] = useState<Errors>({});
@@ -41,13 +50,13 @@ export function SearchForm({ loading, onSubmit }: Props) {
     const next: Errors = {};
     if (!origin) next.origin = "출발역을 검색 목록에서 선택해 주세요.";
     if (!destination) next.destination = "도착역을 검색 목록에서 선택해 주세요.";
-    const arrivalDate = new Date(arrival);
+    const arrivalDate = todayAt(arrival);
     if (!arrival || Number.isNaN(arrivalDate.getTime())) {
       next.arrival = "도착해야 하는 시각을 입력해 주세요.";
     }
     let departureDate: Date | null = null;
     if (departure) {
-      departureDate = new Date(departure);
+      departureDate = todayAt(departure);
       if (Number.isNaN(departureDate.getTime())) {
         next.departure = "출발 시각 형식이 올바르지 않아요.";
       } else if (!next.arrival && departureDate >= arrivalDate) {
@@ -67,7 +76,7 @@ export function SearchForm({ loading, onSubmit }: Props) {
   return (
     <section className={styles.layout}>
       <div className={styles.hero}>
-        <Mascot size={160} mood="idle" />
+        <SubwayScene className={styles.scene} />
         <h2 className={styles.headline}>
           어느 역에서 내려
           <br />
@@ -89,7 +98,7 @@ export function SearchForm({ loading, onSubmit }: Props) {
             <input
               id={arrivalId}
               className={styles.input}
-              type="datetime-local"
+              type="time"
               suppressHydrationWarning // 기본값이 서버와 브라우저 시각에 따라 달라진다.
               value={arrival}
               aria-invalid={errors.arrival ? true : undefined}
@@ -109,7 +118,7 @@ export function SearchForm({ loading, onSubmit }: Props) {
             <input
               id={departureId}
               className={styles.input}
-              type="datetime-local"
+              type="time"
               value={departure}
               aria-invalid={errors.departure ? true : undefined}
               aria-describedby={`${departureId}-hint${errors.departure ? ` ${departureId}-error` : ""}`}

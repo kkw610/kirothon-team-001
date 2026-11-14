@@ -16,7 +16,7 @@ export function Header({ conditionSummary, onChangeCondition }: HeaderProps) {
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          <LogoMark size={28} decorative />
+          <LogoMark size={32} decorative />
           <span className={styles.name}>BBalligalge</span>
         </div>
         {hasSummary ? (

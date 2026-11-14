@@ -10,6 +10,10 @@
   justify-items: start;
   align-content: start;
 }
+.scene {
+  justify-self: stretch;
+  max-width: 100%;
+}
 .headline {
   margin: 0;
   font-family: var(--font-heading), system-ui, sans-serif;
