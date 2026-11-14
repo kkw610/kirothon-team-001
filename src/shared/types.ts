@@ -107,3 +107,27 @@ export type TaxiEstimator = (
   to: Coordinate,
   boardingAt?: Date,
 ) => Promise<TaxiEstimate>;
+
+export type ApiErrorCode = "INVALID_REQUEST" | "NO_ROUTE" | "UPSTREAM_ERROR" | "SERVER_ERROR";
+
+/** API 오류 응답 본문. error는 사용자에게 보여 줘도 되는 문장이다. */
+export interface ApiErrorBody {
+  error: string;
+  /**
+   * INVALID_REQUEST(400): 요청 형식 오류
+   * NO_ROUTE(404): 조건에 맞는 경로가 없음(정상적인 "결과 없음")
+   * UPSTREAM_ERROR(502): 외부 API 호출 실패(연결, 인증, 한도, 응답 형식)
+   * SERVER_ERROR(500): 그 밖의 서버 오류(설정 누락, 버그)
+   */
+  code: ApiErrorCode;
+  /** 오류가 난 외부 API. NO_ROUTE, UPSTREAM_ERROR에서만 있다 */
+  source?: "transit" | "taxi" | "places";
+}
+
+/** 환승역에서 목적지까지 택시로 가는 도로 경로(지도용). */
+export interface TaxiPath {
+  /** 출발에서 도착 순서의 좌표. 길찾기에 실패하면 [출발, 도착] 두 점 */
+  path: Coordinate[];
+  /** true면 도로 경로를 못 구해 직선으로 대신한 것 */
+  fallback: boolean;
+}

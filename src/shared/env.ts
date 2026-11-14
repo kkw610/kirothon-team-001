@@ -4,7 +4,7 @@ import "server-only";
  * 서버 전용 환경변수 읽기. 클라이언트 번들에서 import하면 빌드가 실패한다.
  * 값이 없을 수 있으므로(가짜 데이터 단계) 필수 여부는 호출하는 쪽이 requireEnv로 정한다.
  */
-export type EnvKey = "KAKAO_REST_API_KEY" | "KAKAO_JS_KEY" | "TRANSIT_API_KEY";
+export type EnvKey = "KAKAO_REST_API_KEY" | "TRANSIT_API_KEY";
 
 export function getEnv(key: EnvKey): string | undefined {
   const value = process.env[key];
