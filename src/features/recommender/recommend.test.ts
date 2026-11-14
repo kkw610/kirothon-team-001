@@ -128,7 +128,7 @@ describe("recommend 빈 입력과 오류 전파", () => {
 
   it("estimateTaxi가 한 Stop에서 예외를 던지면 recommend가 reject된다", async () => {
     const failing: TaxiEstimator = async (from, to) => {
-      if (from.name === "B") throw new Error("taxi failure");
+      if ("name" in from && from.name === "B") throw new Error("taxi failure");
       return taxi(from, to);
     };
     await expect(
