@@ -1,8 +1,11 @@
+import type { Option } from "@/shared/types";
+
 const timeFormat = new Intl.DateTimeFormat("ko-KR", {
   timeZone: "Asia/Seoul",
   hour: "2-digit",
   minute: "2-digit",
   hour12: false,
+  hourCycle: "h23",
 });
 
 export const formatTime = (iso: string) => timeFormat.format(new Date(iso));
@@ -32,4 +35,93 @@ export function formatMargin(diffMin: number): string {
   if (diffMin > 0) return `${formatDuration(diffMin)} 여유`;
   if (diffMin < 0) return `${formatDuration(-diffMin)} 늦음`;
   return "딱 맞게 도착";
+}
+
+/* ---------- 화면 표시 문구 (result-ui-design) ---------- */
+
+export const RECOMMEND_CHIP = "추천 · 제시간 도착 중 가장 싼 방법";
+export const LATE_CHIP = "제시간 도착 불가";
+export const LATE_HEADLINE = "제시간에 도착하는 방법이 없어요";
+export const LOADING_TITLE = "경로 계산 중...";
+export const SLOW_NOTICE = "평소보다 오래 걸리고 있어요. 잠시만 기다려 주세요.";
+export const SLOW_THRESHOLD_MS = 30_000;
+export const ERROR_TITLE = "경로를 불러오지 못했어요";
+export const DEFAULT_ERROR_MESSAGE = "잠시 후 다시 시도해 주세요.";
+export const EMPTY_TITLE = "경로를 찾지 못했어요";
+export const EMPTY_HINT = "출발지나 도착지를 바꿔 다시 검색해 보세요.";
+export const TAXI_FARE_NOTE = "교통상황에 따라 변동";
+export const FASTEST_BADGE = "가장 빠름";
+export const BEST_BADGE = "추천";
+
+const PLACEHOLDER = "-";
+
+const isValidIso = (iso: unknown): iso is string =>
+  typeof iso === "string" && !Number.isNaN(new Date(iso).getTime());
+
+const isFiniteNumber = (n: unknown): n is number => typeof n === "number" && Number.isFinite(n);
+
+/** 앞뒤 공백을 제거하고 끝에 "역"이 없으면 붙인다. 빈 값이면 "-". */
+export function formatStationName(name: string): string {
+  const trimmed = (name ?? "").trim();
+  if (trimmed === "") return PLACEHOLDER;
+  return trimmed.endsWith("역") ? trimmed : `${trimmed}역`;
+}
+
+export function formatTransferHeadline(stopName: string): string {
+  return `${formatStationName(stopName)}에서 택시로 갈아타세요`;
+}
+
+/** "09:12 → 09:28". 유효하지 않은 쪽은 "-". */
+export function formatTimeRange(fromIso: string, toIso: string): string {
+  return `${safeTime(fromIso)} → ${safeTime(toIso)}`;
+}
+
+/** ISO 문자열에 분을 더한 ISO 문자열. 입력이 유효하지 않으면 입력을 그대로 돌려준다. */
+export function addMinutes(iso: string, min: number): string {
+  if (!isValidIso(iso) || !isFiniteNumber(min)) return iso;
+  return new Date(new Date(iso).getTime() + min * 60_000).toISOString();
+}
+
+/** diffMin < 0이면 "N분 늦음"(N ≥ 1), 아니면 undefined. */
+export function formatLateMinutes(diffMin: number): string | undefined {
+  if (!isFiniteNumber(diffMin) || diffMin >= 0) return undefined;
+  return `${Math.max(1, Math.round(-diffMin))}분 늦음`;
+}
+
+export function safeTime(iso: string | null | undefined): string {
+  if (!isValidIso(iso)) return PLACEHOLDER;
+  try {
+    return formatTime(iso);
+  } catch {
+    return PLACEHOLDER;
+  }
+}
+
+export function safeWon(n: number | null | undefined): string {
+  return isFiniteNumber(n) ? formatWon(n) : PLACEHOLDER;
+}
+
+export function safeMargin(diffMin: number | null | undefined): string {
+  return isFiniteNumber(diffMin) ? formatMargin(diffMin) : PLACEHOLDER;
+}
+
+/** "09:57 도착 · 3분 여유 · 총 21,350원". 유효하지 않은 값은 그 자리만 "-". */
+export function formatArrivalSummary(
+  option: Pick<Option, "arrivalTime" | "totalCost">,
+  deadlineIso: string,
+): string {
+  const arrival = safeTime(option?.arrivalTime);
+  const diff =
+    isValidIso(deadlineIso) && isValidIso(option?.arrivalTime)
+      ? diffMinutes(deadlineIso, option.arrivalTime)
+      : undefined;
+  const margin = safeMargin(diff);
+  const cost = isFiniteNumber(option?.totalCost) ? `총 ${formatWon(option.totalCost)}` : PLACEHOLDER;
+  return `${arrival} 도착 · ${margin} · ${cost}`;
+}
+
+/** 비었거나 공백뿐이면 기본 문구, 아니면 원문 그대로. */
+export function resolveErrorMessage(message: string | undefined | null): string {
+  if (message === undefined || message === null || message.trim() === "") return DEFAULT_ERROR_MESSAGE;
+  return message;
 }

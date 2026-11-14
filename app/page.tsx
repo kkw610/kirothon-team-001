@@ -42,16 +42,18 @@ export default function HomePage() {
       <h1 className={styles.title}>택시 환승역 추천</h1>
       <div className={styles.panel}>
         <SearchForm loading={state.status === "loading"} onSubmit={handleSubmit} />
-        {state.status === "loading" && <ResultSkeleton />}
-        {state.status === "error" && (
-          <ResultError
-            message={state.message}
-            onRetry={() => lastRequest && handleSubmit(lastRequest)}
-          />
-        )}
-        {state.status === "success" && (
-          <ResultView result={state.data} arrivalDeadline={state.request.arrivalTime} />
-        )}
+        <div className={styles.resultArea}>
+          {state.status === "loading" && <ResultSkeleton />}
+          {state.status === "error" && (
+            <ResultError
+              message={state.message}
+              onRetry={() => lastRequest && handleSubmit(lastRequest)}
+            />
+          )}
+          {state.status === "success" && (
+            <ResultView result={state.data} arrivalDeadline={state.request.arrivalTime} />
+          )}
+        </div>
       </div>
       {state.status === "success" && (
         <div className={styles.mapArea}>

@@ -1,57 +1,439 @@
-.card {
+/* Design_Token: 색 값은 이 블록에서만 선언한다 (.kiro/steering/design-system.md) */
+.root {
+  --primary: #8e44d4;
+  --on-primary: #ffffff;
+  --primary-text: #7a35c4;
+  --primary-soft: #f3eafc;
+  --surface-tint: #f6f2fd;
+  --ink: #1e1433;
+  --text-sub: #5e5670;
+  --border: #e6ddf6;
   --ok: #16a34a;
   --late: #dc2626;
-  --primary: #8e44d4;
-  --primary-soft: #f3eafc;
-  --on-primary: #ffffff;
-  --muted: #9ca3af;
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  --late-row: #6b7280;
+  --subway: #2e9e4f;
+  --taxi: #f2a007;
+  --surface: #ffffff;
+  --late-soft: #fdecea;
+
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
-.stack { display: grid; gap: 16px; }
+.root,
+.root * {
+  box-sizing: border-box;
+}
 
-.recommended { border-left: 6px solid var(--primary); }
-.fallback { border-left: 6px solid var(--late); }
+/* 제목 계열 (Heading_Font) */
+.heading {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
 
-.headline { margin: 0 0 8px; font-size: 20px; line-height: 1.4; }
-.stop { background: var(--primary); color: var(--on-primary); padding: 0 6px; border-radius: 6px; }
-.sub { margin: 0 0 8px; color: #4b5563; }
+.stack {
+  display: grid;
+  gap: 16px;
+}
 
-.arrival { margin: 8px 0 12px; font-size: 16px; }
-.ok { color: var(--ok); font-weight: 600; }
-.late { color: var(--late); font-weight: 600; }
+/* ---------- 공통 카드 ---------- */
+.card {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  min-width: 0;
+}
 
-.breakdown { margin: 0; display: grid; gap: 6px; }
-.breakdown > div { display: flex; justify-content: space-between; gap: 12px; }
-.breakdown dt { color: #4b5563; }
-.breakdown dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
-.total { border-top: 1px solid #eee; padding-top: 8px; font-weight: 700; font-size: 18px; }
-.total dt { color: inherit; }
+.withMascot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-.note { margin: 12px 0 0; font-size: 12px; color: #6b7280; }
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
 
-.tableTitle { margin: 0 0 8px; font-size: 16px; }
-.tableWrap { overflow-x: auto; }
-.table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
-.table th, .table td { text-align: left; padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: top; }
-.table small { color: #6b7280; }
-.rowBest { background: var(--primary-soft); font-weight: 600; }
-.rowLate { color: var(--muted); }
-.rowLate small { color: var(--muted); }
-.badge { display: inline-block; background: var(--primary); color: var(--on-primary); border-radius: 4px; padding: 0 4px; font-size: 12px; }
+.mascotSlot {
+  width: 64px;
+  height: 64px;
+  flex: none;
+}
 
-.skeleton { height: 16px; margin: 10px 0; border-radius: 6px; background: linear-gradient(90deg, #eee, #f7f7f7, #eee); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
-.skeletonTitle { height: 28px; width: 70%; }
-@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  font-size: 14px;
+  font-weight: 400;
+}
 
-.errorCard { border-left: 6px solid var(--late); }
-.errorText { margin: 0 0 12px; color: var(--late); }
-.retry { min-height: 44px; padding: 0 16px; background: var(--primary); color: var(--on-primary); border: 0; border-radius: 8px; font-size: 16px; cursor: pointer; }
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
 
-/* 모바일(~639px): 표 행을 카드로 바꿔 가로 스크롤을 없앤다 */
+.iconOk {
+  fill: var(--ok);
+}
+
+.iconLate {
+  fill: var(--late);
+}
+
+.sub {
+  margin: 0 0 8px;
+  color: var(--text-sub);
+}
+
+.note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.ok {
+  color: var(--ink);
+}
+
+.late {
+  color: var(--late);
+}
+
+/* ---------- 추천 카드 ---------- */
+.recommendCard {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.recommendCard .chip {
+  background: var(--on-primary);
+  color: var(--primary-text);
+}
+
+.headline {
+  margin: 0 0 8px;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.summary {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.recommendCard .summary,
+.recommendCard .headline {
+  color: var(--on-primary);
+}
+
+@media (min-width: 768px) {
+  .headline {
+    font-size: 28px;
+  }
+}
+
+/* ---------- 늦음 카드 ---------- */
+.lateCard {
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--late);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.lateCard .chip {
+  background: var(--late-soft);
+  color: var(--late);
+}
+
+.lateCard .headline {
+  color: var(--ink);
+}
+
+.lateText {
+  color: var(--late);
+}
+
+/* ---------- 내역 카드 ---------- */
+.breakdownCard {
+  display: grid;
+  gap: 12px;
+}
+
+.breakdownRow {
+  display: grid;
+  grid-template-columns: 4px minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 4px;
+  min-height: 44px;
+}
+
+.bar {
+  width: 4px;
+  align-self: stretch;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.barSubway {
+  background: var(--subway);
+}
+
+.barTaxi {
+  background: var(--taxi);
+}
+
+.rowTitle {
+  min-width: 0;
+}
+
+.rowLabel {
+  margin: 0;
+  font-size: 16px;
+}
+
+.rowRange {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.rowDuration,
+.rowCost {
+  margin: 0;
+  font-size: 14px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rowNote {
+  grid-column: 2 / -1;
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.totalRow {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.totalCost {
+  font-size: 20px;
+  color: var(--primary-text);
+}
+
+/* ---------- 비교표 ---------- */
+.tableTitle {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  font-weight: 400;
+  color: var(--text-sub);
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  text-align: left;
+}
+
+.table tr {
+  min-height: 44px;
+}
+
+.table th,
+.table td {
+  height: 44px;
+}
+
+.table td small {
+  color: var(--text-sub);
+}
+
+.cellStop {
+  font-size: 16px;
+}
+
+.cellNum {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th.cellNum {
+  text-align: right;
+}
+
+.rowBest {
+  background: var(--primary-soft);
+}
+
+.rowBest td:first-child {
+  border-left: 4px solid var(--primary);
+  border-radius: 8px 0 0 8px;
+}
+
+.rowLate {
+  color: var(--late-row);
+}
+
+.rowLate small {
+  color: var(--late-row);
+}
+
+.table td small.late {
+  color: var(--late);
+}
+
+.badge {
+  display: inline-block;
+  margin: 0 4px 0 0;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.badgeFastest {
+  background: var(--late);
+}
+
+/* ---------- 로딩 ---------- */
+.skeletonCard {
+  width: 100%;
+}
+
+.skeletonGroup {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 0;
+}
+
+.skeleton {
+  width: 100%;
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface-tint), var(--primary-soft), var(--surface-tint));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+.skeletonTitle {
+  height: 24px;
+  width: 70%;
+}
+
+.skeletonBlock {
+  height: 80px;
+  border-radius: 16px;
+}
+
+.skeletonBlockLarge {
+  height: 96px;
+  border-radius: 20px;
+}
+
+.slowNotice {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--surface-tint);
+  }
+}
+
+/* ---------- 오류, 빈 결과 ---------- */
+.errorCard {
+  border-color: var(--border);
+}
+
+.iconCircle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 0 8px;
+  border-radius: 999px;
+  background: var(--late-soft);
+}
+
+.errorTitle {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.errorText {
+  margin: 0 0 16px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.retry {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 20px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 0;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.emptyCard .headline {
+  font-size: 20px;
+}
+
+/* ---------- 모바일(~639px): 표 행을 카드로 ---------- */
 @media (max-width: 639px) {
   .table thead {
     position: absolute;
@@ -60,29 +442,51 @@
     overflow: hidden;
     clip-path: inset(50%);
   }
-  .table, .table tbody { display: block; }
+
+  .table,
+  .table tbody {
+    display: block;
+  }
+
   .table tr {
     display: block;
+    min-height: 44px;
     padding: 8px 12px;
-    margin-bottom: 8px;
-    border: 1px solid #eee;
+    margin: 0 0 8px;
+    border: 1px solid var(--border);
     border-radius: 8px;
   }
+
   .table td {
     display: flex;
     justify-content: space-between;
     gap: 12px;
+    height: auto;
+    min-height: 44px;
     padding: 4px 0;
     border-bottom: 0;
     text-align: right;
+    align-items: center;
   }
+
   .table td::before {
     content: attr(data-label);
-    color: #6b7280;
+    color: var(--text-sub);
     font-weight: 400;
     text-align: left;
     flex: none;
   }
-  .table td.cellStop { font-size: 16px; font-weight: 700; }
-  .rowBest { border-color: var(--primary); }
+
+  .rowBest td:first-child {
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .rowBest {
+    border-left: 4px solid var(--primary);
+  }
+
+  .rowLate {
+    color: var(--late-row);
+  }
 }
