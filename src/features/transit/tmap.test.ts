@@ -45,10 +45,13 @@ function sample() {
 }
 
 const departureAt = new Date("2026-11-14T17:00:00+09:00");
+/** 샘플 목적지: D역(127.03) 근처 */
+const destination = { x: 127.031, y: 37.5 };
+const opts = (maxRoutes: number) => ({ maxRoutes, departureAt, destination });
 
 function codeOf(body: unknown) {
   try {
-    parseTmapRoutes(body, { maxRoutes: 1, departureAt });
+    parseTmapRoutes(body, opts(1));
   } catch (error) {
     return error instanceof TransitError ? error.code : "OTHER";
   }
@@ -56,9 +59,10 @@ function codeOf(body: unknown) {
 }
 
 describe("parseTmapRoutes", () => {
-  it("버스·1~9호선 외 노선이 섞인 경로를 건너뛰고 첫 지하철 경로를 고른다", () => {
-    const [route] = parseTmapRoutes(sample(), { maxRoutes: 1, departureAt });
+  it("버스로 시작하거나 1~9호선 앞부분이 없는 경로는 버리고, 택시 없이 가장 빠른 경로를 고른다", () => {
+    const [route] = parseTmapRoutes(sample(), opts(1));
     expect(route).toMatchObject({ id: "tmap-0", fare: 1650, totalMin: 16, transferCount: 1, timeAware: true });
+    expect(route.truncated).toBeUndefined();
     expect(route.departureTime).toBe(departureAt.toISOString());
     expect(route.stops.map((s) => [s.name, s.elapsedMin, s.line, s.distanceM, s.fare])).toEqual([
       ["A", 3, "수도권2호선", 0, 0],
@@ -68,8 +72,8 @@ describe("parseTmapRoutes", () => {
     ]);
   });
 
-  it("maxRoutes만큼 대체 경로를 응답 순서대로 붙인다", () => {
-    const routes = parseTmapRoutes(sample(), { maxRoutes: 3, departureAt });
+  it("maxRoutes만큼 대체 경로를 totalMin 순으로 붙인다", () => {
+    const routes = parseTmapRoutes(sample(), opts(3));
     expect(routes.map((r) => [r.id, r.fare, r.stops.length])).toEqual([
       ["tmap-0", 1650, 4],
       ["tmap-1", 1550, 2],
@@ -81,13 +85,51 @@ describe("parseTmapRoutes", () => {
     const body = sample();
     const leg = body.metaData.plan.itineraries[3].legs[1] as { passStopList?: Record<string, unknown> };
     leg.passStopList = { stationList: leg.passStopList?.stations };
-    expect(parseTmapRoutes(body, { maxRoutes: 3, departureAt })[1].stops).toHaveLength(2);
+    expect(parseTmapRoutes(body, opts(3))[1].stops).toHaveLength(2);
   });
 
   it("조건을 만족하는 경로가 없으면 NO_ROUTE", () => {
     const body = sample();
     body.metaData.plan.itineraries = body.metaData.plan.itineraries.slice(0, 2);
     expect(codeOf(body)).toBe("NO_ROUTE");
+  });
+
+  it("버스가 섞이면 앞의 1~9호선 구간을 목적지에 가장 가까운 역에서 끊고 나머지는 도보로 추정한다", () => {
+    const body = {
+      metaData: {
+        plan: {
+          itineraries: [
+            {
+              totalTime: 2000,
+              fare: { regular: { totalFare: 2900 } },
+              legs: [
+                walk(120),
+                // 2호선 A → B → C → D, 목적지는 D(127.03) 근처
+                subway("수도권2호선", 600, 3000, [st(0, "A", "127.00"), st(1, "B", "127.01"), st(2, "C", "127.02"), st(3, "D", "127.03"), st(4, "E", "127.04")]),
+                walk(90),
+                { mode: "BUS", sectionTime: 900, route: "간선:472" },
+                walk(60),
+              ],
+            },
+          ],
+        },
+      },
+    };
+    const [r] = parseTmapRoutes(body, opts(1));
+    expect(r.truncated).toBe(true);
+    expect(r.stops.map((s) => s.name)).toEqual(["A", "B", "C", "D"]);
+    expect(r.walkToDestination?.estimated).toBe(true);
+    expect(r.walkToDestination!.distanceM).toBeLessThan(200);
+    // 요금은 버스 포함 요금(2900)이 아니라 D까지 거리비례 운임
+    expect(r.fare).toBe(r.stops.at(-1)!.fare);
+    expect(r.fare).toBe(1550);
+    expect(r.totalMin).toBe(Math.round((r.stops.at(-1)!.elapsedMin + r.walkToDestination!.minutes) * 10) / 10);
+  });
+
+  it("같은 역 순서의 후보는 하나만 남긴다", () => {
+    const body = sample();
+    body.metaData.plan.itineraries.push(structuredClone(body.metaData.plan.itineraries[3]));
+    expect(parseTmapRoutes(body, opts(3))).toHaveLength(2);
   });
 
   it("result.status 11~14는 NO_ROUTE, 그 밖의 status와 error 객체는 UPSTREAM", () => {
@@ -102,9 +144,15 @@ describe("parseTmapRoutes", () => {
 describe("parseTmapRoutes 실제 응답 (신촌역 → 코엑스, 2026-11-14 16:01)", () => {
   const at = new Date("2026-11-14T16:01:00+09:00");
 
-  it("10개 경로 중 버스·수인분당선이 섞인 경로를 빼고 2호선 → 9호선(급행) 경로를 고른다", () => {
-    const routes = parseTmapRoutes(fixture, { maxRoutes: 3, departureAt: at });
-    expect(routes).toHaveLength(1);
+  const coex = { x: 127.0588, y: 37.5116 };
+
+  it("택시 없이 가장 빠른 2호선 → 9호선(급행) 완전 경로가 1위, 버스 섞인 경로는 잘라서 뒤에 붙는다", () => {
+    const routes = parseTmapRoutes(fixture, { maxRoutes: 3, departureAt: at, destination: coex });
+    expect(routes).toHaveLength(3);
+    expect(routes.map((x) => x.truncated ?? false)).toEqual([false, true, true]);
+    // 2호선 → 3호선 → 버스(강남08) 경로는 압구정에서 끊긴다
+    expect(routes[1].stops.at(-1)?.name).toBe("압구정");
+    expect(routes.map((x) => x.totalMin)).toEqual([...routes.map((x) => x.totalMin!)].sort((a, b) => a - b));
     const [r] = routes;
     expect(r).toMatchObject({ fare: 1750, totalMin: 44.4, transferCount: 1, timeAware: true });
     expect(r.stops.map((s) => s.name)).toEqual([
@@ -117,7 +165,7 @@ describe("parseTmapRoutes 실제 응답 (신촌역 → 코엑스, 2026-11-14 16:
   });
 
   it("역별 시간·거리·요금이 단조 증가하고 끝값이 경로 값과 맞는다", () => {
-    const [r] = parseTmapRoutes(fixture, { maxRoutes: 1, departureAt: at });
+    const [r] = parseTmapRoutes(fixture, { maxRoutes: 1, departureAt: at, destination: coex });
     const first = r.stops[0];
     const last = r.stops.at(-1)!;
     expect(first).toMatchObject({ elapsedMin: 2.2, distanceM: 0, fare: 0 }); // 도보 132초
@@ -139,9 +187,13 @@ describe("parseTmapRoutes 실제 응답 (신촌역 → 코엑스, 2026-11-14 16:
 });
 
 describe("출발 시각 반영 (실제 응답)", () => {
-  it("막차 후(01:30)에는 같은 경로라도 service 0이라 NO_ROUTE", () => {
+  it("막차 후(01:30)에는 잘라 쓸 앞부분 지하철도 service 0이라 NO_ROUTE", () => {
     try {
-      parseTmapRoutes(fixtureNight, { maxRoutes: 1, departureAt: new Date("2026-11-15T01:30:00+09:00") });
+      parseTmapRoutes(fixtureNight, {
+        maxRoutes: 1,
+        departureAt: new Date("2026-11-15T01:30:00+09:00"),
+        destination: { x: 127.0588, y: 37.5116 },
+      });
       throw new Error("던져지지 않음");
     } catch (error) {
       expect(error).toBeInstanceOf(TransitError);
@@ -154,7 +206,7 @@ describe("출발 시각 반영 (실제 응답)", () => {
     const body = sample();
     const its = body.metaData.plan.itineraries as Array<{ legs: Array<Record<string, unknown>> }>;
     its[2].legs[1].service = 0;
-    const routes = parseTmapRoutes(body, { maxRoutes: 3, departureAt });
+    const routes = parseTmapRoutes(body, opts(3));
     expect(routes.map((r) => r.fare)).toEqual([1550]);
   });
 });

@@ -22,8 +22,8 @@ export type TransitLeg =
 
 export interface RouteMeta {
   id: string;
-  /** 경로 전체 요금(원) */
-  fare: number;
+  /** 경로 전체 요금(원). 없으면 역별 거리비례 운임만 쓰고 경로 요금은 마지막 역 운임이다 */
+  fare?: number;
   /** 총 소요시간(분). 없으면 구간 시간 합 */
   totalMin?: number;
   timeAware: boolean;
@@ -102,7 +102,10 @@ export function buildRoute(legs: TransitLeg[], meta: RouteMeta): Route | null {
           mode: "subway",
           line: leg.line,
           distanceM,
-          fare: stops.length === 0 ? 0 : Math.min(calculateSubwayFare(distanceM), meta.fare),
+          fare:
+            stops.length === 0
+              ? 0
+              : Math.min(calculateSubwayFare(distanceM), meta.fare ?? Number.POSITIVE_INFINITY),
         });
       });
       distCursor += legDistance;
@@ -111,14 +114,15 @@ export function buildRoute(legs: TransitLeg[], meta: RouteMeta): Route | null {
   }
 
   if (stops.length === 0) return null;
-  if (stops.length > 1) stops[stops.length - 1].fare = meta.fare;
+  if (stops.length > 1 && meta.fare !== undefined) stops[stops.length - 1].fare = meta.fare;
+  const fare = meta.fare ?? stops[stops.length - 1].fare ?? 0;
 
   const firstSubway = legs.findIndex((l) => l.kind === "subway");
   const lastSubway = legs.length - 1 - [...legs].reverse().findIndex((l) => l.kind === "subway");
 
   return {
     id: meta.id,
-    fare: meta.fare,
+    fare,
     stops,
     totalMin: meta.totalMin ?? round1(timeCursor),
     transferCount: Math.max(0, legs.filter((l) => l.kind === "subway").length - 1),

@@ -78,8 +78,9 @@ async function fetchTmap(origin: Place, destination: Place, searchDttm: string):
 }
 
 /**
- * 출발지에서 목적지까지 수도권 1~9호선 지하철 경로를 출발 시각 기준으로 찾는다(TMAP 대중교통).
- * routes[0]이 추천 경로이고, maxRoutes가 2 이상이면 대체 경로가 뒤에 붙는다.
+ * 출발지에서 목적지까지 수도권 1~9호선 지하철+도보 경로를 출발 시각 기준으로 찾는다(TMAP 대중교통).
+ * 버스·다른 노선이 섞인 경로는 앞의 1~9호선 구간을 목적지에 가장 가까운 역에서 끊는다(design.md D5).
+ * routes[0]이 택시 없이 목적지까지 가장 빠른 경로이고, maxRoutes가 2 이상이면 다음 후보가 뒤에 붙는다.
  * 같은 출발지, 목적지, 출발 시각(10분 단위)은 10분간 캐시한다. 실패는 TransitError로 던진다.
  */
 export async function getTransitRoutes(
@@ -97,6 +98,7 @@ export async function getTransitRoutes(
     parseTmapRoutes(await fetchTmap(origin, destination, searchDttm), {
       maxRoutes: MAX_ROUTES,
       departureAt,
+      destination,
     }),
   );
   return routes.slice(0, maxRoutes);

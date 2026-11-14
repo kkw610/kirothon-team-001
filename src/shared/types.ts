@@ -42,6 +42,8 @@ export interface WalkSegment {
   distanceM: number;
   /** 시간(분, 소수 1자리) */
   minutes: number;
+  /** true면 API 값이 아니라 직선거리로 추정한 값 */
+  estimated?: boolean;
 }
 
 export interface Route {
@@ -61,6 +63,8 @@ export interface Route {
   walkFromOrigin?: WalkSegment;
   /** 마지막 역에서 목적지까지 도보. 택시 없이 갈 때만 쓴다. totalMin에 포함된다 */
   walkToDestination?: WalkSegment;
+  /** true면 버스·1~9호선 외 노선 앞에서 자른 경로. 마지막 역 이후는 도보(추정) 또는 택시 */
+  truncated?: boolean;
 }
 
 export interface Option {

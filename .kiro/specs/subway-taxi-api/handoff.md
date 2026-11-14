@@ -5,6 +5,7 @@
 - 담당: API 파트(`feat/api`). 받는 쪽: 추천 로직 파트(`src/features/recommender`, `app/api/recommend/route.ts`)
 - 검증: 2026-11-14 실제 키로 확인했다. TMAP(신촌역 → 코엑스 16:01, 다음 날 01:30), 전체 흐름(강남역 → 서울역: TMAP → recommend → 카카오).
 - 개정 2 (2026-11-14): 지하철 API를 TMAP 대중교통으로 교체. 출발 시각 기준 경로, 대체 경로 옵션, 1~9호선 제한 추가.
+- 개정 5 (2026-11-14): 버스 섞인 경로는 1~9호선 앞부분을 목적지에 가장 가까운 역에서 잘라 쓴다(2절). 지하철+도보와 택시를 비교하는 데 쓸 값을 4절에 정리했다.
 - 개정 4 (2026-11-14): 도보 구간(`walkFromOrigin`, `walkToDestination`) 추가. 택시 없이 지하철+도보로 가는 기준 옵션을 만들 수 있다(4절).
 - 개정 3 (2026-11-14): TMAP 실측 반영. 출발 시각은 운행 여부로만 반영된다(2절, 7절).
 
@@ -23,21 +24,26 @@
 ## 2. 지하철: `Route`
 
 - `routes[0]`이 추천 경로다. TMAP이 추천한 순서에서 조건에 맞는 첫 경로를 고른다.
-- 조건: 도보와 지하철로만 이루어지고, 모든 지하철 구간이 **수도권 1~9호선(급행 포함)**이며, **출발 시각에 운행 중**인 경로. 버스, 신분당선, 수인분당선, 경의중앙선, 공항철도 등이 섞이면 제외한다.
-- 대체 경로는 구간에 따라 없을 수 있다. 실측한 두 구간 모두 조건을 만족하는 경로는 1개였다. `maxRoutes: 3`을 줘도 1개가 올 수 있다.
+- 후보 만들기 (개정 5)
+  - 경로 전체가 도보와 **수도권 1~9호선(급행 포함)**이면 그대로 쓴다(완전 경로). 도착 도보는 TMAP 실제 값이다.
+  - 버스, 신분당선, 수인분당선 등이 섞이면 **앞에서부터 이어지는 1~9호선 구간만** 쓰고, 그 안에서 **목적지에 가장 가까운 역**에서 끊는다(`truncated: true`). 그 역에서 목적지까지 도보는 직선거리 × 1.3, 분당 67m로 추정한다(`walkToDestination.estimated: true`).
+  - 버스로 시작하는 경로처럼 앞부분에 지하철이 없으면 버린다. 앞부분 지하철이 출발 시각에 운행하지 않으면(첫차 전, 막차 후) 버린다.
+- 정렬: 택시 없이 목적지까지 걸리는 시간(`totalMin`)이 짧은 순. 같은 역 순서는 하나만 남긴다.
+- 대체 경로: 개정 5부터 버스 섞인 경로도 잘라서 후보가 된다. 실측 신촌역 → 코엑스는 완전 경로 1개(44.4분)와 자른 경로 4개(88.6분~)였다.
 - `domain-rules.md`가 "경로 1개"이므로 기본값은 1개다. `develop`의 `recommend()`는 받은 경로 중 가장 빠른 지하철 경로 1개(`pickFastestSubwayRoute`)만 평가하므로, `maxRoutes: 3`을 넘겨도 택시 호출 수는 늘지 않는다.
 
 | 필드 | 단위 | 출처 / 계산 | 정확도 |
 |---|---|---|---|
 | `id` | - | `"tmap-0"`, `"tmap-1"`, ... (0이 추천) | - |
-| `fare` | 원 | TMAP `fare.regular.totalFare`. 끝까지 지하철로 갈 때 요금 | 실제 값 |
+| `fare` | 원 | 완전 경로: TMAP `fare.regular.totalFare`. 자른 경로: 끊은 역까지 거리비례 운임 | 실제 값 / 추정 |
 | `totalMin` | 분 | TMAP `totalTime`(초) ÷ 60. **택시 없이** 지하철과 도보로 목적지까지 가는 시간 | 실제 값 |
 | `transferCount` | 회 | 지하철 구간 수 − 1 | 실제 값 |
 | `timeAware` | - | 출발 시각 기준으로 찾은 경로인지. TMAP은 `true` | - |
 | `departureTime` | ISO 8601 | 검색 기준 출발 시각 | - |
 | `stops` | - | 지나는 역 순서대로. 첫 역이 탑승역, 마지막 역이 하차역 | 아래 표 |
 | `walkFromOrigin` | `{ distanceM, minutes }` | 출발지 → 첫 역 도보. TMAP 첫 `WALK` 구간. `elapsedMin`에 이미 포함 | 실제 값 |
-| `walkToDestination` | `{ distanceM, minutes }` | 마지막 역 → 목적지 도보. TMAP 마지막 `WALK` 구간. `totalMin`에 포함 | 실제 값 |
+| `walkToDestination` | `{ distanceM, minutes, estimated? }` | 마지막 역 → 목적지 도보. 완전 경로는 TMAP 마지막 `WALK` 구간, 자른 경로는 직선거리 추정(`estimated: true`). `totalMin`에 포함 | 완전 경로 실제 값 / 자른 경로 추정 |
+| `truncated` | - | `true`면 버스·다른 노선 앞에서 자른 경로 | - |
 
 ### `Stop` (역 하나)
 
@@ -109,16 +115,21 @@
 | 오늘 23:30 | predicted | 20,271m | 27분 | 27,280원(40% 할증) |
 | 내일 08:30 | predicted | 15,491m | 30분 | 15,500원 |
 
-## 4. 추천 로직이 해야 할 일
+## 4. 추천 로직이 쓸 값과 바꿀 곳
 
-`app/api/recommend/route.ts`에서 지하철도 출발 시각 기준으로 찾도록 `departureAt`을 넘긴다.
+### 지하철+도보와 택시 비교에 쓰는 값 (개정 5)
+API 파트는 경로를 **1~9호선 지하철 + 마지막 역에서 목적지까지 도보**로 만들어 준다. 비교 로직은 추천 로직 파트가 구현한다.
 
-```ts
-const departureAt = departureTime ? new Date(departureTime) : new Date();
-const routes = await getTransitRoutes(origin, destination, departureAt);
-```
+| 비교 대상 | 도착 시각 | 비용 |
+|---|---|---|
+| 지하철 + 도보(택시 없음) | 출발 + `route.totalMin` | 마지막 역 `stop.fare` (= `route.fare`) |
+| 역 X에서 택시 | 출발 + `X.elapsedMin` + 5분 + `taxi.durationSec` | `X.fare` + `taxi.fare` |
 
-`src/features/recommender/recommend.ts`에서 세 군데를 바꾼다. (3)은 `design.md` D4 제안이며 `domain-rules.md` 합의가 먼저다.
+- 도보 거리·시간은 `route.walkToDestination`. `estimated: true`면 직선거리 추정(자른 경로)이다.
+- 실측 신촌역 → 코엑스: 완전 경로 `totalMin` 44.4분, `fare` 1,750원, 도착 도보 551m 8.2분(TMAP 실제 값).
+- 기본 `maxRoutes: 1`이면 `routes[0]`은 `totalMin`이 가장 짧은 경로다. 여러 경로를 받아 직접 고른다면 마지막 역 `elapsedMin`이 아니라 `totalMin`으로 비교해야 한다(자른 경로는 마지막 역 도착이 빨라도 걷는 시간이 길다).
+
+### 그 밖에 바꿀 곳
 
 ```ts
 // (1) 택시 탑승 시각을 넘겨 그 시각의 교통 예측과 심야 할증을 반영한다
@@ -131,40 +142,7 @@ const taxi = await estimateTaxi(stop, destination, boardingAt);
 const subwayFare = stop.fare ?? (index === 0 ? 0 : route.fare);
 ```
 
-```ts
-// (3) 기준 옵션: 택시 없이 지하철+도보로 목적지까지 (design.md D4)
-//     Option에 kind?: "walk" | "taxi", walkMin?: number 추가가 필요하다(공통 파일 변경 요청 10).
-const last = selected.stops[selected.stops.length - 1];
-const walkArrivalMs = departureAt.getTime() + (selected.totalMin ?? last.elapsedMin) * MIN_MS;
-evaluated.push({
-  arrivalMs: walkArrivalMs,
-  option: {
-    kind: "walk",
-    routeId: selected.id,
-    stopName: last.name,
-    stopCoord: { x: last.x, y: last.y },
-    departureTime: departureAt.toISOString(),
-    arrivalTime: new Date(walkArrivalMs).toISOString(),
-    onTime: walkArrivalMs <= arrivalDeadline.getTime(),
-    subwayMin: last.elapsedMin,
-    walkMin: selected.walkToDestination?.minutes ?? 0,
-    taxiWaitMin: 0,
-    taxiMin: 0,
-    taxiDistanceM: 0,
-    subwayFare: selected.fare,
-    taxiFare: 0,
-    totalCost: selected.fare,
-  },
-});
-```
-- 기준 옵션은 택시 요금이 0이라 제시간이면 항상 가장 싸서 추천된다. 늦으면 택시 옵션 중에서 고른다(기존 규칙).
-- 마지막 역에서 택시를 타는 옵션은 그대로 둔다. 도착 도보가 길 때는 택시가 더 빨라 비교 대상이 된다.
-
 도착 시각과 총비용 공식은 `domain-rules.md` 그대로다.
-- 도착 = 출발 + `stop.elapsedMin` + 5분 + `taxi.durationSec`
-- 총비용 = `subwayFare` + `taxi.fare`
-
-**마지막 역에서 택시를 타는 후보**도 평가된다. 그 역에서 목적지까지 택시를 타는 경우다. 전 구간을 지하철로 가는 경우(목적지까지 도보)는 `Route.totalMin`과 `Route.fare`로 따로 비교할 수 있다.
 
 ## 5. 오류
 
@@ -192,6 +170,7 @@ evaluated.push({
 | 지하철 대체 경로 | 1~9호선 지하철만으로 가는 대체 경로는 구간에 따라 없다. 실측 두 구간 모두 1개. |
 | 택시 경로의 출발 시각 반영 | 됨(`boardingAt` 기준 교통 예측). |
 | 역별 시간 | 구간 시간을 역 사이 거리로 나눈 추정값이다. |
+| 자른 경로의 도착 도보 | 직선거리 × 1.3, 분당 67m 추정이다. 큰길, 하천, 철로 때문에 실제로는 더 걸릴 수 있다. |
 | 택시 요금 | 미터 요금 추정이다. 실제 요금은 신호와 정체에 따라 다르다. 카카오 자체 예상 요금과 −7%~+15% 차이가 났다. 시계외 할증과 통행료는 없다. |
 | 지하철 요금 | 성인 교통카드 기준이다. 조조할인, 청소년 요금, 버스 환승은 없다. |
 | TMAP 호출 한도 | 일 10건. 개발과 데모를 합친 숫자다. |
