@@ -85,14 +85,19 @@ export default function HomePage() {
 
         {/* 결과 슬롯 */}
         {state.phase === "result" && (
-          <div>
-            <ResultView result={state.data} arrivalDeadline={state.request.arrivalTime} />
-            <MapView
-              routes={state.data.routes}
-              destination={state.request.destination}
-              highlightStopName={state.data.best?.stopName}
-            />
-          </div>
+          <ResultView
+            result={state.data}
+            arrivalDeadline={state.request.arrivalTime}
+            originName={state.request.origin.name}
+            destinationName={state.request.destination.name}
+            aside={
+              <MapView
+                routes={state.data.routes}
+                destination={state.request.destination}
+                highlightStopName={state.data.best?.stopName}
+              />
+            }
+          />
         )}
 
         {/* 오류 슬롯 */}

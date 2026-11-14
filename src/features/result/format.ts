@@ -50,6 +50,8 @@ export const DEFAULT_ERROR_MESSAGE = "잠시 후 다시 시도해 주세요.";
 export const EMPTY_TITLE = "경로를 찾지 못했어요";
 export const EMPTY_HINT = "출발지나 도착지를 바꿔 다시 검색해 보세요.";
 export const TAXI_FARE_NOTE = "교통상황에 따라 변동";
+export const TAXI_FARE_DISCLAIMER = "택시비는 예상 요금이에요. 교통 상황에 따라 달라질 수 있어요.";
+export const ON_TIME_LABEL = "제시간";
 export const FASTEST_BADGE = "가장 빠름";
 export const BEST_BADGE = "추천";
 
