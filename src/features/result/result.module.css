@@ -1,0 +1,88 @@
+.card {
+  --ok: #16a34a;
+  --late: #dc2626;
+  --primary: #8e44d4;
+  --primary-soft: #f3eafc;
+  --on-primary: #ffffff;
+  --muted: #9ca3af;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+}
+
+.stack { display: grid; gap: 16px; }
+
+.recommended { border-left: 6px solid var(--primary); }
+.fallback { border-left: 6px solid var(--late); }
+
+.headline { margin: 0 0 8px; font-size: 20px; line-height: 1.4; }
+.stop { background: var(--primary); color: var(--on-primary); padding: 0 6px; border-radius: 6px; }
+.sub { margin: 0 0 8px; color: #4b5563; }
+
+.arrival { margin: 8px 0 12px; font-size: 16px; }
+.ok { color: var(--ok); font-weight: 600; }
+.late { color: var(--late); font-weight: 600; }
+
+.breakdown { margin: 0; display: grid; gap: 6px; }
+.breakdown > div { display: flex; justify-content: space-between; gap: 12px; }
+.breakdown dt { color: #4b5563; }
+.breakdown dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.total { border-top: 1px solid #eee; padding-top: 8px; font-weight: 700; font-size: 18px; }
+.total dt { color: inherit; }
+
+.note { margin: 12px 0 0; font-size: 12px; color: #6b7280; }
+
+.tableTitle { margin: 0 0 8px; font-size: 16px; }
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.table th, .table td { text-align: left; padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: top; }
+.table small { color: #6b7280; }
+.rowBest { background: var(--primary-soft); font-weight: 600; }
+.rowLate { color: var(--muted); }
+.rowLate small { color: var(--muted); }
+.badge { display: inline-block; background: var(--primary); color: var(--on-primary); border-radius: 4px; padding: 0 4px; font-size: 12px; }
+
+.skeleton { height: 16px; margin: 10px 0; border-radius: 6px; background: linear-gradient(90deg, #eee, #f7f7f7, #eee); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+.skeletonTitle { height: 28px; width: 70%; }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.errorCard { border-left: 6px solid var(--late); }
+.errorText { margin: 0 0 12px; color: var(--late); }
+.retry { min-height: 44px; padding: 0 16px; background: var(--primary); color: var(--on-primary); border: 0; border-radius: 8px; font-size: 16px; cursor: pointer; }
+
+/* 모바일(~639px): 표 행을 카드로 바꿔 가로 스크롤을 없앤다 */
+@media (max-width: 639px) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .table, .table tbody { display: block; }
+  .table tr {
+    display: block;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    border-bottom: 0;
+    text-align: right;
+  }
+  .table td::before {
+    content: attr(data-label);
+    color: #6b7280;
+    font-weight: 400;
+    text-align: left;
+    flex: none;
+  }
+  .table td.cellStop { font-size: 16px; font-weight: 700; }
+  .rowBest { border-color: var(--primary); }
+}

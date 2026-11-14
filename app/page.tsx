@@ -2,18 +2,24 @@
 
 import { useState } from "react";
 import { MapView } from "@/features/map";
-import { ResultView } from "@/features/result";
+import { ResultError, ResultSkeleton, ResultView } from "@/features/result";
 import { SearchForm } from "@/features/search-form";
-import type { Place, RecommendRequest, RecommendResponse } from "@/shared/types";
+import type { RecommendRequest, RecommendResponse } from "@/shared/types";
+import styles from "./page.module.css";
+
+type State =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "error"; message: string }
+  | { status: "success"; data: RecommendResponse; request: RecommendRequest };
 
 export default function HomePage() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<{ data: RecommendResponse; destination: Place } | null>(null);
+  const [state, setState] = useState<State>({ status: "idle" });
+  const [lastRequest, setLastRequest] = useState<RecommendRequest | null>(null);
 
   async function handleSubmit(request: RecommendRequest) {
-    setLoading(true);
-    setError(null);
+    setLastRequest(request);
+    setState({ status: "loading" });
     try {
       const res = await fetch("/api/recommend", {
         method: "POST",
@@ -22,29 +28,39 @@ export default function HomePage() {
       });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? "추천을 불러오지 못했습니다.");
-      setResult({ data: body, destination: request.destination });
+      setState({ status: "success", data: body, request });
     } catch (e) {
-      setResult(null);
-      setError(e instanceof Error ? e.message : "추천을 불러오지 못했습니다.");
-    } finally {
-      setLoading(false);
+      setState({
+        status: "error",
+        message: e instanceof Error ? e.message : "추천을 불러오지 못했습니다.",
+      });
     }
   }
 
   return (
-    <main>
-      <h1>택시 환승역 추천</h1>
-      <SearchForm loading={loading} onSubmit={handleSubmit} />
-      {error && <p className="error">{error}</p>}
-      {result && (
-        <>
-          <ResultView result={result.data} />
-          <MapView
-            routes={result.data.routes}
-            destination={result.destination}
-            highlightStopName={result.data.best?.stopName}
+    <main className={styles.main}>
+      <h1 className={styles.title}>택시 환승역 추천</h1>
+      <div className={styles.panel}>
+        <SearchForm loading={state.status === "loading"} onSubmit={handleSubmit} />
+        {state.status === "loading" && <ResultSkeleton />}
+        {state.status === "error" && (
+          <ResultError
+            message={state.message}
+            onRetry={() => lastRequest && handleSubmit(lastRequest)}
           />
-        </>
+        )}
+        {state.status === "success" && (
+          <ResultView result={state.data} arrivalDeadline={state.request.arrivalTime} />
+        )}
+      </div>
+      {state.status === "success" && (
+        <div className={styles.mapArea}>
+          <MapView
+            routes={state.data.routes}
+            destination={state.request.destination}
+            highlightStopName={state.data.best?.stopName}
+          />
+        </div>
       )}
     </main>
   );

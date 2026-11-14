@@ -15,6 +15,8 @@ const SIZE = { w: 480, h: 280, pad: 24 };
  */
 export function MapView({ routes, destination, highlightStopName }: Props) {
   const stops = routes.flatMap((r) => r.stops);
+  const origin = routes[0]?.stops[0];
+  const highlightStop = stops.find((s) => s.name === highlightStopName);
   const points = [...stops, destination];
   const xs = points.map((p) => p.x);
   const ys = points.map((p) => p.y);
@@ -30,7 +32,11 @@ export function MapView({ routes, destination, highlightStopName }: Props) {
       className="card map"
       viewBox={`0 0 ${SIZE.w} ${SIZE.h}`}
       role="img"
-      aria-label="경로와 택시 환승역 위치"
+      aria-label={
+        highlightStopName
+          ? `${origin?.name ?? "출발지"}에서 ${destination.name}까지 경로. ${highlightStopName}역에서 택시로 갈아탑니다.`
+          : `${origin?.name ?? "출발지"}에서 ${destination.name}까지 경로`
+      }
     >
       {routes.map((route) => (
         <polyline
@@ -47,14 +53,28 @@ export function MapView({ routes, destination, highlightStopName }: Props) {
           cx={sx(s.x)}
           cy={sy(s.y)}
           r={s.name === highlightStopName ? 7 : 3}
-          fill={s.name === highlightStopName ? "#e5484d" : "#2e9e4f"}
+          fill={s.name === highlightStopName ? "#8e44d4" : "#2e9e4f"}
         >
           <title>{s.name}</title>
         </circle>
       ))}
+      {origin && (
+        <g>
+          <circle cx={sx(origin.x)} cy={sy(origin.y)} r={6} fill="#fff" stroke="#1a1a1a" strokeWidth={3}>
+            <title>출발: {origin.name}</title>
+          </circle>
+          <text x={sx(origin.x) + 10} y={sy(origin.y) - 8} fontSize={12}>출발</text>
+        </g>
+      )}
       <rect x={sx(destination.x) - 6} y={sy(destination.y) - 6} width={12} height={12} fill="#1d4ed8">
         <title>{destination.name}</title>
       </rect>
+      <text x={sx(destination.x) + 10} y={sy(destination.y) - 8} fontSize={12}>도착</text>
+      {highlightStop && (
+        <text x={sx(highlightStop.x) + 10} y={sy(highlightStop.y) + 16} fontSize={12} fontWeight={700}>
+          여기서 내리세요
+        </text>
+      )}
     </svg>
   );
 }

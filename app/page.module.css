@@ -1,0 +1,58 @@
+/*
+ * 페이지 배치 전용. globals.css의 `main` 규칙(폭 640px, 한 열)을 이 클래스로 덮어쓴다.
+ * 모바일 우선: 기본은 한 열(입력 -> 결과 -> 지도), 1024px 이상은 두 열(왼쪽 입력·결과, 오른쪽 지도).
+ */
+.main {
+  width: 100%;
+  max-width: 640px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+}
+
+.panel {
+  display: grid;
+  gap: 16px;
+  min-width: 0; /* 비교표가 넘칠 때 열이 커지지 않게 한다 */
+}
+
+.mapArea {
+  min-width: 0;
+}
+
+/* 태블릿: 폭만 넓힌다 */
+@media (min-width: 768px) {
+  .main {
+    max-width: 760px;
+  }
+  .title {
+    font-size: 26px;
+  }
+}
+
+/* 데스크톱: 두 열 */
+@media (min-width: 1024px) {
+  .main {
+    max-width: 1200px;
+    grid-template-columns: 420px minmax(0, 1fr);
+    grid-template-areas:
+      "title title"
+      "panel map";
+    align-items: start;
+    column-gap: 24px;
+  }
+  .title {
+    grid-area: title;
+  }
+  .panel {
+    grid-area: panel;
+  }
+  .mapArea {
+    grid-area: map;
+    position: sticky;
+    top: 24px;
+  }
+}
