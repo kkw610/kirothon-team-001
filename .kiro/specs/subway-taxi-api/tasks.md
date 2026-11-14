@@ -32,8 +32,12 @@
 - [x] 9-17. `build-route.ts`에 도보 구간(`walkFromOrigin`, `walkToDestination`)과 테스트 (R1.14)
 - [x] 9-18. `tmap.ts`가 도보 거리 전달, 실제 응답 fixture로 검증 (R1.14, R1.15)
 - [x] 9-19. `shared/types.ts` `Route` 도보 필드 추가, `handoff.md` 개정 4
-- [ ] 9-20. [사람·팀] D4 확인, `domain-rules.md`·`Option` 변경 합의(공통 파일 변경 요청 9~11)
-- [ ] 9-21. 추천 로직 기준 옵션 구현 (9-20 합의 후, recommender 담당 또는 위임)
+- [x] 9-20. [사람] D5 결정(사용자 지시), `domain-rules.md` 서비스 범위 개정. D4 비교 로직은 추천 로직 파트
+- [x] 9-21. `walk.ts`(도보 추정, 가장 가까운 역에서 자르기)와 테스트 (R1.17, R1.18)
+- [x] 9-22. `tmap.ts` 앞부분 자르기, 후보 정렬·중복 제거, fixture 테스트 (R1.2, R1.16)
+- [x] 9-23. `shared/types.ts`: `Route.truncated`, `WalkSegment.estimated`
+- [x] 9-26. lint, typecheck, test, build. `handoff.md`, BUILD_REPORT 갱신
+- [ ] 9-27. [사람] 추천 로직 담당자에게 자른 경로·도보 데이터 공유(handoff.md 2절, 4절)
 - [ ] 9-12-2. [사람·팀] 대체 경로·시간표 대기 시간 필요 여부 결정(design.md D1 실측 결과 참고)
 - [ ] 9-13. [사람] `npm run dev`로 `http://localhost:3000` 화면 확인, 시연 영상 촬영
 - [ ] 9-14. [사람] 공통 파일 변경 요청(design.md 1, 2, 6, 7, 8)을 담당자에게 전달

@@ -24,7 +24,7 @@
 ### D3. 노선 범위 → 수도권 1~9호선(급행 포함)만 (2026-11-14 결정)
 모든 지하철 구간이 1~9호선인 경로만 쓴다. 신분당선, 경의중앙선, 공항철도 등이 섞인 경로는 버린다.
 
-### D4. 기준 경로: 지하철+도보, 택시는 비교 대상 (2026-11-14 제안, 추천 로직 담당자 확인 필요)
+### D4. 기준 경로: 지하철+도보, 택시는 비교 대상 (2026-11-14 결정. API 파트는 데이터만 제공, 비교는 추천 로직 파트)
 - 문제: `recommend()`가 모든 역을 "그 역에서 택시 탑승" 후보로만 평가한다. 목적지가 마지막 역에서 걸어갈 거리여도 택시 옵션만 나온다.
 - 결정: 출발지→목적지 **지하철+도보 경로를 기준 옵션**으로 두고, 각 역에서 택시로 갈아타는 옵션과 비교한다.
   - 기준 옵션 도착 = 출발 + `Route.totalMin`, 비용 = `Route.fare`, 택시 0원
@@ -32,6 +32,12 @@
 - 데이터: TMAP 응답의 `WALK` 구간에 거리와 시간이 있다. 추가 호출 없이 `walkFromOrigin`, `walkToDestination`으로 넘긴다(R1.14).
 - 검토한 대안: 카카오모빌리티 도보 길찾기는 제휴 전용, TMAP 보행자 경로는 별도 상품(호출 비용 추가)이라 쓰지 않는다.
 - `domain-rules.md` "총비용과 추천"에 기준 옵션 규칙 추가가 필요하다(공통 파일 변경 요청 9).
+
+### D5. 버스 섞인 경로: 1~9호선 앞부분을 목적지에 가장 가까운 역에서 자르기 (2026-11-14 결정)
+- 문제: 버스가 섞인 경로를 모두 버려서, 지하철 전용 경로가 없는 구간은 검색 결과가 0개(404)였다. 실측 신촌역→코엑스 응답 10개 중 9개에 버스가 섞여 있었다.
+- 결정: 경로 앞에서부터 도보와 1~9호선 지하철만 이어지는 구간을 쓰고, 그 안에서 목적지에 가장 가까운 역에서 끊는다. 이후는 도보(추정)와 택시로 비교한다.
+- 도보 추정: 직선거리 × 1.3(우회율), 분당 67m(TMAP 실측 도보 551m/494초). 추정이므로 `estimated: true`로 표시한다. TMAP 보행자 API는 별도 상품이라 호출하지 않는다.
+- 후보 정렬: 완전 경로(지하철+도보로 목적지까지)와 자른 경로를 함께 `totalMin` 순으로 정렬한다. 같은 역 순서는 하나만 남긴다.
 
 ## 흐름
 ```mermaid
@@ -79,6 +85,12 @@ Content-Type: application/json
 - `fare` = `calculateSubwayFare(distanceM)`, 경로 요금 이하. 탑승역 0, 마지막 역은 경로 요금
 - 환승역은 먼저 나온 것만 남긴다. `transferCount` = 지하철 구간 수 − 1
 - 지하철 요금 상수(`transit/fare.ts`): 기본 1,550원(10km), 50km까지 5km마다 100원, 이후 8km마다 100원. 출처: https://world.seoul.go.kr/policy/transportation/modes-of-transport/subway/
+
+### 경로 자르기 (개정 5, `tmap.ts`)
+1. 각 경로의 `legs`를 앞에서부터 본다. `WALK`이거나 1~9호선 `SUBWAY`(service 1)인 동안 앞부분에 넣는다. 처음으로 다른 구간이 나오면 멈춘다.
+2. 앞부분 끝의 `WALK`(버스 정류장으로 가는 도보)는 버린다. 앞부분에 `SUBWAY`가 없으면 경로를 버린다.
+3. 경로 전체가 앞부분이면 완전 경로다(`walkToDestination`은 TMAP 실제 값).
+4. 아니면 `buildRoute`로 역 목록을 만든 뒤, 목적지까지 직선거리가 가장 짧은 역까지 남긴다(`truncateAtNearest`, `walk.ts`). 요금은 그 역까지 거리비례 운임, `walkToDestination`은 추정, `totalMin` = 그 역 `elapsedMin` + 추정 도보.
 
 ### 도보 구간 (개정 4)
 - `walkFromOrigin`: 첫 `SUBWAY` 앞의 `WALK` 구간 합(거리 m, 시간 분)
@@ -140,6 +152,8 @@ Authorization: KakaoAK {KAKAO_REST_API_KEY}
 | 신규 | `src/features/transit/tmap.test.ts` | 샘플·실제 응답 변환, 경로 필터, 운행 여부, 오류 테스트 |
 | 신규 | `src/features/transit/__fixtures__/*.json` | TMAP 실제 응답 2건(16:01, 다음 날 01:30) |
 | 신규 | `src/features/transit/build-route.ts` | 구간 목록 → `Route`(역별 시간·거리·요금) |
+| 신규 | `src/features/transit/walk.ts`, `walk.test.ts` | 도보 추정, 목적지에 가장 가까운 역에서 자르기(개정 5) |
+| 수정 | `.kiro/steering/domain-rules.md` | 서비스 범위: 1~9호선 앞부분을 목적지에 가장 가까운 역에서 자르기(개정 5) |
 | 신규 | `src/features/transit/build-route.test.ts` | 역별 값 계산 테스트 |
 | 삭제 | `src/features/transit/odsay.ts`, `odsay.test.ts` | TMAP으로 교체(D1) |
 | 신규 | `src/features/transit/errors.ts` | `TransitError` |
@@ -175,11 +189,9 @@ Authorization: KakaoAK {KAKAO_REST_API_KEY}
 8. `app/api/recommend/route.ts`: 지하철도 출발 시각 기준으로 찾도록 `departureAt`을 넘긴다.
    `const routes = await getTransitRoutes(origin, destination, departureAt);`
 
-9. `.kiro/steering/domain-rules.md` "총비용과 추천" (팀 합의 후): 다음 규칙 추가 제안
-   - 택시를 타지 않고 지하철과 도보로만 가는 옵션을 기준 옵션으로 함께 평가한다. 도착 = 출발 + `Route.totalMin`, 총비용 = `Route.fare`.
-   - 기준 옵션이 제시간이면 추천한다(택시 옵션보다 항상 싸다).
-10. `src/shared/types.ts` `Option`: 기준 옵션을 구분할 필드 추가 제안 `kind?: "walk" | "taxi"`(없으면 `"taxi"`), `walkMin?: number`(마지막 역→목적지 도보 분).
-11. `src/features/recommender/recommend.ts` (recommender 담당): 기준 옵션 추가. `handoff.md` 4절 코드 참고. 결과 화면(`result`)은 `kind === "walk"`면 "택시 없이 도보 N분"으로 표시.
+9. (이 브랜치에서 적용함) `.kiro/steering/domain-rules.md` 서비스 범위: 1~9호선 앞부분을 목적지에 가장 가까운 역에서 자르기. "택시 없이 가는 옵션" 규칙은 추천 로직 담당자가 정한다.
+10. (이 브랜치에서 적용함) `src/shared/types.ts`: `Route.truncated?`, `WalkSegment.estimated?`.
+11. 추천 로직 담당: 지하철+도보 옵션과 택시 옵션 비교. API 파트가 주는 값은 `handoff.md` 4절. 여러 경로를 넘길 때 경로 선택(`pickFastestSubwayRoute`)은 마지막 역 `elapsedMin`이 아니라 `totalMin`을 써야 한다. 자른 경로는 마지막 역 도착이 빨라도 목적지까지 걷는 시간이 길기 때문이다(기본 `maxRoutes: 1`이면 transit이 이미 `totalMin` 최소 경로 1개만 준다).
 
 ## 리스크
 - TMAP 응답 구조는 실제 응답 2건으로 확정했다. 응답은 `transit/__fixtures__/`에 저장해 테스트에 쓴다(지도용 좌표 `passShape`는 제외).
