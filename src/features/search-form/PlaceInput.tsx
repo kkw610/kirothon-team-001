@@ -1,73 +1,179 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useState, type KeyboardEvent } from "react";
 import type { Place } from "@/shared/types";
 import styles from "./searchForm.module.css";
 
 interface Props {
   label: string;
-  /** 검증 오류 문구. 있으면 입력에 aria-invalid로 연결된다. */
+  /** 검증 오류 문구. 있으면 버튼에 aria-invalid로 연결된다. */
   error?: string | null;
   onChange: (place: Place | null) => void;
 }
 
-/** 이름을 입력하면 /api/places로 후보를 찾고, 후보 중 하나와 일치할 때 장소가 선택된다. */
+/**
+ * 역 선택 드롭다운(WAI-ARIA select-only combobox). 글자 검색 없이 목록에서 고른다.
+ * 역 목록은 처음 한 번 /api/places에서 전체를 받아 온다.
+ */
 export function PlaceInput({ label, error, onChange }: Props) {
-  const listId = useId();
-  const inputId = useId();
-  const errorId = `${inputId}-error`;
-  const [text, setText] = useState("");
-  const [suggestions, setSuggestions] = useState<Place[]>([]);
+  const baseId = useId();
+  const labelId = `${baseId}-label`;
+  const buttonId = `${baseId}-button`;
+  const listId = `${baseId}-list`;
+  const errorId = `${baseId}-error`;
+  const optionId = (i: number) => `${baseId}-opt-${i}`;
+
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [selected, setSelected] = useState<Place | null>(null);
 
   useEffect(() => {
-    const q = text.trim();
-    if (!q) return;
     const controller = new AbortController();
-    const timer = setTimeout(async () => {
+    (async () => {
       try {
-        const res = await fetch(`/api/places?q=${encodeURIComponent(q)}`, {
-          signal: controller.signal,
-        });
-        if (!res.ok) return;
-        const places: Place[] = await res.json();
-        setSuggestions(places);
-        onChange(places.find((p) => p.name === q) ?? null);
+        const res = await fetch("/api/places?q=", { signal: controller.signal });
+        if (!res.ok) throw new Error(String(res.status));
+        setPlaces(await res.json());
       } catch {
-        // 요청 취소나 일시 오류는 무시한다. 선택이 없으면 제출 시 안내한다.
+        if (!controller.signal.aborted) setLoadFailed(true);
       }
-    }, 200);
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
-    // onChange는 부모가 매 렌더 새로 만들 수 있어 의존성에서 뺀다.
+    })();
+    return () => controller.abort();
+  }, []);
+
+  // 키보드로 가리킨 항목이 목록 밖으로 나가지 않게 스크롤한다.
+  useEffect(() => {
+    if (!open || activeIndex < 0) return;
+    document.getElementById(optionId(activeIndex))?.scrollIntoView({ block: "nearest" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [text]);
+  }, [activeIndex, open]);
+
+  function openList() {
+    const current = selected ? places.findIndex((p) => p.name === selected.name) : -1;
+    setActiveIndex(current >= 0 ? current : 0);
+    setOpen(true);
+  }
+
+  function choose(place: Place) {
+    setSelected(place);
+    onChange(place);
+    setOpen(false);
+  }
+
+  function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>) {
+    const last = places.length - 1;
+    if (!open) {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) {
+        e.preventDefault();
+        openList();
+      }
+      return;
+    }
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setActiveIndex((i) => Math.min(i + 1, last));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setActiveIndex((i) => Math.max(i - 1, 0));
+        break;
+      case "Home":
+        e.preventDefault();
+        setActiveIndex(0);
+        break;
+      case "End":
+        e.preventDefault();
+        setActiveIndex(last);
+        break;
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        if (places[activeIndex]) choose(places[activeIndex]);
+        break;
+      case "Escape":
+        e.preventDefault();
+        setOpen(false);
+        break;
+      case "Tab":
+        setOpen(false);
+        break;
+    }
+  }
+
+  const describedBy = error ? errorId : undefined;
 
   return (
     <div className={styles.field}>
-      <label className={styles.label} htmlFor={inputId}>
+      <span id={labelId} className={styles.label}>
         {label}
-      </label>
-      <input
-        id={inputId}
-        className={styles.input}
-        list={listId}
-        value={text}
-        placeholder="예: 신촌역"
-        autoComplete="off"
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? errorId : undefined}
-        onChange={(e) => {
-          setText(e.target.value);
-          onChange(null);
-        }}
-      />
-      <datalist id={listId}>
-        {suggestions.map((p) => (
-          <option key={p.name} value={p.name} />
-        ))}
-      </datalist>
+      </span>
+      <div className={styles.combo}>
+        <button
+          id={buttonId}
+          type="button"
+          role="combobox"
+          className={[styles.input, styles.selectButton].join(" ")}
+          aria-labelledby={`${labelId} ${buttonId}`}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={listId}
+          aria-activedescendant={open && activeIndex >= 0 ? optionId(activeIndex) : undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy}
+          onClick={() => (open ? setOpen(false) : openList())}
+          onBlur={() => setOpen(false)}
+          onKeyDown={handleKeyDown}
+        >
+          <span className={selected ? styles.selectValue : styles.selectPlaceholder}>
+            {selected ? selected.name : "역을 선택하세요"}
+          </span>
+        </button>
+        <span className={[styles.comboCaret, open ? styles.comboCaretOpen : ""].join(" ")} aria-hidden="true" />
+        {open && (
+          <ul id={listId} role="listbox" aria-labelledby={labelId} className={styles.listbox}>
+            {places.length === 0 ? (
+              <li className={styles.listEmpty} role="presentation">
+                {loadFailed ? "역 목록을 불러오지 못했어요" : "역 목록을 불러오는 중이에요"}
+              </li>
+            ) : (
+              places.map((p, i) => {
+                const isSelected = selected?.name === p.name;
+                return (
+                  <li
+                    key={p.name}
+                    id={optionId(i)}
+                    role="option"
+                    aria-selected={isSelected}
+                    className={[
+                      styles.option,
+                      i === activeIndex ? styles.optionActive : "",
+                      isSelected ? styles.optionSelected : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    // 버튼의 blur보다 먼저 처리해 목록이 닫히기 전에 선택되게 한다.
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      choose(p);
+                    }}
+                    onMouseEnter={() => setActiveIndex(i)}
+                  >
+                    {p.name}
+                    {isSelected && (
+                      <span className={styles.optionCheck} aria-hidden="true">
+                        ✓
+                      </span>
+                    )}
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        )}
+      </div>
       {error && (
         <p id={errorId} className={styles.error}>
           {error}

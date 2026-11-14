@@ -48,8 +48,8 @@ export function SearchForm({ loading, onSubmit }: Props) {
     e.preventDefault();
     if (loading) return;
     const next: Errors = {};
-    if (!origin) next.origin = "출발역을 검색 목록에서 선택해 주세요.";
-    if (!destination) next.destination = "도착역을 검색 목록에서 선택해 주세요.";
+    if (!origin) next.origin = "출발역을 선택해 주세요.";
+    if (!destination) next.destination = "도착역을 선택해 주세요.";
     const arrivalDate = todayAt(arrival);
     if (!arrival || Number.isNaN(arrivalDate.getTime())) {
       next.arrival = "도착해야 하는 시각을 입력해 주세요.";
