@@ -38,6 +38,15 @@
 | 설계 | Spec (design) | [경로 지도] 택시 경로는 추천 역 1곳만 별도 API(/api/taxi-path)로 받고, 카카오모빌리티 vertexes로 도로 모양을 그리되 실패하면 직선으로 대체하도록 설계했다. | `.kiro/specs/map-route/design.md` |
 | 구현 | Spec (tasks) | [경로 지도] 태스크 13개를 5개로 다시 나눠 SDK 로더, KakaoMap, taxi-path API, 메인 화면 연결 순서로 구현했다. | `.kiro/specs/map-route/tasks.md`, `src/features/map/`, `app/api/taxi-path/` |
 
+### 프론트엔드
+
+| 단계 | 사용한 Kiro 기능 | 무엇을 했는지 | 결과물 위치 |
+| --- | --- | --- | --- |
+| 기획 | Steering | [프론트엔드] 결과 화면·지도의 배치·상태·표기 규칙(`frontend-ui.md`)과 색·글꼴·모양 규칙(`design-system.md`)을 나눠 썼다. 충돌하면 `frontend-ui.md`를 따르도록 우선순위를 적었다. | `.kiro/steering/frontend-ui.md`, `design-system.md` |
+| 설계 | Spec | [프론트엔드] 동작하는 결과 화면(`recommend-result-ui`)을 먼저 만들고, 목업 5장 기준 디자인(`result-ui-design`)과 공통 UI·화면 전환 구조(`app-shell-shared-ui`)를 별도 spec으로 나눴다. 디자인 단계에서는 데이터와 상태 판별 로직을 바꾸지 않기로 했다. | `.kiro/specs/recommend-result-ui/`, `result-ui-design/`, `app-shell-shared-ui/` |
+| 구현 | Vibe + Spec (tasks) | [프론트엔드] 앱 셸, 입력 화면, 결과 화면(추천 카드, 내역, 비교표, 로딩·오류)을 구현했다. 상태 판별과 표시 계산은 컴포넌트 밖 순수 함수로 분리했다. | `app/page.tsx`, `src/shared/ui/`, `src/features/search-form/`, `src/features/result/` |
+| 구현 | Vibe | [프론트엔드] 지하철만 타고 갈 때의 도착 시각·요금·여유를 택시 환승과 비교하는 카드를 추가했다. | `src/features/result/SubwayOnlyCard.tsx`, `subwayOnly.ts` |
+
 ### 팀 공용
 | 단계 | 사용한 Kiro 기능 | 무엇을 했는지 | 결과물 위치 |
 | --- | --- | --- | --- |
@@ -82,6 +91,10 @@
 - **바뀐 이유**: 실측 응답 10개 중 9개에 버스가 섞여 있었다. 지하철 전용 경로가 없는 구간은 검색 결과가 0개였다.
 - **바꾼 방식**: 앞에서부터 이어지는 1~9호선 구간을 목적지에 가장 가까운 역에서 끊는다. 남은 거리는 도보로 추정한다(직선거리 × 1.3, 분당 67m는 TMAP 실측 도보 속도). 후보는 택시 없이 목적지까지 걸리는 시간(`totalMin`) 순으로 정렬한다.
 - **범위 조정**: 처음에는 추천 로직의 "택시 없는 옵션"과 결과 화면 표시까지 이 브랜치에서 구현했다. 팀원이 같은 기능을 맡은 것을 확인하고 되돌렸다. API 파트는 비교에 필요한 데이터만 제공한다.
+### [프론트엔드] 공통 UI를 결과 폴더에서 `shared/ui`로 이동
+
+- **바뀐 이유**: 입력·로딩·오류 화면을 병렬로 만들어야 하는데, 기능 폴더끼리 import할 수 없어 헤더, 버튼, 글꼴, 색 토큰을 공유할 곳이 없었다.
+- **바꾼 방식**: `app-shell-shared-ui` spec을 만들어 `src/shared/ui/`와 `globals.css` 토큰으로 옮겼다. 기존 컴포넌트가 깨지지 않게 `result/fonts.ts`는 같은 이름을 다시 내보내게 했다.
 
 ## 어려웠던 점과 해결 방법
 
@@ -117,3 +130,8 @@
   - TMAP 오류 응답의 코드를 서버 로그에 남기도록 바꿔 `INVALID_API_KEY`를 확인했다.
   - 키 값은 출력하지 않고 해시만 비교했다. `.env.local`의 키와 실행 중인 서버 프로세스의 키가 달랐다.
   - Next.js는 프로세스 환경변수를 `.env.local`보다 우선한다. 예전 키를 물려받지 않게 서버를 다시 띄워 해결했고, 이 주의 사항을 `design.md` 리스크에 적었다.
+
+### [프론트엔드] 한 화면이 여러 상태를 가짐
+
+- **문제**: 결과 영역이 정상, 제시간 도착 불가, 후보 없음, 로딩, 오류로 나뉘고 표시 규칙이 많아 컴포넌트 안에 두면 테스트하기 어렵다.
+- **해결**: 상태 판별과 내역·비교 행 계산을 순수 함수로 빼고 컴포넌트는 그리기만 하게 했다.
