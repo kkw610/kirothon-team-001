@@ -31,11 +31,18 @@
 - 택시 요금은 응답의 요금 값을 쓰지 않고 거리와 시간으로 직접 계산한다.
 - 후보 역이 많으므로 호출 수를 제한하고(동시 호출 수 제한, 같은 요청 내 중복 제거) 호출 한도를 넘지 않게 한다.
 
+### 카카오 로컬 장소 검색 API
+- 키워드 검색: `GET https://dapi.kakao.com/v2/local/search/keyword.json?query=...&size=10`
+- 인증: `Authorization: KakaoAK ${KAKAO_REST_API_KEY}` 헤더. 카카오모빌리티와 같은 REST 키를 쓴다.
+- 응답의 `place_name`, `x`(경도), `y`(위도)를 `Place`로 바꿔 입력창 자동완성 후보로 쓴다. 같은 검색어는 10분간 캐시한다.
+- 카카오 콘솔에서 카카오맵(로컬) 사용 설정이 꺼져 있으면 403(`disabled OPEN_MAP_AND_LOCAL service`)이 나온다. 앱 설정에서 켠다.
+
 ## 환경 변수
 | 이름 | 용도 |
 |---|---|
 | `TRANSIT_API_KEY` | 대중교통 경로 API 키 (TMAP `appKey`) |
 | `KAKAO_REST_API_KEY` | 카카오모빌리티 REST API 키 |
+| `NEXT_PUBLIC_KAKAO_JS_KEY` | 카카오 지도 JavaScript 키. 브라우저에 노출되며 빌드 시점에 번들에 들어간다. 콘솔에서 사이트 도메인(localhost, 배포 주소)을 등록한다 |
 
 - 키는 `.env.local`에만 두고 커밋하지 않는다. 저장소에는 `.env.example`만 둔다.
 - 키와 사용자 입력 주소를 로그에 남기지 않는다.
@@ -43,3 +50,4 @@
 ## 오류 처리
 - 외부 API 실패 시 사용자에게 원인(경로 없음, 일시 오류)을 구분해 안내한다. 추측 값으로 추천하지 않는다.
 - 외부 호출에는 타임아웃을 둔다.
+- `POST /api/recommend`의 오류 응답은 `{ error, code, source? }`(`ApiErrorBody`)다. `INVALID_REQUEST` 400, `NO_ROUTE` 404(조건에 맞는 경로 없음), `UPSTREAM_ERROR` 502(외부 API 호출 실패), `SERVER_ERROR` 500(설정 누락, 버그). `error`만 사용자에게 보여 주고, 외부 API의 상세 오류(키, HTTP 상태)는 서버 로그에만 남긴다.
