@@ -5,6 +5,7 @@ import type {
   Route,
   TaxiEstimator,
 } from "@/shared/types";
+import { buildLegs } from "./legs";
 import { TAXI_WAIT_BUFFER_MIN } from "./constants";
 
 export interface RecommendInput {
@@ -72,6 +73,7 @@ export async function recommend(input: RecommendInput): Promise<RecommendRespons
         stopCoord: { x: stop.x, y: stop.y },
         departureTime: departureAt.toISOString(),
         arrivalTime: new Date(arrivalMs).toISOString(),
+        legs: buildLegs(route.stops, index),
         onTime: arrivalMs <= arrivalDeadline.getTime(),
         subwayMin: stop.elapsedMin,
         taxiWaitMin: TAXI_WAIT_BUFFER_MIN,

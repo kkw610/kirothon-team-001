@@ -42,7 +42,13 @@ export function formatMargin(diffMin: number): string {
 export const RECOMMEND_CHIP = "추천 · 제시간 도착 중 가장 싼 방법";
 export const LATE_CHIP = "제시간 도착 불가";
 export const LATE_HEADLINE = "제시간에 도착하는 방법이 없어요";
-export const LOADING_TITLE = "경로를 찾는 중이에요";
+export const LOADING_TITLE = "환승이가 갈아탈 역을 찾고 있어요";
+export const LOADING_STEPS = [
+  "지하철 경로와 역별 도착 시각 조회",
+  "역마다 택시 시간·요금 조회",
+  "제시간 도착 + 최저 비용 역 고르기",
+] as const;
+export const LOADING_STEP_MS = 2_500;
 export const SLOW_NOTICE = "평소보다 오래 걸리고 있어요. 잠시만 기다려 주세요.";
 export const SLOW_THRESHOLD_MS = 30_000;
 export const ERROR_TITLE = "경로를 불러오지 못했어요";
@@ -122,6 +128,27 @@ export function formatArrivalSummary(
   return `${arrival} 도착 · ${margin} · ${cost}`;
 }
 
+/** 추천 카드의 통계 칸(도착·여유·총비용). 유효하지 않은 값은 "-". */
+export function formatArrivalStats(
+  option: Pick<Option, "arrivalTime" | "totalCost">,
+  deadlineIso: string,
+): { label: string; value: string }[] {
+  const diff =
+    isValidIso(deadlineIso) && isValidIso(option?.arrivalTime)
+      ? diffMinutes(deadlineIso, option.arrivalTime)
+      : undefined;
+  let margin = { label: "여유", value: PLACEHOLDER };
+  if (isFiniteNumber(diff)) {
+    if (diff > 0) margin = { label: "여유", value: formatDuration(diff) };
+    else if (diff === 0) margin = { label: "여유", value: "딱 맞게" };
+    else margin = { label: "늦음", value: formatDuration(-diff) };
+  }
+  return [
+    { label: "도착", value: safeTime(option?.arrivalTime) },
+    margin,
+    { label: "총비용", value: safeWon(option?.totalCost) },
+  ];
+}
 /** 비었거나 공백뿐이면 기본 문구, 아니면 원문 그대로. */
 export function resolveErrorMessage(message: string | undefined | null): string {
   if (message === undefined || message === null || message.trim() === "") return DEFAULT_ERROR_MESSAGE;

@@ -26,6 +26,16 @@ export interface Stop extends Coordinate {
   fare?: number;
 }
 
+/** 한 호선으로 계속 탄 구간. 호선이 바뀔 때마다 새 구간이 시작된다. */
+export interface SubwayLeg {
+  line: string;
+  fromName: string;
+  toName: string;
+  /** 출발지부터의 누적 소요시간(분) */
+  startMin: number;
+  endMin: number;
+}
+
 export interface Route {
   id: string;
   /** 대중교통 요금(원). 끝까지 지하철로 갈 때의 요금 */
@@ -53,6 +63,8 @@ export interface Option {
   arrivalTime: string;
   /** 희망 도착 시각 이하로 도착하는지 */
   onTime: boolean;
+  /** 호선별 탑승 구간. 호선 정보가 없는 경로면 비어 있다. */
+  legs?: SubwayLeg[];
   /** 지하철 탑승 시간(분). 출발지에서 환승 정류장까지 */
   subwayMin: number;
   /** 택시 탑승 전 고정 대기 시간(분) */
