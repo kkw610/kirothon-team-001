@@ -11,7 +11,7 @@
   --ok: #16a34a;
   --late: #dc2626;
   --late-row: #6b7280;
-  --subway: #2e9e4f;
+  --subway: #475569;
   --taxi: #f2a007;
   --surface: #ffffff;
   --late-soft: #fdecea;
@@ -333,7 +333,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-.table th.cellNum {
+.table th.cellNum,
+.table td.cellNum {
   text-align: right;
 }
 
@@ -341,9 +342,9 @@
   background: var(--primary-soft);
 }
 
+/* border-left는 첫 칸의 내용을 밀어 줄이 어긋나므로 안쪽 그림자로 막대를 그린다 */
 .rowBest td:first-child {
-  border-left: 4px solid var(--primary);
-  border-radius: 8px 0 0 8px;
+  box-shadow: inset 4px 0 0 var(--primary);
 }
 
 .rowLate {
@@ -520,8 +521,7 @@
   }
 
   .rowBest td:first-child {
-    border-left: 0;
-    border-radius: 0;
+    box-shadow: none;
   }
 
   .rowBest {
@@ -533,7 +533,7 @@
   }
 }
 
-/* ---------- 결과 레이아웃: 한 열, 1024px 이상에서 왼쪽(추천·내역)/오른쪽(경로·지도) ---------- */
+/* ---------- 결과 레이아웃: 한 열, 1024px 이상에서 추천 / 내역·경로 / 지도 / 비교표 ---------- */
 /*
  * 간격 위계: 추천 카드 아래 28px > 세부 카드 사이 20px > 비교표 위 32px.
  * 추천 카드는 결론이라 세부 카드와 덩어리를 나누고, 비교표는 별도 구역으로 더 띄운다.
@@ -544,14 +544,10 @@
   gap: 20px;
   min-width: 0;
 }
-.areaSide {
-  display: grid;
-  gap: 20px;
-  align-content: start;
-  min-width: 0;
-}
 .areaHero,
 .areaBreakdown,
+.areaRoute,
+.areaMap,
 .areaTable {
   min-width: 0;
 }
@@ -562,15 +558,17 @@
   margin-top: 12px;
 }
 @media (min-width: 1024px) {
+  /* 추천 카드는 한 줄 전체, 내역과 경로 요약은 같은 줄, 지도는 한 줄 전체, 비교표는 마지막 줄 */
   .layout {
     column-gap: 24px;
     row-gap: 20px;
-    grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
-      "hero side"
-      "breakdown side"
+      "hero hero"
+      "breakdown route"
+      "map map"
       "table table";
-    align-items: start;
+    align-items: stretch;
   }
   .areaHero {
     grid-area: hero;
@@ -578,11 +576,19 @@
   .areaBreakdown {
     grid-area: breakdown;
   }
-  .areaSide {
-    grid-area: side;
+  .areaRoute {
+    grid-area: route;
+  }
+  .areaMap {
+    grid-area: map;
   }
   .areaTable {
     grid-area: table;
+  }
+  /* 같은 줄의 두 카드는 높이를 맞춘다 */
+  .areaBreakdown > *,
+  .areaRoute > * {
+    height: 100%;
   }
 }
 

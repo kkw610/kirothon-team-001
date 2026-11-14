@@ -83,8 +83,9 @@ export function SearchForm({ loading, onSubmit }: Props) {
           택시를 타야 할까요?
         </h2>
         <p className={styles.lead}>
-          출발역, 도착역, 도착해야 하는 시각을 알려주면 BBalligalge가 제시간에
-          도착하면서 가장 싼 환승역을 찾아요.
+          어디서 어디로, 몇 시까지 가야 하는지만 알려 주세요.
+          <br />
+          제시간에 도착하는 가장 싼 택시 환승역을 찾아 드릴게요.
         </p>
       </div>
       <Card as="div" padding="lg" className={styles.card}>
