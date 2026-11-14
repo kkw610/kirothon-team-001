@@ -8,13 +8,15 @@ fileMatchPattern: "{src/features/result/**,src/features/map/**,app/page.tsx,app/
 
 ## 반응형
 
-모바일 우선으로 작성하고 `min-width` 미디어 쿼리로 넓힌다. 배치 CSS는 `app/page.module.css`에만 둔다(`globals.css`는 수정하지 않는다).
+모바일 우선으로 작성하고 `min-width` 미디어 쿼리로 넓힌다. 배치 CSS는 `app/page.module.css`에만 둔다(토큰과 `body` 바탕만 `globals.css`에 둔다).
 
-| 구간 | 배치 |
+단계마다 한 화면, 본문 컨테이너 폭 3구간.
+
+| 구간 | 본문 컨테이너 폭 |
 |---|---|
-| 기본 (~767px) | 한 열: 입력 → 결과 → 지도. 폭 100%, 최대 640px |
-| 768px~ | 한 열, 최대 폭 760px |
-| 1024px~ | 두 열: 왼쪽 420px(입력, 결과), 오른쪽 지도(스크롤 시 고정). 최대 폭 1200px |
+| 기본 (~767px) | 폭 100%, 좌우 16px |
+| 768px~ | 최대 폭 760px |
+| 1024px~ | 최대 폭 1200px |
 
 - feature 컴포넌트는 배치를 모른다. 폭은 부모에 맞추고 고정 px 폭을 쓰지 않는다.
 - 비교표는 640px 미만에서 행을 카드로 바꾼다(각 `td`의 `data-label`을 라벨로 표시). 그 외 넘칠 수 있는 요소는 `overflow-x: auto`로 감싼다.
@@ -38,7 +40,7 @@ fileMatchPattern: "{src/features/result/**,src/features/map/**,app/page.tsx,app/
 
 ## 스타일
 
-- `app/globals.css`는 모두가 쓰는 파일이므로 수정하지 않는다. result와 map의 스타일은 각 폴더의 `*.module.css`(CSS Modules)로 둔다.
+- 토큰과 `body` 바탕만 `globals.css`에 둔다. result와 map의 스타일은 각 폴더의 `*.module.css`(CSS Modules)로 둔다.
 - 색상 값은 컴포넌트에 직접 쓰지 않고 해당 폴더의 CSS Module 상단 변수로 모아 둔다.
 
 | 용도 | 값 |

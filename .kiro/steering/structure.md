@@ -21,10 +21,12 @@ src/
     types.ts              공통 타입 (Place, Stop, Route, Option, RecommendResponse 등)
     cache.ts              메모리 TTL 캐시 (MemoryCache)
     env.ts                서버 전용 환경변수 읽기 (getEnv, requireEnv)
+    ui/                   공통 UI (Button, Card, Chip, LogoMark, Mascot, Header, fonts)
 ```
 
 ## 규칙
 1. **기능 폴더끼리는 서로 import하지 않는다.** 데이터는 `src/shared/types.ts`의 타입으로만 주고받는다. ESLint(`no-restricted-imports`)가 이를 검사한다.
+   - 기능 폴더와 `app/`은 `@/shared/ui`를 import할 수 있다.
 2. 기능을 연결하는 곳은 `app/` 아래 라우트와 페이지뿐이다. 예를 들어 `POST /api/recommend`가 `transit`으로 경로를 받아 `recommender`에 넘기고, `taxi`의 `estimateTaxi`를 `recommender`에 함수로 주입한다.
 3. `app/`에서는 각 기능의 `index.ts`로만 import한다(`@/features/taxi`). 기능 폴더 안쪽 파일을 직접 import하지 않는다.
 4. 두 기능이 같은 타입이 필요하면 그 타입을 `shared/types.ts`에 추가한다. 타입 변경은 팀 전체에 영향을 주므로 PR에서 알린다.

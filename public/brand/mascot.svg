@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">
+  <title>땀 흘리며 급하게 달리는 유령</title>
+  <desc>투명 배경 위에 하얀 유령 캐릭터와 땀방울, 보라색 속도선만 있는 SVG 일러스트.</desc>
+  <defs>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#5B27B7" flood-opacity=".16"/>
+    </filter>
+  </defs>
+
+  <!-- Motion lines behind the ghost -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M52 252 H205" stroke="#A66BFF" stroke-width="18"/>
+    <path d="M25 316 H184" stroke="#C49AFF" stroke-width="14"/>
+    <path d="M82 379 H190" stroke="#A66BFF" stroke-width="17"/>
+    <path d="M112 210 H194" stroke="#D8C0FF" stroke-width="9"/>
+  </g>
+
+  <!-- Ghost -->
+  <g filter="url(#shadow)">
+    <path d="
+      M254 520
+      C213 511 194 479 207 444
+      C178 458 145 447 137 421
+      C128 392 153 366 176 341
+      C195 320 198 286 202 248
+      C211 157 270 96 354 96
+      C449 96 506 166 505 267
+      C504 354 473 434 426 484
+      C397 515 359 524 331 496
+      C303 526 272 531 254 520Z"
+      fill="#FFFFFF" stroke="#8D4CF2" stroke-width="9" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Eyes -->
+  <g fill="#050505">
+    <ellipse cx="322" cy="260" rx="24" ry="38"/>
+    <ellipse cx="407" cy="260" rx="24" ry="38"/>
+  </g>
+
+  <!-- Dark circles -->
+  <g fill="#A77AE0" opacity=".38">
+    <ellipse cx="322" cy="302" rx="27" ry="10"/>
+    <ellipse cx="407" cy="302" rx="27" ry="10"/>
+  </g>
+
+  <!-- Sweat drops -->
+  <path d="M492 142 C492 142 469 172 469 188 C469 203 480 214 494 214 C508 214 519 203 519 188 C519 172 492 142 492 142Z"
+        fill="#70D8FF" stroke="#8D4CF2" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M174 174 C174 174 159 195 159 207 C159 219 168 228 180 228 C192 228 201 219 201 207 C201 195 174 174 174 174Z"
+        fill="#70D8FF" stroke="#8D4CF2" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M498 164 C503 172 507 179 507 186" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M179 190 C183 196 186 201 186 207" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Urgency accents -->
+  <g fill="none" stroke="#FFD95A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M555 245 l-20 25 25 -3"/>
+    <path d="M570 304 l-14 19 22 -2"/>
+  </g>
+</svg>

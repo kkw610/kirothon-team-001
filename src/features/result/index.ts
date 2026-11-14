@@ -1,4 +1,6 @@
 export { ResultView } from "./ResultView";
-export { EmptyCard, ResultError, ResultSkeleton } from "./ResultStates";
+export { EmptyCard } from "./ResultStates";
+export { ResultError } from "./ResultError";
+export { ResultSkeleton } from "./ResultSkeleton";
 export { LateCard } from "./LateCard";
 export { BreakdownCard } from "./BreakdownCard";
