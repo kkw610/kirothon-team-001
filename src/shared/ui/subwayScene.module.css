@@ -35,19 +35,6 @@
   fill: var(--primary);
   opacity: 0.4;
 }
-.bubbleShape {
-  fill: var(--surface);
-  stroke: var(--primary);
-  stroke-width: 1.5;
-  stroke-linejoin: round;
-}
-.bubbleText {
-  fill: var(--ink);
-  font-size: 10px;
-  font-weight: 700;
-  text-anchor: middle;
-  dominant-baseline: central;
-}
 .rider {
   transform-box: fill-box;
   transform-origin: 50% 100%;

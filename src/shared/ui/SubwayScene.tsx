@@ -30,12 +30,6 @@ export function SubwayScene({ className }: SubwaySceneProps) {
             width="68"
             height="68"
           />
-          <g className={styles.bubble}>
-            <path
-              className={styles.bubbleShape}
-              d="M91,-42 H185 A11,11 0 0 1 185,-20 H98 L82,-12 L88,-21.5 A11,11 0 0 1 91,-42 Z"
-            />
-          </g>
           <rect className={styles.body} x="-10" y="20" width="96" height="42" rx="12" />
           <rect className={styles.stripe} x="-10" y="48" width="96" height="6" />
           <rect className={styles.window} x="0" y="28" width="18" height="14" rx="4" />
