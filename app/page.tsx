@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { MapView } from "@/features/map";
 import { ResultError, ResultSkeleton, ResultView } from "@/features/result";
 import { SearchForm } from "@/features/search-form";
 import type { RecommendRequest, RecommendResponse } from "@/shared/types";
@@ -91,11 +90,7 @@ export default function HomePage() {
             originName={state.request.origin.name}
             destinationName={state.request.destination.name}
             aside={
-              <MapView
-                routes={state.data.routes}
-                destination={state.request.destination}
-                highlightStopName={state.data.best?.stopName}
-              />
+              <div className={styles.mapPlaceholder}>지도는 준비 중이에요</div>
             }
           />
         )}

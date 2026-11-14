@@ -1,6 +1,6 @@
 .header {
   box-sizing: border-box;
-  height: 50px;
+  height: 56px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
@@ -25,7 +25,7 @@
 
 .name {
   font-family: var(--font-heading), system-ui, sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.625rem;
   line-height: 1;
   color: var(--primary-text);
   white-space: nowrap;
@@ -50,6 +50,14 @@
 .action {
   flex: none;
   margin-left: auto;
+}
+
+/* 헤더 안에서만 작게. .inner를 붙여 Button 기본 규칙보다 우선하게 한다 */
+.inner .action {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  font-size: 0.8125rem;
+  white-space: nowrap;
 }
 
 @media (min-width: 768px) {
