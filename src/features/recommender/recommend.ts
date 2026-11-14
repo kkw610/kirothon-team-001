@@ -18,6 +18,27 @@ export interface RecommendInput {
 const MIN_MS = 60_000;
 
 /**
+ * 지하철 전용 Route 중 마지막 Stop의 elapsedMin이 가장 작은 Route 1개를 고른다.
+ * 정렬하지 않고 입력 순서대로 한 번 순회하며, 엄격히 더 작을 때만 교체하므로
+ * 동률이면 먼저 나온 Route가 남는다. 해당하는 Route가 없으면 undefined.
+ */
+export function pickFastestSubwayRoute(routes: Route[]): Route | undefined {
+  let picked: Route | undefined;
+  let minDuration = Infinity;
+  for (const route of routes) {
+    const { stops } = route;
+    if (stops.length === 0) continue;
+    if (!stops.every((stop) => stop.mode === "subway")) continue;
+    const duration = stops[stops.length - 1].elapsedMin;
+    if (picked === undefined || duration < minDuration) {
+      picked = route;
+      minDuration = duration;
+    }
+  }
+  return picked;
+}
+
+/**
  * 경로의 각 지하철 정류장을 택시 환승 후보로 평가하고 추천 옵션을 고른다.
  *
  * 도착 시각 = 출발 + 정류장까지 지하철 시간 + 5분 버퍼 + 택시 시간
@@ -27,14 +48,16 @@ const MIN_MS = 60_000;
 export async function recommend(input: RecommendInput): Promise<RecommendResponse> {
   const { routes, destination, departureAt, arrivalDeadline, estimateTaxi } = input;
 
-  const candidates = routes.flatMap((route) =>
-    route.stops
-      .map((stop, index) => ({ route, stop, index }))
-      .filter(({ stop }) => stop.mode === "subway"),
-  );
+  const selected = pickFastestSubwayRoute(routes);
+  if (!selected) return { best: null, options: [], routes: [] };
+
+  const candidates = selected.stops
+    .map((stop, index) => ({ stop, index }))
+    .filter(({ stop }) => stop.mode === "subway");
 
   const evaluated = await Promise.all(
-    candidates.map(async ({ route, stop, index }) => {
+    candidates.map(async ({ stop, index }) => {
+      const route = selected;
       const taxi = await estimateTaxi(stop, destination);
       const taxiMin = Math.ceil(taxi.durationSec / 60);
       const arrivalMs =
@@ -72,6 +95,6 @@ export async function recommend(input: RecommendInput): Promise<RecommendRespons
   return {
     best: onTime[0]?.option ?? null,
     options: evaluated.map(({ option }) => option),
-    routes,
+    routes: [selected],
   };
 }
