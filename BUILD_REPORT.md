@@ -52,7 +52,33 @@
 | --- | --- | --- | --- |
 | 기타 | Hooks | [팀 공용] 에이전트 작업이 끝날 때마다(Stop) `npm run lint`를 실행해 기능 폴더 간 import 위반을 바로 잡았다. 셸 명령이라 크레딧이 들지 않는다. | `.kiro/hooks/lint.json` |
 
+### 추천 로직
+| 단계 | 사용한 Kiro 기능 | 무엇을 했는지 | 결과물 위치 |
+| --- | --- | --- | --- |
+| 기획 | Spec (requirements) | [추천 로직] 이미 구현된 추천 동작(도착 시각, 총비용, 최소 비용 선택)은 회귀 방지용으로 명세하고, 빠져 있던 "버스 없는 지하철 경로 중 가장 빠른 1개만 평가" 규칙(R1)과 그 테스트(R5)를 새 요구사항으로 작성했다. 연동 단계마다 개정 표시(2026-11-14)를 남겼다. | `.kiro/specs/transfer-station-recommender/requirements.md` |
+| 설계 | Spec (design) | [추천 로직] 경로 선택을 순수 함수 `pickFastestSubwayRoute`로 분리하고, "정렬하지 않고 엄격히 작을 때만 교체"해 동률이면 먼저 나온 경로가 남도록 정했다. 속성 7개(Correctness Properties)와 단위 테스트 목록, 공통 파일 변경 요청(`ResultView.tsx`, `taxi/service.ts`, `package.json`)을 적었다. | `.kiro/specs/transfer-station-recommender/design.md` |
+| 구현 | Spec (tasks) | [추천 로직] 30분 이내 작업으로 나누고(구현 2개, 단위 테스트 2개, 속성 테스트 7개), `fast-check`가 없으면 속성 테스트 묶음을 건너뛰도록 조건을 달았다. 설치·빌드는 `[사람]` 몫으로 남겼다. | `.kiro/specs/transfer-station-recommender/tasks.md`, `tasks.meta.json` |
+| 구현 | Vibe (코드 작성) | [추천 로직] `recommend()`가 선택된 경로 1개에서만 후보 역을 만들고 `routes`에 그 경로만 담도록 바꿨다. 경로가 없으면 택시 추정기를 호출하지 않고 빈 응답을 돌려준다. | `src/features/recommender/recommend.ts` |
+| 구현 | Vibe (코드 작성, handoff 반영) | [추천 로직] `feat/api` handoff를 반영했다. 택시 탑승 시각(`boardingAt`)을 추정기에 넘기고, 역별 지하철 요금(`stop.fare`)을 우선 쓰며, 택시 `NO_ROUTE` 오류가 난 역만 후보에서 뺀다. 그 밖의 오류는 전체 실패로 올린다(기능 폴더 import 금지 규칙 때문에 `TaxiError` 대신 `code` 필드로 판별). | `src/features/recommender/recommend.ts`, `requirements.md` R2.6·R3.2~3.6 |
+| 구현 | Spec (개정) + Vibe | [추천 로직] 목적지가 역이 아닐 때 택시 없이 마지막 역에서 걸어가는 옵션(`kind: "walk"`)을 같이 평가하도록 추가했다. 도보 정보(`walkToDestination`)가 없는 경로에는 만들지 않는다. 결과 화면의 비교표·요약 카드·지도가 걷기 옵션을 구분해 보여 주도록 맞췄다. | `recommend.ts`, `src/shared/types.ts`(`Option.kind` 등 선택 필드), `src/features/result/`, `src/features/map/RouteMap.tsx` |
+| 검증 | Vibe (단위 테스트) | [추천 로직] 경로 선택(버스 경로 제외, 최소 시간 선택, 동률 시 입력 순서), 빈 입력, 추정기 오류 전파, `NO_ROUTE` 역만 제외, 걷기 옵션 생성 테스트를 추가했다. 기존 4개 테스트는 코드와 단언을 고치지 않았다. | `src/features/recommender/recommend.test.ts` |
+| 기타 | Steering | [추천 로직] 택시 대기 버퍼를 5분에서 3분으로 바꾸면서 `domain-rules.md`(대기 시간, 도착 시각 산식)와 `constants.ts`를 함께 고쳤다. "택시 없이 걷는 후보" 규칙도 `domain-rules.md`에 추가했다. | `.kiro/steering/domain-rules.md`, `src/features/recommender/constants.ts` |
+
 ## 개발 과정에서 바뀐 점
+
+### [추천 로직] 후보 범위: 모든 경로의 역 → 최소시간 지하철 경로 1개
+- **처음 상태**: `recommend`가 받은 모든 Route의 지하철 정류장을 합쳐 후보로 삼았다.
+- **바뀐 이유**: `domain-rules.md`가 "지하철 단일 경로 1개 기준"이라고 정했는데 코드가 달랐다. 버스가 섞인 경로의 역도 후보가 될 수 있었다.
+- **바꾼 방식**: 경로 선택을 순수 함수로 떼어 내고 그 경로에서만 후보를 만들었다. 이미 있던 동작은 새로 짜지 않고 요구사항에 "구현됨"으로 표시해 회귀 방지 테스트 대상으로만 두었다.
+
+### [추천 로직] API 연동 반영: 요금, 탑승 시각, 오류 구분
+- 택시 추정기에 `boardingAt`을 넘겨 교통 예측과 심야 할증이 탑승 시각 기준으로 계산되게 했다.
+- 지하철 요금은 `route.fare` 전체 금액 대신 역별 요금(`stop.fare`)을 우선 쓴다. 그래야 중간 역에서 갈아탈 때 총비용이 과대 계산되지 않는다.
+- 택시 경로가 없는 역은 후보에서만 빼고, API 장애 같은 다른 오류는 부분 결과 없이 실패시킨다.
+
+### [추천 로직] 택시 없이 걷는 기준 옵션 추가
+- **바뀐 이유**: 목적지가 마지막 역에서 걸어갈 만한 거리인데도 택시 옵션만 나왔다(API 파트 D4와 같은 문제).
+- **바꾼 방식**: `Route.walkToDestination`이 있으면 마지막 역에서 걸어가는 옵션을 후보에 같이 넣어 택시 옵션과 같은 규칙(제시간 도착, 최소 비용)으로 고른다. 타입은 선택 필드만 추가해 기존 코드가 그대로 동작한다.
 
 ### [API 연동] 지하철 API: ODsay → TMAP 대중교통
 
@@ -131,7 +157,23 @@
   - 키 값은 출력하지 않고 해시만 비교했다. `.env.local`의 키와 실행 중인 서버 프로세스의 키가 달랐다.
   - Next.js는 프로세스 환경변수를 `.env.local`보다 우선한다. 예전 키를 물려받지 않게 서버를 다시 띄워 해결했고, 이 주의 사항을 `design.md` 리스크에 적었다.
 
+<<<<<<< HEAD
 ### [프론트엔드] 한 화면이 여러 상태를 가짐
 
 - **문제**: 결과 영역이 정상, 제시간 도착 불가, 후보 없음, 로딩, 오류로 나뉘고 표시 규칙이 많아 컴포넌트 안에 두면 테스트하기 어렵다.
 - **해결**: 상태 판별과 내역·비교 행 계산을 순수 함수로 빼고 컴포넌트는 그리기만 하게 했다.
+=======
+### [추천 로직] 이미 구현된 코드와 새 요구사항을 한 Spec에 담기
+- **문제**: `recommend.ts`에는 추천 동작이 이미 있었고 빠진 것은 경로 선택뿐이었다. 전부 새로 명세하면 기존 동작을 다시 짜게 될 위험이 있었다.
+- **해결**
+  - 요구사항을 "구현됨"(R2~R4)과 "새로 구현"(R1, R5)으로 나눴다.
+  - 수정 범위를 `recommend.ts`와 `recommend.test.ts`로 못 박고, 기존 테스트 4개는 고치지 않는다는 조건을 R5.4에 넣었다.
+
+### [추천 로직] 다른 파트 변경이 필요한 일
+- **문제**: `best`가 `null`일 때의 대안 표시(`ResultView.tsx`)와 택시 동시 호출 제한(`taxi/service.ts`)은 추천 로직만으로 해결되지 않고 다른 팀원 담당 파일이었다.
+- **해결**: 직접 고치지 않고 design.md의 "공통 파일 변경 요청" 표에 이유와 함께 적었다. 걷기 옵션처럼 타입 변경이 꼭 필요한 곳은 선택 필드만 추가했다.
+
+### [추천 로직] 기능 폴더 간 import 금지와 오류 판별
+- **문제**: `NO_ROUTE`를 구분하려면 taxi 기능의 `TaxiError`가 필요한데, 기능 폴더끼리 import할 수 없다.
+- **해결**: 오류 객체의 `code` 필드만 보는 `isNoRouteError`를 추천 폴더 안에 만들어 import 없이 판별했다.
+>>>>>>> origin/develop
