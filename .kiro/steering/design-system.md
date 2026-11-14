@@ -39,9 +39,9 @@ CSS Module 맨 위에 변수로 모아 두고, 컴포넌트에 색 값을 직접
 | 용도 | 글꼴 |
 |---|---|
 | 추천 문장, 상태 제목, 섹션 제목 | **Jua** (굵기 400 하나뿐. 굵게 지정하지 않는다) |
-| 본문, 표, 숫자, 버튼 | 기존 본문 글꼴 |
+| 본문, 표, 숫자, 버튼, 입력 | **Pretendard** (가변 글꼴, `--font-body`) |
 
-- Jua는 `next/font/google`로 `shared/ui/fonts.ts`에서 한 번 불러온다. `layout.tsx`가 `<html>`에 변수 클래스를 적용한다.
+- Jua는 `next/font/google`로, Pretendard는 `pretendard` 패키지의 woff2를 `next/font/local`로 `shared/ui/fonts.ts`에서 한 번 불러온다. `layout.tsx`가 `<html>`에 두 변수 클래스를 적용한다.
 - 숫자(시간·요금·도착 시각)는 Jua로 쓰지 않고 `tabular-nums`로 자리를 맞춘다.
 - Jua는 같은 크기에서 작아 보이므로 다른 제목보다 2~4px 크게 쓴다.
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 import type { Place } from "@/shared/types";
+import { matchPlace } from "./matchPlace";
 import styles from "./searchForm.module.css";
 
 interface Props {
@@ -11,13 +12,17 @@ interface Props {
   onChange: (place: Place | null) => void;
 }
 
-/** 이름을 입력하면 /api/places로 후보를 찾고, 후보 중 하나와 일치할 때 장소가 선택된다. */
+/**
+ * 이름을 입력하면 /api/places로 후보를 찾고, 후보와 일치하면 장소가 선택된다.
+ * 노선이 붙은 역 이름(예: "신촌역 2호선")도 "신촌역"만 입력해 선택할 수 있다(matchPlace).
+ */
 export function PlaceInput({ label, error, onChange }: Props) {
   const listId = useId();
   const inputId = useId();
   const errorId = `${inputId}-error`;
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<Place[]>([]);
+  const [picked, setPicked] = useState<Place | null>(null);
 
   useEffect(() => {
     const q = text.trim();
@@ -31,7 +36,9 @@ export function PlaceInput({ label, error, onChange }: Props) {
         if (!res.ok) return;
         const places: Place[] = await res.json();
         setSuggestions(places);
-        onChange(places.find((p) => p.name === q) ?? null);
+        const match = matchPlace(places, q);
+        setPicked(match);
+        onChange(match);
       } catch {
         // 요청 취소나 일시 오류는 무시한다. 선택이 없으면 제출 시 안내한다.
       }
@@ -60,6 +67,7 @@ export function PlaceInput({ label, error, onChange }: Props) {
         aria-describedby={error ? errorId : undefined}
         onChange={(e) => {
           setText(e.target.value);
+          setPicked(null);
           onChange(null);
         }}
       />
@@ -68,6 +76,9 @@ export function PlaceInput({ label, error, onChange }: Props) {
           <option key={p.name} value={p.name} />
         ))}
       </datalist>
+      {picked && picked.name !== text.trim() && !error && (
+        <p className={styles.hint}>선택: {picked.name}</p>
+      )}
       {error && (
         <p id={errorId} className={styles.error}>
           {error}

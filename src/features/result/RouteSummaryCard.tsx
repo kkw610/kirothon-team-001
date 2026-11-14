@@ -20,13 +20,13 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
       key: "stop",
       name: formatStationName(option.stopName),
       time: `${safeTime(getOff)} 하차 · ${safeTime(taxiStart)} 택시 승차`,
-      dot: styles.dotTaxi,
+      dot: styles.dotTransfer,
       line: styles.lineTaxi,
     },
     { key: "dest", name: destinationName, time: `${safeTime(arrivalTime)} 도착`, dot: styles.dotDest, line: undefined },
   ];
   return (
-    <section className={cx(styles.root, styles.card)}>
+    <section className={cx(styles.root, styles.card, styles.routeCard)}>
       <h3 className={cx(styles.heading, styles.sectionTitle)}>경로 요약</h3>
       <ol className={styles.timeline}>
         {steps.map((s) => (

@@ -19,7 +19,7 @@ interface Props {
   /** 출발지·도착지 이름. 있으면 경로 요약과 내역 제목에 쓴다. */
   originName?: string;
   destinationName?: string;
-  /** 경로 요약 아래(넓은 화면에서는 오른쪽 열)에 놓을 요소. 보통 지도 */
+  /** 내역과 경로 요약 아래, 비교표 위에 한 칸을 차지하는 요소. 보통 지도 */
   aside?: ReactNode;
 }
 
@@ -50,12 +50,12 @@ export function ResultView({ result, arrivalDeadline, originName, destinationNam
       <div className={styles.areaBreakdown}>
         <BreakdownCard option={shown} names={names} />
       </div>
-      <div className={styles.areaSide}>
+      <div className={styles.areaRoute}>
         {originName && destinationName && (
           <RouteSummaryCard option={shown} originName={originName} destinationName={destinationName} />
         )}
-        {aside}
       </div>
+      {aside && <div className={styles.areaMap}>{aside}</div>}
       <div className={styles.areaTable}>
         <ComparisonTable options={options} best={best} arrivalDeadline={arrivalDeadline} />
       </div>

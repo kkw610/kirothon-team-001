@@ -15,7 +15,8 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px;
   --space-4: 16px; --space-5: 20px; --space-6: 24px;
 }
-body { margin: 0; font-family: system-ui, sans-serif; background: var(--page-bg); color: var(--ink); }
+input, button, select, textarea { font-family: inherit; }
+body { margin: 0; font-family: var(--font-body), system-ui, sans-serif; background: var(--page-bg); color: var(--ink); }
 .card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
 .form { display: grid; gap: 12px; }
 .field { display: grid; gap: 4px; font-size: 14px; }

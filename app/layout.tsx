@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { jua } from "@/shared/ui/fonts";
+import { jua, pretendard } from "@/shared/ui/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={jua.variable}>
+    <html lang="ko" className={`${jua.variable} ${pretendard.variable}`}>
       <body>{children}</body>
     </html>
   );
