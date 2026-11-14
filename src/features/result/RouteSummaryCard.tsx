@@ -3,6 +3,16 @@ import { cx } from "./cx";
 import { addMinutes, formatStationName, safeTime } from "./format";
 import styles from "./result.module.css";
 
+interface Step {
+  key: string;
+  name: string;
+  time: string;
+  /** 이 단계에서 출발하는 지하철 구간 (예: "2호선 · 이대역 → 당산역") */
+  leg?: string;
+  dot: string;
+  line?: string;
+}
+
 interface Props {
   option: Option;
   originName: string;
@@ -14,8 +24,23 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
   const { departureTime, arrivalTime, subwayMin, taxiWaitMin } = option;
   const getOff = addMinutes(departureTime, subwayMin);
   const taxiStart = addMinutes(departureTime, subwayMin + taxiWaitMin);
-  const steps = [
-    { key: "origin", name: originName, time: `${safeTime(departureTime)} 출발`, dot: styles.dotSubway, line: styles.lineSubway },
+  const legs = option.legs ?? [];
+  const legLabel = (i: number) => {
+    const leg = legs[i];
+    return leg ? `${leg.line} · ${formatStationName(leg.fromName)} → ${formatStationName(leg.toName)}` : undefined;
+  };
+  // 호선이 바뀌는 환승역마다 단계를 하나씩 끼워 넣어 어느 호선으로 갈아타는지 보여 준다.
+  const transferSteps = legs.slice(0, -1).map((leg, i) => ({
+    key: `transfer-${i}`,
+    name: formatStationName(leg.toName),
+    time: `${safeTime(addMinutes(departureTime, leg.endMin))} ${leg.line} → ${legs[i + 1].line} 환승`,
+    leg: legLabel(i + 1),
+    dot: styles.dotSubway,
+    line: styles.lineSubway,
+  }));
+  const steps: Step[] = [
+    { key: "origin", name: originName, time: `${safeTime(departureTime)} 출발`, leg: legLabel(0), dot: styles.dotSubway, line: styles.lineSubway },
+    ...transferSteps,
     {
       key: "stop",
       name: formatStationName(option.stopName),
@@ -38,6 +63,7 @@ export function RouteSummaryCard({ option, originName, destinationName }: Props)
             <div className={styles.stepText}>
               <p className={styles.stepName}>{s.name}</p>
               <p className={styles.stepTime}>{s.time}</p>
+              {s.leg && <p className={styles.stepLeg}>{s.leg}</p>}
             </div>
           </li>
         ))}

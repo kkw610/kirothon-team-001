@@ -111,58 +111,98 @@
 }
 
 /* ---------- 추천 카드 ---------- */
+/* 흰 카드 뒤에 연보라 판이 비스듬히 깔리고, 유령이 위에서 얼굴을 내민다 */
 .recommendCard {
-  background: var(--primary);
-  color: var(--on-primary);
-  border: 1px solid var(--primary);
-  border-radius: 20px;
-  padding: 20px;
+  position: relative;
+  isolation: isolate;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 28px 24px 24px;
 }
-
+.recommendCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--primary) 18%, var(--surface));
+  transform: translate(8px, 10px) rotate(0.6deg);
+}
+.mascotPeek {
+  position: absolute;
+  top: -44px;
+  right: 20px;
+  width: 96px;
+  height: 96px;
+}
 .recommendCard .chip {
-  background: var(--on-primary);
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  font-weight: 700;
+}
+.headline {
+  margin: 0 0 20px;
+  font-size: 28px;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.stat {
+  display: grid;
+  gap: 2px;
+  padding: 12px 16px;
+  background: var(--surface-tint);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  min-width: 0;
+}
+.statLabel {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+.statValue {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.stat:last-child .statValue {
   color: var(--primary-text);
 }
-
-.headline {
-  margin: 0 0 8px;
-  font-size: 24px;
-  line-height: 1.4;
+@media (max-width: 420px) {
+  .stat {
+    padding: 8px 12px;
+  }
+  .statValue {
+    font-size: 18px;
+  }
 }
-
+@media (min-width: 768px) {
+  .headline {
+    font-size: 34px;
+  }
+  .statValue {
+    font-size: 26px;
+  }
+}
 .summary {
   margin: 0;
   font-size: 16px;
   line-height: 1.5;
 }
-
-.recommendCard .mascotSlot {
-  width: 88px;
-  height: 88px;
-}
-@media (min-width: 768px) {
-  .recommendCard .mascotSlot {
-    width: 120px;
-    height: 120px;
-  }
-}
-.recommendCard .summary,
-.recommendCard .headline {
-  color: var(--on-primary);
-}
-
-@media (min-width: 768px) {
-  .headline {
-    font-size: 28px;
-  }
-}
-
 /* ---------- 늦음 카드 ---------- */
 .lateCard {
   background: var(--surface);
   color: var(--ink);
   border: 2px solid var(--late);
-  border-radius: 20px;
+  border-radius: 28px;
   padding: 20px;
 }
 
@@ -185,6 +225,18 @@
   gap: 12px;
 }
 
+.breakdownList {
+  display: grid;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.breakdownList > .breakdownRow {
+  padding: 12px 16px;
+}
+.breakdownList > .breakdownRow + .breakdownRow {
+  border-top: 1px solid var(--border);
+}
 .breakdownRow {
   display: grid;
   grid-template-columns: 8px minmax(0, 1fr) minmax(48px, auto) minmax(72px, auto);
@@ -246,8 +298,7 @@
 }
 
 .totalRow {
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
+  background: var(--surface-tint);
 }
 
 .totalCost {
@@ -258,7 +309,7 @@
 /* ---------- 비교표 ---------- */
 .sectionTitle {
   margin: 0 0 16px;
-  font-size: 22px;
+  font-size: 24px;
 }
 .tableHead {
   display: flex;
@@ -552,7 +603,8 @@
   min-width: 0;
 }
 .areaHero {
-  margin-bottom: 8px;
+  margin-top: 44px;
+  margin-bottom: 12px;
 }
 .areaTable {
   margin-top: 12px;
@@ -601,7 +653,9 @@
 .timeline {
   list-style: none;
   margin: 4px 0 0;
-  padding: 0;
+  padding: 20px 16px 8px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -679,74 +733,146 @@
   color: var(--text-sub);
 }
 
-/* ---------- 로딩: 헤더 아래 남은 화면의 가운데 ---------- */
-.loadingScreen {
+.stepLeg {
+  display: inline-block;
+  margin: 6px 0 0;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+/* ---------- 로딩: 경로 위를 달리는 유령 + 단계 목록 ---------- */
+.loadingCard {
   display: grid;
-  justify-items: center;
-  align-content: center;
-  gap: 12px;
-  /* 헤더 56px와 본문 위아래 여백 48px를 뺀 높이 */
-  min-height: calc(100dvh - 56px - 48px);
-  padding: 24px 0;
-  text-align: center;
+  gap: 20px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
 }
-.loadingScene {
-  width: 100%;
-  max-width: 420px;
-  margin-bottom: 8px;
+.loadingStage {
+  position: relative;
+  padding: 72px 20px 28px;
+  border-radius: 16px;
+  background: var(--surface-tint);
 }
-.loadingTitle {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 2px;
-  font-size: 24px;
-  color: var(--ink);
+.loadingGhost {
+  position: absolute;
+  top: 8px;
+  width: 72px;
+  height: 72px;
+  transform: translateX(-50%);
+  transition: left 0.8s ease-in-out;
+  animation: loadingBob 1s ease-in-out infinite;
 }
-.loadingLead {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--text-sub);
-  word-break: keep-all;
+.loadingGhost img {
+  display: block;
 }
-.loadingDots {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: 4px;
-}
-.loadingDots span {
-  width: 6px;
+.loadingTrack {
+  position: relative;
   height: 6px;
   border-radius: 999px;
+  background: var(--taxi);
+}
+.loadingTrackDone {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--subway);
+  transition: width 0.8s ease-in-out;
+}
+.loadingNode,
+.loadingNodeCurrent {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: 3px solid var(--subway);
+  border-radius: 999px;
+  background: var(--surface);
+  transform: translate(-50%, -50%);
+}
+.loadingNodeA {
+  left: 28%;
+}
+.loadingNodeB {
+  left: 50%;
+}
+.loadingNodeCurrent {
+  border-color: var(--taxi);
+  transition: left 0.8s ease-in-out;
+}
+.loadingGoal {
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
   background: var(--primary);
-  animation: loadingDot 1.2s ease-in-out infinite;
+  transform: translateY(-50%);
 }
-.loadingDots span:nth-child(2) {
-  animation-delay: 0.2s;
+.loadingTitle {
+  display: block;
+  margin: 0;
+  padding: 0 4px;
+  border-radius: 0;
+  background: none;
+  font-size: 22px;
+  color: var(--ink);
+  word-break: keep-all;
 }
-.loadingDots span:nth-child(3) {
-  animation-delay: 0.4s;
+.loadingSteps {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0 4px 8px;
+  list-style: none;
 }
-@keyframes loadingDot {
+.loadingStep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.loadingStepMark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary);
+  border-radius: 999px;
+  color: var(--on-primary);
+}
+.loadingStep_done .loadingStepMark {
+  background: var(--primary);
+}
+.loadingStep_todo {
+  color: var(--text-sub);
+}
+.loadingStep_todo .loadingStepMark {
+  border-color: var(--border);
+}
+@keyframes loadingBob {
   0%,
-  80%,
   100% {
-    opacity: 0.25;
-    transform: translateY(0);
+    margin-top: 0;
   }
-  40% {
-    opacity: 1;
-    transform: translateY(-4px);
-  }
-}
-@media (min-width: 768px) {
-  .loadingTitle {
-    font-size: 28px;
+  50% {
+    margin-top: -6px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .loadingDots span {
+  .loadingGhost,
+  .loadingTrackDone,
+  .loadingNodeCurrent {
     animation: none;
-    opacity: 0.6;
+    transition: none;
   }
 }

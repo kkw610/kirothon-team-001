@@ -21,6 +21,7 @@ export function BreakdownCard({ option, names }: Props) {
   return (
     <section className={cx(styles.root, styles.card, styles.breakdownCard)}>
       <h3 className={cx(styles.heading, styles.sectionTitle)}>시간·비용 내역</h3>
+      <div className={styles.breakdownList}>
       {rows.map((row) => {
         const isTotal = row.kind === "total";
         return (
@@ -35,6 +36,7 @@ export function BreakdownCard({ option, names }: Props) {
           </div>
         );
       })}
+      </div>
       <p className={styles.note}>{TAXI_FARE_DISCLAIMER}</p>
     </section>
   );

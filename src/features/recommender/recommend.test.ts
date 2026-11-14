@@ -136,3 +136,26 @@ describe("recommend 빈 입력과 오류 전파", () => {
     ).rejects.toThrow("taxi failure");
   });
 });
+describe("recommend 목적지 근처 정류장", () => {
+  it("목적지와 같은 위치의 정류장은 택시 후보에서 빼고 택시를 호출하지 않는다", async () => {
+    const atDestination: Route = {
+      id: "r2",
+      fare: 1500,
+      stops: [
+        { name: "A", x: 127.0, y: 37.5, elapsedMin: 0, mode: "subway" },
+        { name: "B", x: 127.01, y: 37.5, elapsedMin: 10, mode: "subway" },
+        { name: "도착역", x: 127.02, y: 37.5, elapsedMin: 20, mode: "subway" },
+      ],
+    };
+    const spy = vi.fn(taxi);
+    const res = await recommend({
+      ...base,
+      routes: [atDestination],
+      destination: { name: "도착역", x: 127.02001, y: 37.50001 },
+      arrivalDeadline: new Date("2025-01-01T02:00:00Z"),
+      estimateTaxi: spy,
+    });
+    expect(res.options.map((o) => o.stopName)).toEqual(["A", "B"]);
+    expect(spy).toHaveBeenCalledTimes(2);
+  });
+});
