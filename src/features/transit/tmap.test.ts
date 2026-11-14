@@ -125,6 +125,11 @@ describe("parseTmapRoutes 실제 응답 (신촌역 → 코엑스, 2026-11-14 16:
     expect(last.elapsedMin).toBe(36.2);
     expect(last.distanceM).toBe(4471 + 15794);
     expect(last.fare).toBe(1750);
+    // 도보: 출발지 → 신촌 138m 132초, 봉은사 → 코엑스 551m 494초
+    expect(r.walkFromOrigin).toEqual({ distanceM: 138, minutes: 2.2 });
+    expect(r.walkToDestination).toEqual({ distanceM: 551, minutes: 8.2 });
+    // 택시 없이 지하철+도보로 가는 시간 = 마지막 역 도착 + 도착 도보 = totalMin
+    expect(Math.round((last.elapsedMin + r.walkToDestination!.minutes) * 10) / 10).toBe(r.totalMin);
     for (let i = 1; i < r.stops.length; i += 1) {
       expect(r.stops[i].elapsedMin).toBeGreaterThanOrEqual(r.stops[i - 1].elapsedMin);
       expect(r.stops[i].distanceM!).toBeGreaterThanOrEqual(r.stops[i - 1].distanceM!);

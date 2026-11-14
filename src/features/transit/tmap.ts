@@ -86,7 +86,7 @@ function toLegs(it: Itinerary): TransitLeg[] {
         .map((s) => ({ name: s.stationName, x: s.lon, y: s.lat }));
       return { kind: "subway", minutes, distanceM: leg.distance, line: leg.route, stations };
     }
-    return { kind: leg.mode === "WALK" ? "walk" : "other", minutes };
+    return { kind: leg.mode === "WALK" ? "walk" : "other", minutes, distanceM: leg.distance };
   });
 }
 

@@ -27,6 +27,13 @@
 - [x] 9-12. 같은 구간을 16:01과 01:30에 호출해 `searchDttm` 반영 범위 확인 → 운행 여부(`service`)만 반영. 미운행 경로 제외 구현
 - [x] 9-12-1. 실제 키로 전체 흐름 확인(강남역 → 서울역: TMAP → recommend → 카카오). TMAP 3건 사용
 - [x] 9-12-3. 검색 실패 진단: 무료 한도 소진(429 `QUOTA_EXCEEDED`) → 프리미엄 전환 후 서버 프로세스에 남은 이전 키(403 `INVALID_API_KEY`). TMAP 오류 코드 로그 추가
+- [x] 9-15. develop 머지(PR #6 #7: 카카오 장소 검색, 지도, 오류 구분)
+- [x] 9-16. 요구사항 개정 4, design D4(지하철+도보 기준 경로) 작성
+- [x] 9-17. `build-route.ts`에 도보 구간(`walkFromOrigin`, `walkToDestination`)과 테스트 (R1.14)
+- [x] 9-18. `tmap.ts`가 도보 거리 전달, 실제 응답 fixture로 검증 (R1.14, R1.15)
+- [x] 9-19. `shared/types.ts` `Route` 도보 필드 추가, `handoff.md` 개정 4
+- [ ] 9-20. [사람·팀] D4 확인, `domain-rules.md`·`Option` 변경 합의(공통 파일 변경 요청 9~11)
+- [ ] 9-21. 추천 로직 기준 옵션 구현 (9-20 합의 후, recommender 담당 또는 위임)
 - [ ] 9-12-2. [사람·팀] 대체 경로·시간표 대기 시간 필요 여부 결정(design.md D1 실측 결과 참고)
 - [ ] 9-13. [사람] `npm run dev`로 `http://localhost:3000` 화면 확인, 시연 영상 촬영
 - [ ] 9-14. [사람] 공통 파일 변경 요청(design.md 1, 2, 6, 7, 8)을 담당자에게 전달

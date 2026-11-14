@@ -24,6 +24,15 @@
 ### D3. 노선 범위 → 수도권 1~9호선(급행 포함)만 (2026-11-14 결정)
 모든 지하철 구간이 1~9호선인 경로만 쓴다. 신분당선, 경의중앙선, 공항철도 등이 섞인 경로는 버린다.
 
+### D4. 기준 경로: 지하철+도보, 택시는 비교 대상 (2026-11-14 제안, 추천 로직 담당자 확인 필요)
+- 문제: `recommend()`가 모든 역을 "그 역에서 택시 탑승" 후보로만 평가한다. 목적지가 마지막 역에서 걸어갈 거리여도 택시 옵션만 나온다.
+- 결정: 출발지→목적지 **지하철+도보 경로를 기준 옵션**으로 두고, 각 역에서 택시로 갈아타는 옵션과 비교한다.
+  - 기준 옵션 도착 = 출발 + `Route.totalMin`, 비용 = `Route.fare`, 택시 0원
+  - 기준 옵션이 제시간이면 비용이 가장 낮아 자연히 추천된다(택시 요금 > 0).
+- 데이터: TMAP 응답의 `WALK` 구간에 거리와 시간이 있다. 추가 호출 없이 `walkFromOrigin`, `walkToDestination`으로 넘긴다(R1.14).
+- 검토한 대안: 카카오모빌리티 도보 길찾기는 제휴 전용, TMAP 보행자 경로는 별도 상품(호출 비용 추가)이라 쓰지 않는다.
+- `domain-rules.md` "총비용과 추천"에 기준 옵션 규칙 추가가 필요하다(공통 파일 변경 요청 9).
+
 ## 흐름
 ```mermaid
 flowchart LR
@@ -70,6 +79,12 @@ Content-Type: application/json
 - `fare` = `calculateSubwayFare(distanceM)`, 경로 요금 이하. 탑승역 0, 마지막 역은 경로 요금
 - 환승역은 먼저 나온 것만 남긴다. `transferCount` = 지하철 구간 수 − 1
 - 지하철 요금 상수(`transit/fare.ts`): 기본 1,550원(10km), 50km까지 5km마다 100원, 이후 8km마다 100원. 출처: https://world.seoul.go.kr/policy/transportation/modes-of-transport/subway/
+
+### 도보 구간 (개정 4)
+- `walkFromOrigin`: 첫 `SUBWAY` 앞의 `WALK` 구간 합(거리 m, 시간 분)
+- `walkToDestination`: 마지막 `SUBWAY` 뒤의 `WALK` 구간 합
+- 도보 구간이 없으면 `{ distanceM: 0, minutes: 0 }`
+- 계산은 `build-route.ts`에서 한다. TMAP 응답 형식은 `tmap.ts` 밖으로 나가지 않는다.
 
 ### 캐시
 같은 출발지, 목적지, 출발 시각(10분 단위)은 10분간 캐시한다. 요청의 `searchDttm`은 처음 호출한 시각 그대로다. 일 10건 한도 때문에 분 단위 캐시에서 바꿨다. 응답 전체(최대 3개 경로)를 캐시하고 `maxRoutes`로 잘라서 돌려준다.
@@ -159,6 +174,12 @@ Authorization: KakaoAK {KAKAO_REST_API_KEY}
    ```
 8. `app/api/recommend/route.ts`: 지하철도 출발 시각 기준으로 찾도록 `departureAt`을 넘긴다.
    `const routes = await getTransitRoutes(origin, destination, departureAt);`
+
+9. `.kiro/steering/domain-rules.md` "총비용과 추천" (팀 합의 후): 다음 규칙 추가 제안
+   - 택시를 타지 않고 지하철과 도보로만 가는 옵션을 기준 옵션으로 함께 평가한다. 도착 = 출발 + `Route.totalMin`, 총비용 = `Route.fare`.
+   - 기준 옵션이 제시간이면 추천한다(택시 옵션보다 항상 싸다).
+10. `src/shared/types.ts` `Option`: 기준 옵션을 구분할 필드 추가 제안 `kind?: "walk" | "taxi"`(없으면 `"taxi"`), `walkMin?: number`(마지막 역→목적지 도보 분).
+11. `src/features/recommender/recommend.ts` (recommender 담당): 기준 옵션 추가. `handoff.md` 4절 코드 참고. 결과 화면(`result`)은 `kind === "walk"`면 "택시 없이 도보 N분"으로 표시.
 
 ## 리스크
 - TMAP 응답 구조는 실제 응답 2건으로 확정했다. 응답은 `transit/__fixtures__/`에 저장해 테스트에 쓴다(지도용 좌표 `passShape`는 제외).
