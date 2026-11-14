@@ -26,6 +26,17 @@ export interface TransitOptions {
   maxRoutes?: number;
 }
 
+/** 오류 응답 본문에서 TMAP 오류 코드만 꺼낸다. 형식: { code } 또는 { error: { code } } */
+async function upstreamErrorCode(response: Response): Promise<string> {
+  const body: unknown = await response.json().catch(() => undefined);
+  if (body && typeof body === "object") {
+    const b = body as { code?: unknown; error?: { code?: unknown } };
+    const code = b.code ?? b.error?.code;
+    if (typeof code === "string" && /^[A-Z0-9_]{1,40}$/.test(code)) return code;
+  }
+  return "code unknown";
+}
+
 async function fetchTmap(origin: Place, destination: Place, searchDttm: string): Promise<unknown> {
   let response: Response;
   try {
@@ -52,11 +63,11 @@ async function fetchTmap(origin: Place, destination: Place, searchDttm: string):
   } catch {
     throw new TransitError("UPSTREAM", "TMAP 대중교통 API에 연결하지 못했습니다.");
   }
-  if (response.status === 401 || response.status === 403) {
-    throw new TransitError("UPSTREAM", `TMAP 대중교통 키 인증 실패(HTTP ${response.status})`);
-  }
-  if (response.status === 429) {
-    throw new TransitError("UPSTREAM", "TMAP 대중교통 호출 한도를 넘었습니다(HTTP 429).");
+  if (response.status === 401 || response.status === 403 || response.status === 429) {
+    // 원인 구분을 위해 TMAP 오류 코드(예: QUOTA_EXCEEDED)만 메시지에 담는다. 키나 요청 좌표는 담지 않는다.
+    const code = await upstreamErrorCode(response);
+    const reason = response.status === 429 ? "호출 한도 초과" : "키 인증 실패";
+    throw new TransitError("UPSTREAM", `TMAP 대중교통 ${reason}(HTTP ${response.status}, ${code})`);
   }
   // 경로 없음(status 11~14)도 본문으로 판단해야 하므로 4xx 본문은 파서에 넘긴다.
   const body = await response.json().catch(() => undefined);
@@ -67,8 +78,9 @@ async function fetchTmap(origin: Place, destination: Place, searchDttm: string):
 }
 
 /**
- * 출발지에서 목적지까지 수도권 1~9호선 지하철 경로를 출발 시각 기준으로 찾는다(TMAP 대중교통).
- * routes[0]이 추천 경로이고, maxRoutes가 2 이상이면 대체 경로가 뒤에 붙는다.
+ * 출발지에서 목적지까지 수도권 1~9호선 지하철+도보 경로를 출발 시각 기준으로 찾는다(TMAP 대중교통).
+ * 버스·다른 노선이 섞인 경로는 앞의 1~9호선 구간을 목적지에 가장 가까운 역에서 끊는다(design.md D5).
+ * routes[0]이 택시 없이 목적지까지 가장 빠른 경로이고, maxRoutes가 2 이상이면 다음 후보가 뒤에 붙는다.
  * 같은 출발지, 목적지, 출발 시각(10분 단위)은 10분간 캐시한다. 실패는 TransitError로 던진다.
  */
 export async function getTransitRoutes(
@@ -86,6 +98,7 @@ export async function getTransitRoutes(
     parseTmapRoutes(await fetchTmap(origin, destination, searchDttm), {
       maxRoutes: MAX_ROUTES,
       departureAt,
+      destination,
     }),
   );
   return routes.slice(0, maxRoutes);

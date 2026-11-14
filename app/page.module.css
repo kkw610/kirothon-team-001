@@ -42,7 +42,7 @@
 .mapPlaceholder {
   display: grid;
   place-items: center;
-  min-height: 200px;
+  min-height: 320px;
   padding: var(--space-4);
   border: 1px dashed var(--border);
   border-radius: 16px;

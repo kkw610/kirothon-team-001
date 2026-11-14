@@ -14,7 +14,12 @@ export function pickFastest(options: Option[]): Option | undefined {
   return fastest;
 }
 
-/** routeId와 stopName이 모두 같으면 같은 옵션으로 본다. */
+/** routeId, stopName, 이동 방식(도보/택시)이 모두 같으면 같은 옵션으로 본다. */
 export function isSameOption(a: Option | null, b: Option): boolean {
-  return a !== null && a.routeId === b.routeId && a.stopName === b.stopName;
+  return (
+    a !== null &&
+    a.routeId === b.routeId &&
+    a.stopName === b.stopName &&
+    (a.kind ?? "taxi") === (b.kind ?? "taxi")
+  );
 }

@@ -13,6 +13,7 @@ function barClass(kind: BreakdownKind): string | undefined {
   if (kind === "subway") return styles.barSubway;
   if (kind === "taxiWait") return styles.barWait;
   if (kind === "taxi") return styles.barTaxi;
+  if (kind === "walk") return styles.barWait;
   return undefined;
 }
 
@@ -21,6 +22,7 @@ export function BreakdownCard({ option, names }: Props) {
   return (
     <section className={cx(styles.root, styles.card, styles.breakdownCard)}>
       <h3 className={cx(styles.heading, styles.sectionTitle)}>시간·비용 내역</h3>
+      <div className={styles.breakdownList}>
       {rows.map((row) => {
         const isTotal = row.kind === "total";
         return (
@@ -35,7 +37,8 @@ export function BreakdownCard({ option, names }: Props) {
           </div>
         );
       })}
-      <p className={styles.note}>{TAXI_FARE_DISCLAIMER}</p>
+      </div>
+      {option.kind !== "walk" && <p className={styles.note}>{TAXI_FARE_DISCLAIMER}</p>}
     </section>
   );
 }

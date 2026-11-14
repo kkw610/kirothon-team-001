@@ -35,7 +35,7 @@ export function ComparisonTable({ options, best, arrivalDeadline }: Props) {
             <tr>
               <th>택시 타는 곳</th>
               <th className={styles.cellNum}>지하철</th>
-              <th className={styles.cellNum}>택시</th>
+              <th className={styles.cellNum}>택시·도보</th>
               <th className={styles.cellNum}>택시비</th>
               <th className={styles.cellNum}>총비용</th>
               <th className={styles.cellNum}>도착</th>
@@ -45,20 +45,20 @@ export function ComparisonTable({ options, best, arrivalDeadline }: Props) {
           <tbody>
             {rows.map(({ option: o, isBest, isFastest, isLate, lateText }) => (
               <tr
-                key={`${o.routeId}:${o.stopName}`}
+                key={`${o.routeId}:${o.kind ?? "taxi"}:${o.stopName}`}
                 className={cx(isBest && styles.rowBest, !isBest && isLate && styles.rowLate)}
               >
                 <td data-label="택시 타는 곳" className={styles.cellStop}>
-                  {o.stopName}
+                  {o.kind === "walk" ? `${o.stopName} (도보)` : o.stopName}
                 </td>
                 <td data-label="지하철" className={styles.cellNum}>
                   {formatDuration(o.subwayMin)}
                 </td>
-                <td data-label="택시" className={styles.cellNum}>
-                  {formatDuration(o.taxiMin)}
+                <td data-label="택시·도보" className={styles.cellNum}>
+                  {o.kind === "walk" ? `도보 ${formatDuration(o.walkMin ?? 0)}` : formatDuration(o.taxiMin)}
                 </td>
                 <td data-label="택시비" className={styles.cellNum}>
-                  {formatTaxiFare(o.taxiFare)}
+                  {o.kind === "walk" ? "-" : formatTaxiFare(o.taxiFare)}
                 </td>
                 <td data-label="총비용" className={cx(styles.cellNum, styles.cellTotal)}>
                   {formatWon(o.totalCost)}

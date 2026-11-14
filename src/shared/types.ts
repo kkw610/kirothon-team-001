@@ -26,6 +26,26 @@ export interface Stop extends Coordinate {
   fare?: number;
 }
 
+/** 한 호선으로 계속 탄 구간. 호선이 바뀔 때마다 새 구간이 시작된다. */
+export interface SubwayLeg {
+  line: string;
+  fromName: string;
+  toName: string;
+  /** 출발지부터의 누적 소요시간(분) */
+  startMin: number;
+  endMin: number;
+}
+
+/** 도보 구간 */
+export interface WalkSegment {
+  /** 거리(m) */
+  distanceM: number;
+  /** 시간(분, 소수 1자리) */
+  minutes: number;
+  /** true면 API 값이 아니라 직선거리로 추정한 값 */
+  estimated?: boolean;
+}
+
 export interface Route {
   id: string;
   /** 대중교통 요금(원). 끝까지 지하철로 갈 때의 요금 */
@@ -39,20 +59,37 @@ export interface Route {
   timeAware?: boolean;
   /** 경로 검색 기준 출발 시각 (ISO 8601) */
   departureTime?: string;
+  /** 출발지에서 첫 역까지 도보. elapsedMin에 이미 포함된다 */
+  walkFromOrigin?: WalkSegment;
+  /** 마지막 역에서 목적지까지 도보. 택시 없이 갈 때만 쓴다. totalMin에 포함된다 */
+  walkToDestination?: WalkSegment;
+  /** true면 버스·1~9호선 외 노선 앞에서 자른 경로. 마지막 역 이후는 도보(추정) 또는 택시 */
+  truncated?: boolean;
 }
 
 export interface Option {
+  /**
+   * "taxi": 정류장에서 내려 택시로 간다(없으면 "taxi").
+   * "walk": 끝까지 지하철을 타고 마지막 역에서 목적지까지 걸어간다. 택시 필드는 0이다.
+   */
+  kind?: "walk" | "taxi";
   routeId: string;
-  /** 택시로 갈아탈 정류장 이름 */
+  /** 택시로 갈아탈 정류장 이름. kind가 "walk"이면 마지막 역 */
   stopName: string;
-  /** 택시로 갈아탈 정류장 좌표 */
+  /** 택시로 갈아탈 정류장 좌표. kind가 "walk"이면 마지막 역 */
   stopCoord: Coordinate;
+  /** 마지막 역에서 목적지까지 도보 시간(분). kind가 "walk"일 때만 있다 */
+  walkMin?: number;
+  /** 마지막 역에서 목적지까지 도보 거리(m). kind가 "walk"일 때만 있다 */
+  walkDistanceM?: number;
   /** 출발 시각 (ISO 8601) */
   departureTime: string;
   /** 예상 도착 시각 (ISO 8601) */
   arrivalTime: string;
   /** 희망 도착 시각 이하로 도착하는지 */
   onTime: boolean;
+  /** 호선별 탑승 구간. 호선 정보가 없는 경로면 비어 있다. */
+  legs?: SubwayLeg[];
   /** 지하철 탑승 시간(분). 출발지에서 환승 정류장까지 */
   subwayMin: number;
   /** 택시 탑승 전 고정 대기 시간(분) */
@@ -107,3 +144,27 @@ export type TaxiEstimator = (
   to: Coordinate,
   boardingAt?: Date,
 ) => Promise<TaxiEstimate>;
+
+export type ApiErrorCode = "INVALID_REQUEST" | "NO_ROUTE" | "UPSTREAM_ERROR" | "SERVER_ERROR";
+
+/** API 오류 응답 본문. error는 사용자에게 보여 줘도 되는 문장이다. */
+export interface ApiErrorBody {
+  error: string;
+  /**
+   * INVALID_REQUEST(400): 요청 형식 오류
+   * NO_ROUTE(404): 조건에 맞는 경로가 없음(정상적인 "결과 없음")
+   * UPSTREAM_ERROR(502): 외부 API 호출 실패(연결, 인증, 한도, 응답 형식)
+   * SERVER_ERROR(500): 그 밖의 서버 오류(설정 누락, 버그)
+   */
+  code: ApiErrorCode;
+  /** 오류가 난 외부 API. NO_ROUTE, UPSTREAM_ERROR에서만 있다 */
+  source?: "transit" | "taxi" | "places";
+}
+
+/** 환승역에서 목적지까지 택시로 가는 도로 경로(지도용). */
+export interface TaxiPath {
+  /** 출발에서 도착 순서의 좌표. 길찾기에 실패하면 [출발, 도착] 두 점 */
+  path: Coordinate[];
+  /** true면 도로 경로를 못 구해 직선으로 대신한 것 */
+  fallback: boolean;
+}

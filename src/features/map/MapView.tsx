@@ -11,7 +11,7 @@ interface Props {
 
 /**
  * 지도 자리표시. 지금은 정류장 좌표를 SVG로 그린다.
- * 카카오 지도(KAKAO_JS_KEY)를 붙일 때 이 컴포넌트를 교체한다. props는 유지한다.
+ * 카카오 지도는 KakaoMap 컴포넌트(NEXT_PUBLIC_KAKAO_JS_KEY)가 맡는다. 이 SVG는 키 없이 쓰는 대체용이다.
  */
 export function MapView({ routes, destination, highlightStopName }: Props) {
   const model = buildMapModel(routes, destination, highlightStopName);
